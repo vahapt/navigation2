@@ -17,7 +17,10 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-namespace nav2_qos
+namespace nav2
+{
+
+namespace qos
 {
 
 /**
@@ -80,6 +83,8 @@ public:
   };
 };
 
-}  // namespace nav2_qos
+}  // namespace qos
+
+}  // namespace nav2
 
 #endif  // NAV2_UTIL__QOS_PROFILES_HPP_

@@ -20,7 +20,10 @@
 #include "nav2_util/service_server.hpp"
 #include "nav2_util/simple_action_server.hpp"
 
-namespace nav2_qos
+namespace nav2
+{
+
+namespace qos
 {
 
 /**
@@ -230,6 +233,8 @@ std::shared_ptr<nav2_util::SimpleActionServer<ActionT>> create_server(
     node, action_name, execute_callback, completion_callback, server_timeout, spin_thread, realtime);
 }
 
-}  // namespace nav2_qos
+}  // namespace qos
+
+}  // namespace nav2
 
 #endif  // NAV2_UTIL__INTERFACE_FACTORIES_HPP_

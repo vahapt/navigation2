@@ -150,7 +150,7 @@ public:
    * @brief Create a subscription to a topic using Nav2 QoS profiles and SubscriptionOptions
    * @param topic_name Name of topic
    * @param callback Callback function to handle incoming messages
-   * @param qos QoS settings for the subscription (default is nav2_qos::StandardTopicQoS())
+   * @param qos QoS settings for the subscription (default is nav2::qos::StandardTopicQoS())
    * @param callback_group The callback group to use (if provided)
    * @return A shared pointer to the created subscription
    */
@@ -162,10 +162,10 @@ public:
   create_subscription(
     const std::string & topic_name,
     CallbackT && callback,
-    const rclcpp::QoS & qos = nav2_qos::StandardTopicQoS(),
+    const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2_qos::create_subscription<MessageT>(
+    return nav2::qos::create_subscription<MessageT>(
       *this, topic_name,
       std::forward<CallbackT>(callback), qos, callback_group);
   }
@@ -173,7 +173,7 @@ public:
   /**
    * @brief Create a publisher to a topic using Nav2 QoS profiles and PublisherOptions
    * @param topic_name Name of topic
-   * @param qos QoS settings for the publisher (default is nav2_qos::StandardTopicQoS())
+   * @param qos QoS settings for the publisher (default is nav2::qos::StandardTopicQoS())
    * @param callback_group The callback group to use (if provided)
    * @return A shared pointer to the created publisher
    */
@@ -184,10 +184,10 @@ public:
   std::shared_ptr<PublisherT>
   create_publisher(
     const std::string & topic_name,
-    const rclcpp::QoS & qos = nav2_qos::StandardTopicQoS(),
+    const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2_qos::create_publisher<MessageT>(
+    return nav2::qos::create_publisher<MessageT>(
       *this, topic_name, qos, callback_group);
   }
 
@@ -203,7 +203,7 @@ public:
     const std::string & service_name,
     bool use_internal_executor = false)
   {
-    return nav2_qos::create_client<ServiceT, LifecycleNode::SharedPtr>(
+    return nav2::qos::create_client<ServiceT, LifecycleNode::SharedPtr>(
       shared_from_this(), service_name, use_internal_executor);
   }
 
@@ -221,7 +221,7 @@ public:
     typename nav2_util::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType callback,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
   {
-    return nav2_qos::create_service<ServiceT, LifecycleNode::SharedPtr>(
+    return nav2::qos::create_service<ServiceT, LifecycleNode::SharedPtr>(
       shared_from_this(), service_name, callback, callback_group);
   }
 
@@ -245,7 +245,7 @@ public:
     bool spin_thread = false,
     const bool realtime = false)
   {
-    return nav2_qos::create_server<ActionT, LifecycleNode::SharedPtr>(
+    return nav2::qos::create_server<ActionT, LifecycleNode::SharedPtr>(
       shared_from_this(), action_name, execute_callback,
       completion_callback, server_timeout, spin_thread, realtime);
   }
