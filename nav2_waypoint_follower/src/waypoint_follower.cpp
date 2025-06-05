@@ -62,7 +62,6 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
   loop_rate_ = get_parameter("loop_rate").as_int();
   waypoint_task_executor_id_ = get_parameter("waypoint_task_executor_plugin").as_string();
   global_frame_id_ = get_parameter("global_frame_id").as_string();
-  global_frame_id_ = nav2_util::strip_leading_slash(global_frame_id_);
 
   callback_group_ = create_callback_group(
     rclcpp::CallbackGroupType::MutuallyExclusive,

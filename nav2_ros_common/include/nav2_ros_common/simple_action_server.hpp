@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef NAV2_UTIL__SIMPLE_ACTION_SERVER_HPP_
-#define NAV2_UTIL__SIMPLE_ACTION_SERVER_HPP_
+#ifndef NAV2_ROS_COMMON__SIMPLE_ACTION_SERVER_HPP_
+#define NAV2_ROS_COMMON__SIMPLE_ACTION_SERVER_HPP_
 
 #include <memory>
 #include <mutex>
@@ -25,14 +25,14 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "nav2_util/node_thread.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_thread.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
-namespace nav2_util
+namespace nav2_ros_common
 {
 
 /**
- * @class nav2_util::SimpleActionServer
+ * @class nav2_ros_common::SimpleActionServer
  * @brief An action server wrapper to make applications simpler using Actions
  */
 template<typename ActionT>
@@ -130,7 +130,7 @@ public:
     if (spin_thread_) {
       executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
       executor_->add_callback_group(callback_group_, node_base_interface_);
-      executor_thread_ = std::make_unique<nav2_util::NodeThread>(executor_);
+      executor_thread_ = std::make_unique<nav2_ros_common::NodeThread>(executor_);
     }
   }
 
@@ -186,7 +186,7 @@ public:
   void setSoftRealTimePriority()
   {
     if (use_realtime_prioritization_) {
-      nav2_util::setSoftRealTimePriority();
+      nav2_ros_common::setSoftRealTimePriority();
       debug_msg("Soft realtime prioritization successfully set!");
     }
   }
@@ -548,7 +548,7 @@ protected:
   bool spin_thread_;
   rclcpp::CallbackGroup::SharedPtr callback_group_{nullptr};
   rclcpp::executors::SingleThreadedExecutor::SharedPtr executor_;
-  std::unique_ptr<nav2_util::NodeThread> executor_thread_;
+  std::unique_ptr<nav2_ros_common::NodeThread> executor_thread_;
 
   /**
    * @brief Generate an empty result object for an action type
@@ -664,6 +664,6 @@ protected:
   }
 };
 
-}  // namespace nav2_util
+}  // namespace nav2_ros_common
 
-#endif   // NAV2_UTIL__SIMPLE_ACTION_SERVER_HPP_
+#endif   // NAV2_ROS_COMMON__SIMPLE_ACTION_SERVER_HPP_

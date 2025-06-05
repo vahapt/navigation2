@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef NAV2_UTIL__SERVICE_CLIENT_HPP_
-#define NAV2_UTIL__SERVICE_CLIENT_HPP_
+#ifndef NAV2_ROS_COMMON__SERVICE_CLIENT_HPP_
+#define NAV2_ROS_COMMON__SERVICE_CLIENT_HPP_
 
 #include <string>
 #include <memory>
 #include <chrono>
 #include "rclcpp/rclcpp.hpp"
 
-namespace nav2_util
+namespace nav2_ros_common
 {
 
 /**
- * @class nav2_util::ServiceClient
+ * @class nav2_ros_common::ServiceClient
  * @brief A simple wrapper on ROS2 services client
  */
 template<class ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
@@ -227,6 +227,6 @@ protected:
   bool use_internal_executor_;
 };
 
-}  // namespace nav2_util
+}  // namespace nav2_ros_common
 
-#endif  // NAV2_UTIL__SERVICE_CLIENT_HPP_
+#endif  // NAV2_ROS_COMMON__SERVICE_CLIENT_HPP_

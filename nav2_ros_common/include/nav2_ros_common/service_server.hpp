@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef NAV2_UTIL__SERVICE_SERVER_HPP_
-#define NAV2_UTIL__SERVICE_SERVER_HPP_
+#ifndef NAV2_ROS_COMMON__SERVICE_SERVER_HPP_
+#define NAV2_ROS_COMMON__SERVICE_SERVER_HPP_
 
 #include <string>
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-namespace nav2_util
+namespace nav2_ros_common
 {
 
 /**
- * @class nav2_util::ServiceServer
+ * @class nav2_ros_common::ServiceServer
  * @brief A simple wrapper on ROS2 services server
  */
 template<class ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
@@ -75,7 +75,7 @@ protected:
   typename rclcpp::Service<ServiceT>::SharedPtr server_;
 };
 
-}  // namespace nav2_util
+}  // namespace nav2_ros_common
 
 
-#endif  // NAV2_UTIL__SERVICE_SERVER_HPP_
+#endif  // NAV2_ROS_COMMON__SERVICE_SERVER_HPP_

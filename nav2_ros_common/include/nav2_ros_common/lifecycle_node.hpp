@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Intel Corporation
+// Copyright (c) 2025 Open Navigation LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,28 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef NAV2_UTIL__LIFECYCLE_NODE_HPP_
-#define NAV2_UTIL__LIFECYCLE_NODE_HPP_
+#ifndef NAV2_ROS_COMMON__LIFECYCLE_NODE_HPP_
+#define NAV2_ROS_COMMON__LIFECYCLE_NODE_HPP_
 
 #include <memory>
 #include <string>
 #include <thread>
+#include <vector>
+#include <utility>
 
+#include "lifecycle_msgs/msg/state.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "rcl_interfaces/msg/parameter_descriptor.hpp"
-#include "nav2_util/node_thread.hpp"
+#include "nav2_ros_common/node_thread.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "bondcpp/bond.hpp"
 #include "bond/msg/constants.hpp"
-#include "nav2_util/interface_factories.hpp"
+#include "nav2_ros_common/interface_factories.hpp"
 
-namespace nav2_util
+namespace nav2_ros_common
 {
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
+using namespace std::chrono_literals;  // NOLINT
 
 /**
- * @class nav2_util::LifecycleNode
+ * @class nav2_ros_common::LifecycleNode
  * @brief A lifecycle node wrapper to enable common Nav2 needs such as manipulating parameters
  */
 class LifecycleNode : public rclcpp_lifecycle::LifecycleNode
@@ -48,102 +53,43 @@ public:
   LifecycleNode(
     const std::string & node_name,
     const std::string & ns = "",
-    const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
-  virtual ~LifecycleNode();
-
-  typedef struct
+    const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
+  : rclcpp_lifecycle::LifecycleNode(node_name, ns, options)
   {
-    double from_value;
-    double to_value;
-    double step;
-  } floating_point_range;
+    // server side never times out from lifecycle manager
+    this->declare_parameter(bond::msg::Constants::DISABLE_HEARTBEAT_TIMEOUT_PARAM, true);
+    this->set_parameter(
+      rclcpp::Parameter(
+        bond::msg::Constants::DISABLE_HEARTBEAT_TIMEOUT_PARAM, true));
 
-  typedef struct
-  {
-    int from_value;
-    int to_value;
-    int step;
-  } integer_range;
+    nav2_ros_common::declare_parameter_if_not_declared(
+      this, "bond_heartbeat_period", rclcpp::ParameterValue(0.1));
+    this->get_parameter("bond_heartbeat_period", bond_heartbeat_period);
 
-  /**
-   * @brief Declare a parameter that has no integer or floating point range constraints
-   * @param node_name Name of parameter
-   * @param default_value Default node value to add
-   * @param description Node description
-   * @param additional_constraints Any additional constraints on the parameters to list
-   * @param read_only Whether this param should be considered read only
-   */
-  void add_parameter(
-    const std::string & name, const rclcpp::ParameterValue & default_value,
-    const std::string & description = "", const std::string & additional_constraints = "",
-    bool read_only = false)
-  {
-    auto descriptor = rcl_interfaces::msg::ParameterDescriptor();
+    bool autostart_node = false;
+    nav2_ros_common::declare_parameter_if_not_declared(
+      this, "autostart_node", rclcpp::ParameterValue(false));
+    this->get_parameter("autostart_node", autostart_node);
+    if (autostart_node) {
+      autostart();
+    }
 
-    descriptor.name = name;
-    descriptor.description = description;
-    descriptor.additional_constraints = additional_constraints;
-    descriptor.read_only = read_only;
+    printLifecycleNodeNotification();
 
-    declare_parameter(descriptor.name, default_value, descriptor);
+    register_rcl_preshutdown_callback();
   }
 
-  /**
-   * @brief Declare a parameter that has a floating point range constraint
-   * @param node_name Name of parameter
-   * @param default_value Default node value to add
-   * @param fp_range floating point range
-   * @param description Node description
-   * @param additional_constraints Any additional constraints on the parameters to list
-   * @param read_only Whether this param should be considered read only
-   */
-  void add_parameter(
-    const std::string & name, const rclcpp::ParameterValue & default_value,
-    const floating_point_range fp_range,
-    const std::string & description = "", const std::string & additional_constraints = "",
-    bool read_only = false)
+  virtual ~LifecycleNode()
   {
-    auto descriptor = rcl_interfaces::msg::ParameterDescriptor();
+    RCLCPP_INFO(get_logger(), "Destroying");
 
-    descriptor.name = name;
-    descriptor.description = description;
-    descriptor.additional_constraints = additional_constraints;
-    descriptor.read_only = read_only;
-    descriptor.floating_point_range.resize(1);
-    descriptor.floating_point_range[0].from_value = fp_range.from_value;
-    descriptor.floating_point_range[0].to_value = fp_range.to_value;
-    descriptor.floating_point_range[0].step = fp_range.step;
+    runCleanups();
 
-    declare_parameter(descriptor.name, default_value, descriptor);
-  }
-
-  /**
-   * @brief Declare a parameter that has an integer range constraint
-   * @param node_name Name of parameter
-   * @param default_value Default node value to add
-   * @param integer_range Integer range
-   * @param description Node description
-   * @param additional_constraints Any additional constraints on the parameters to list
-   * @param read_only Whether this param should be considered read only
-   */
-  void add_parameter(
-    const std::string & name, const rclcpp::ParameterValue & default_value,
-    const integer_range int_range,
-    const std::string & description = "", const std::string & additional_constraints = "",
-    bool read_only = false)
-  {
-    auto descriptor = rcl_interfaces::msg::ParameterDescriptor();
-
-    descriptor.name = name;
-    descriptor.description = description;
-    descriptor.additional_constraints = additional_constraints;
-    descriptor.read_only = read_only;
-    descriptor.integer_range.resize(1);
-    descriptor.integer_range[0].from_value = int_range.from_value;
-    descriptor.integer_range[0].to_value = int_range.to_value;
-    descriptor.integer_range[0].step = int_range.step;
-
-    declare_parameter(descriptor.name, default_value, descriptor);
+    if (rcl_preshutdown_cb_handle_) {
+      rclcpp::Context::SharedPtr context = get_node_base_interface()->get_context();
+      context->remove_pre_shutdown_callback(*(rcl_preshutdown_cb_handle_.get()));
+      rcl_preshutdown_cb_handle_.reset();
+    }
   }
 
   /**
@@ -165,7 +111,7 @@ public:
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::qos::create_subscription<MessageT>(
+    return nav2::interfaces::create_subscription<MessageT>(
       *this, topic_name,
       std::forward<CallbackT>(callback), qos, callback_group);
   }
@@ -187,7 +133,7 @@ public:
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::qos::create_publisher<MessageT>(
+    return nav2::interfaces::create_publisher<MessageT>(
       *this, topic_name, qos, callback_group);
   }
 
@@ -195,15 +141,15 @@ public:
    * @brief Create a ServiceClient to interface with a service
    * @param service_name Name of service
    * @param use_internal_executor Whether to use the internal executor (default is false)
-   * @return A shared pointer to the created nav2_util::ServiceClient
+   * @return A shared pointer to the created nav2_ros_common::ServiceClient
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2_util::ServiceClient<ServiceT, LifecycleNode::SharedPtr>>
+  std::shared_ptr<nav2_ros_common::ServiceClient<ServiceT, LifecycleNode::SharedPtr>>
   create_client(
     const std::string & service_name,
     bool use_internal_executor = false)
   {
-    return nav2::qos::create_client<ServiceT, LifecycleNode::SharedPtr>(
+    return nav2::interfaces::create_client<ServiceT, LifecycleNode::SharedPtr>(
       shared_from_this(), service_name, use_internal_executor);
   }
 
@@ -212,17 +158,17 @@ public:
    * @param service_name Name of service
    * @param callback Callback function to handle service requests
    * @param callback_group The callback group to use (if provided)
-   * @return A shared pointer to the created nav2_util::ServiceServer
+   * @return A shared pointer to the created nav2_ros_common::ServiceServer
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2_util::ServiceServer<ServiceT, LifecycleNode::SharedPtr>>
+  std::shared_ptr<nav2_ros_common::ServiceServer<ServiceT, LifecycleNode::SharedPtr>>
   create_service(
     const std::string & service_name,
-    typename nav2_util::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType callback,
+    typename nav2_ros_common::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType cb,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
   {
-    return nav2::qos::create_service<ServiceT, LifecycleNode::SharedPtr>(
-      shared_from_this(), service_name, callback, callback_group);
+    return nav2::interfaces::create_service<ServiceT, LifecycleNode::SharedPtr>(
+      shared_from_this(), service_name, cb, callback_group);
   }
 
   /**
@@ -233,21 +179,21 @@ public:
    * @param server_timeout Timeout for the action server (default is 500ms)
    * @param spin_thread Whether to spin with a dedicated thread internally (default is false)
    * @param realtime Whether the action server's worker thread should have elevated
-   * @return A shared pointer to the created nav2_util::SimpleActionServer
+   * @return A shared pointer to the created nav2_ros_common::SimpleActionServer
    */
   template<typename ActionT>
-  std::shared_ptr<nav2_util::SimpleActionServer<ActionT>>
+  std::shared_ptr<nav2_ros_common::SimpleActionServer<ActionT>>
   create_server(
     const std::string & action_name,
-    typename nav2_util::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
-    typename nav2_util::SimpleActionServer<ActionT>::CompletionCallback completion_callback = nullptr,
+    typename nav2_ros_common::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
+    typename nav2_ros_common::SimpleActionServer<ActionT>::CompletionCallback compl_cb = nullptr,
     std::chrono::milliseconds server_timeout = std::chrono::milliseconds(500),
     bool spin_thread = false,
     const bool realtime = false)
   {
-    return nav2::qos::create_server<ActionT, LifecycleNode::SharedPtr>(
+    return nav2::interfaces::create_server<ActionT, LifecycleNode::SharedPtr>(
       shared_from_this(), action_name, execute_callback,
-      completion_callback, server_timeout, spin_thread, realtime);
+      compl_cb, server_timeout, spin_thread, realtime);
   }
 
   // Note: There is no need to override create_client for Action Clients.
@@ -257,9 +203,9 @@ public:
   /**
    * @brief Get a shared pointer of this
    */
-  std::shared_ptr<nav2_util::LifecycleNode> shared_from_this()
+  std::shared_ptr<nav2_ros_common::LifecycleNode> shared_from_this()
   {
-    return std::static_pointer_cast<nav2_util::LifecycleNode>(
+    return std::static_pointer_cast<nav2_ros_common::LifecycleNode>(
       rclcpp_lifecycle::LifecycleNode::shared_from_this());
   }
 
@@ -269,61 +215,145 @@ public:
    * @param state State prior to error transition
    * @return Return type for success or failed transition to error state
    */
-  nav2_util::CallbackReturn on_error(const rclcpp_lifecycle::State & /*state*/)
+  nav2_ros_common::CallbackReturn on_error(const rclcpp_lifecycle::State & /*state*/)
   {
     RCLCPP_FATAL(
       get_logger(),
       "Lifecycle node %s does not have error state implemented", get_name());
-    return nav2_util::CallbackReturn::SUCCESS;
+    return nav2_ros_common::CallbackReturn::SUCCESS;
   }
 
   /**
    * @brief Automatically configure and active the node
    */
-  void autostart();
+  void autostart()
+  {
+    using lifecycle_msgs::msg::State;
+    autostart_timer_ = this->create_wall_timer(
+      0s,
+      [this]() -> void {
+        autostart_timer_->cancel();
+        RCLCPP_INFO(get_logger(), "Auto-starting node: %s", this->get_name());
+        if (configure().id() != State::PRIMARY_STATE_INACTIVE) {
+          RCLCPP_ERROR(
+            get_logger(), "Auto-starting node %s failed to configure!", this->get_name());
+          return;
+        }
+        if (activate().id() != State::PRIMARY_STATE_ACTIVE) {
+          RCLCPP_ERROR(
+            get_logger(), "Auto-starting node %s failed to activate!", this->get_name());
+        }
+      });
+  }
 
   /**
    * @brief Perform preshutdown activities before our Context is shutdown.
    * Note that this is related to our Context's shutdown sequence, not the
    * lifecycle node state machine.
    */
-  virtual void on_rcl_preshutdown();
+  virtual void on_rcl_preshutdown()
+  {
+    RCLCPP_INFO(
+      get_logger(), "Running Nav2 LifecycleNode rcl preshutdown (%s)",
+      this->get_name());
+
+    runCleanups();
+
+    destroyBond();
+  }
 
   /**
    * @brief Create bond connection to lifecycle manager
    */
-  void createBond();
+  void createBond()
+  {
+    if (bond_heartbeat_period > 0.0) {
+      RCLCPP_INFO(get_logger(), "Creating bond (%s) to lifecycle manager.", this->get_name());
+
+      bond_ = std::make_unique<bond::Bond>(
+        std::string("bond"),
+        this->get_name(),
+        shared_from_this());
+
+      bond_->setHeartbeatPeriod(bond_heartbeat_period);
+      bond_->setHeartbeatTimeout(4.0);
+      bond_->start();
+    }
+  }
 
   /**
    * @brief Destroy bond connection to lifecycle manager
    */
-  void destroyBond();
+  void destroyBond()
+  {
+    if (bond_heartbeat_period > 0.0) {
+      RCLCPP_INFO(get_logger(), "Destroying bond (%s) to lifecycle manager.", this->get_name());
+
+      if (bond_) {
+        bond_.reset();
+      }
+    }
+  }
 
 protected:
   /**
    * @brief Print notifications for lifecycle node
    */
-  void printLifecycleNodeNotification();
+  void printLifecycleNodeNotification()
+  {
+    RCLCPP_INFO(
+      get_logger(),
+      "\n\t%s lifecycle node launched. \n"
+      "\tWaiting on external lifecycle transitions to activate\n"
+      "\tSee https://design.ros2.org/articles/node_lifecycle.html for more information.",
+      get_name());
+  }
 
   /**
    * Register our preshutdown callback for this Node's rcl Context.
    * The callback fires before this Node's Context is shutdown.
    * Note this is not directly related to the lifecycle state machine.
    */
-  void register_rcl_preshutdown_callback();
-  std::unique_ptr<rclcpp::PreShutdownCallbackHandle> rcl_preshutdown_cb_handle_{nullptr};
+  void register_rcl_preshutdown_callback()
+  {
+    rclcpp::Context::SharedPtr context = get_node_base_interface()->get_context();
+
+    rcl_preshutdown_cb_handle_ = std::make_unique<rclcpp::PreShutdownCallbackHandle>(
+      context->add_pre_shutdown_callback(
+        std::bind(&LifecycleNode::on_rcl_preshutdown, this))
+    );
+  }
 
   /**
    * Run some common cleanup steps shared between rcl preshutdown and destruction.
    */
-  void runCleanups();
+  void runCleanups()
+  {
+    /*
+    * In case this lifecycle node wasn't properly shut down, do it here.
+    * We will give the user some ability to clean up properly here, but it's
+    * best effort; i.e. we aren't trying to account for all possible states.
+    */
+    if (get_current_state().id() ==
+      lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+    {
+      this->deactivate();
+    }
+
+    if (get_current_state().id() ==
+      lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE)
+    {
+      this->cleanup();
+    }
+  }
 
   // Connection to tell that server is still up
+  std::unique_ptr<rclcpp::PreShutdownCallbackHandle> rcl_preshutdown_cb_handle_{nullptr};
   std::unique_ptr<bond::Bond> bond_{nullptr};
   double bond_heartbeat_period;
   rclcpp::TimerBase::SharedPtr autostart_timer_;
 };
 
-}  // namespace nav2_util
+}  // namespace nav2_ros_common
 
-#endif  // NAV2_UTIL__LIFECYCLE_NODE_HPP_
+#endif  // NAV2_ROS_COMMON__LIFECYCLE_NODE_HPP_

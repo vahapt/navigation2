@@ -28,8 +28,8 @@
 #include "rclcpp/qos.hpp"
 #include "rclcpp_lifecycle/lifecycle_publisher.hpp"
 
-#include "lifecycle_node.hpp"
-#include "node_utils.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace nav2_util
 {
@@ -83,14 +83,14 @@ public:
     typename TwistStampedCallbackT
   >
   explicit TwistSubscriber(
-    nav2_util::LifecycleNode::SharedPtr node,
+    nav2_ros_common::LifecycleNode::SharedPtr node,
     const std::string & topic,
     const rclcpp::QoS & qos,
     TwistCallbackT && TwistCallback,
     TwistStampedCallbackT && TwistStampedCallback
   )
   {
-    nav2_util::declare_parameter_if_not_declared(
+    nav2_ros_common::declare_parameter_if_not_declared(
       node, "enable_stamped_cmd_vel",
       rclcpp::ParameterValue(true));
     node->get_parameter("enable_stamped_cmd_vel", is_stamped_);
@@ -117,13 +117,13 @@ public:
   */
   template<typename TwistStampedCallbackT>
   explicit TwistSubscriber(
-    nav2_util::LifecycleNode::SharedPtr node,
+    nav2_ros_common::LifecycleNode::SharedPtr node,
     const std::string & topic,
     const rclcpp::QoS & qos,
     TwistStampedCallbackT && TwistStampedCallback
   )
   {
-    nav2_util::declare_parameter_if_not_declared(
+    nav2_ros_common::declare_parameter_if_not_declared(
       node, "enable_stamped_cmd_vel",
       rclcpp::ParameterValue(true));
     node->get_parameter("enable_stamped_cmd_vel", is_stamped_);

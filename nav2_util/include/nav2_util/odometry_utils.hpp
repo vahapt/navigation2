@@ -26,9 +26,9 @@
 #include "geometry_msgs/msg/twist.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "nav_msgs/msg/odometry.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace nav2_util
 {
@@ -60,7 +60,7 @@ public:
    * @param odom_topic Topic on which odometry should be received
    */
   explicit OdomSmoother(
-    const nav2_util::LifecycleNode::WeakPtr & parent,
+    const nav2_ros_common::LifecycleNode::WeakPtr & parent,
     double filter_duration = 0.3,
     const std::string & odom_topic = "odom");
 

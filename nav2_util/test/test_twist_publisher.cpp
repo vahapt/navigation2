@@ -16,18 +16,14 @@
 #include <string>
 
 #include "nav2_util/twist_publisher.hpp"
-#include "nav2_util/lifecycle_utils.hpp"
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_publisher.hpp"
 
-using nav2_util::startup_lifecycle_nodes;
-using nav2_util::reset_lifecycle_nodes;
-
 TEST(TwistPublisher, Unstamped)
 {
   rclcpp::init(0, nullptr);
-  auto pub_node = std::make_shared<nav2_util::LifecycleNode>("pub_node", "");
+  auto pub_node = std::make_shared<nav2_ros_common::LifecycleNode>("pub_node", "");
   pub_node->configure();
   pub_node->declare_parameter("enable_stamped_cmd_vel", rclcpp::ParameterValue(false));
   auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(pub_node, "cmd_vel", 1);
@@ -38,7 +34,7 @@ TEST(TwistPublisher, Unstamped)
   vel_publisher->on_activate();
   auto pub_thread = std::thread([&]() {rclcpp::spin(pub_node->get_node_base_interface());});
 
-  auto sub_node = std::make_shared<nav2_util::LifecycleNode>("sub_node", "");
+  auto sub_node = std::make_shared<nav2_ros_common::LifecycleNode>("sub_node", "");
   sub_node->configure();
   sub_node->activate();
 
@@ -66,7 +62,7 @@ TEST(TwistPublisher, Unstamped)
 TEST(TwistPublisher, Stamped)
 {
   rclcpp::init(0, nullptr);
-  auto pub_node = std::make_shared<nav2_util::LifecycleNode>("pub_node", "");
+  auto pub_node = std::make_shared<nav2_ros_common::LifecycleNode>("pub_node", "");
   pub_node->declare_parameter("enable_stamped_cmd_vel", true);
   pub_node->configure();
   auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(pub_node, "cmd_vel", 1);
@@ -76,7 +72,7 @@ TEST(TwistPublisher, Stamped)
   EXPECT_TRUE(vel_publisher->is_activated());
   auto pub_thread = std::thread([&]() {rclcpp::spin(pub_node->get_node_base_interface());});
 
-  auto sub_node = std::make_shared<nav2_util::LifecycleNode>("sub_node", "");
+  auto sub_node = std::make_shared<nav2_ros_common::LifecycleNode>("sub_node", "");
   sub_node->configure();
   sub_node->activate();
 
