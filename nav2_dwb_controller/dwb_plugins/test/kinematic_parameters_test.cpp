@@ -55,7 +55,7 @@ public:
 
 TEST(KinematicParameters, SetAllParameters) {
   std::string nodeName = "test_node";
-  auto node = nav2_util::LifecycleNode::make_shared(nodeName);
+  auto node = nav2::LifecycleNode::make_shared(nodeName);
   KinematicsHandlerTest kh;
   kh.initialize(node, nodeName);
 

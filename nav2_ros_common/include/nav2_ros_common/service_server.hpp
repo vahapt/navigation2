@@ -20,11 +20,11 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 /**
- * @class nav2_ros_common::ServiceServer
+ * @class nav2::ServiceServer
  * @brief A simple wrapper on ROS2 services server
  */
 template<class ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
@@ -75,7 +75,7 @@ protected:
   typename rclcpp::Service<ServiceT>::SharedPtr server_;
 };
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 
 #endif  // NAV2_ROS_COMMON__SERVICE_SERVER_HPP_

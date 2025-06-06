@@ -56,7 +56,7 @@ void PlannerTester::activate()
   is_active_ = true;
 
   // Launch a thread to process the messages for this node
-  spin_thread_ = std::make_unique<nav2_util::NodeThread>(this);
+  spin_thread_ = std::make_unique<nav2::NodeThread>(this);
 
   // We start with a 10x10 grid with no obstacles
   costmap_ = std::make_unique<Costmap>(this);

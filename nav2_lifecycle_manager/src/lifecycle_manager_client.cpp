@@ -36,9 +36,9 @@ LifecycleManagerClient::LifecycleManagerClient(
   node_ = parent_node;
 
   // Create the service clients
-  manager_client_ = std::make_shared<nav2_util::ServiceClient<ManageLifecycleNodes>>(
+  manager_client_ = std::make_shared<nav2::ServiceClient<ManageLifecycleNodes, rclcpp::Node::SharedPtr>>(
     manage_service_name_, node_, true /*creates and spins an internal executor*/);
-  is_active_client_ = std::make_shared<nav2_util::ServiceClient<std_srvs::srv::Trigger>>(
+  is_active_client_ = std::make_shared<nav2::ServiceClient<std_srvs::srv::Trigger, rclcpp::Node::SharedPtr>>(
     active_service_name_, node_, true /*creates and spins an internal executor*/);
 }
 

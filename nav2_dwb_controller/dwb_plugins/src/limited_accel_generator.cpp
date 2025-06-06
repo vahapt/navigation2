@@ -39,13 +39,13 @@
 #include "nav_2d_utils/parameters.hpp"
 #include "pluginlib/class_list_macros.hpp"
 #include "dwb_core/exceptions.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace dwb_plugins
 {
 
 void LimitedAccelGenerator::initialize(
-  const nav2_util::LifecycleNode::SharedPtr & nh,
+  const nav2::LifecycleNode::SharedPtr & nh,
   const std::string & plugin_name)
 {
   plugin_name_ = plugin_name;

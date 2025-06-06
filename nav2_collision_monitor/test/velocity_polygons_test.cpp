@@ -23,7 +23,7 @@
 #include <vector>
 
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "geometry_msgs/msg/point32.hpp"
 #include "geometry_msgs/msg/polygon_stamped.hpp"
 
@@ -68,11 +68,11 @@ static const bool IS_NOT_HOLONOMIC{false};
 static const int MIN_POINTS{2};
 static const tf2::Duration TRANSFORM_TOLERANCE{tf2::durationFromSec(0.1)};
 
-class TestNode : public nav2_util::LifecycleNode
+class TestNode : public nav2::LifecycleNode
 {
 public:
   TestNode()
-  : nav2_util::LifecycleNode("test_node"), polygon_received_(nullptr)
+  : nav2::LifecycleNode("test_node"), polygon_received_(nullptr)
   {
     polygon_sub_ = this->create_subscription<geometry_msgs::msg::PolygonStamped>(
       POLYGON_PUB_TOPIC, rclcpp::SystemDefaultsQoS(),
@@ -109,7 +109,7 @@ class VelocityPolygonWrapper : public nav2_collision_monitor::VelocityPolygon
 {
 public:
   VelocityPolygonWrapper(
-    const nav2_util::LifecycleNode::WeakPtr & node,
+    const nav2::LifecycleNode::WeakPtr & node,
     const std::string & polygon_name,
     const std::shared_ptr<tf2_ros::Buffer> tf_buffer,
     const std::string & base_frame_id,

@@ -53,12 +53,12 @@ public:
   * @param qos publisher quality of service
   */
   explicit TwistPublisher(
-    nav2_ros_common::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic,
     const rclcpp::QoS & qos)
   : topic_(topic)
   {
-    using nav2_ros_common::declare_parameter_if_not_declared;
+    using nav2::declare_parameter_if_not_declared;
     declare_parameter_if_not_declared(
       node, "enable_stamped_cmd_vel",
       rclcpp::ParameterValue{true});

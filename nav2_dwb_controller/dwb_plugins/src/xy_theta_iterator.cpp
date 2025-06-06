@@ -39,12 +39,12 @@
 #include <string>
 
 #include "nav_2d_utils/parameters.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace dwb_plugins
 {
 void XYThetaIterator::initialize(
-  const nav2_util::LifecycleNode::SharedPtr & nh,
+  const nav2::LifecycleNode::SharedPtr & nh,
   KinematicsHandler::Ptr kinematics,
   const std::string & plugin_name)
 {

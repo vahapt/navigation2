@@ -28,7 +28,7 @@ using rcl_interfaces::msg::ParameterType;
 using std::placeholders::_1;
 
 WaypointFollower::WaypointFollower(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("waypoint_follower", "", options),
+: nav2::LifecycleNode("waypoint_follower", "", options),
   waypoint_task_executor_loader_("nav2_waypoint_follower",
     "nav2_core::WaypointTaskExecutor")
 {
@@ -51,7 +51,7 @@ WaypointFollower::~WaypointFollower()
 {
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -86,8 +86,8 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
       500), false);
 
   from_ll_to_map_client_ = std::make_unique<
-    nav2_util::ServiceClient<robot_localization::srv::FromLL,
-    std::shared_ptr<nav2_util::LifecycleNode>>>(
+    nav2::ServiceClient<robot_localization::srv::FromLL,
+    std::shared_ptr<nav2::LifecycleNode>>>(
     "/fromLL",
     node,
     true /*creates and spins an internal executor*/);
@@ -120,10 +120,10 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
     on_cleanup(state);
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 WaypointFollower::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -139,10 +139,10 @@ WaypointFollower::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 WaypointFollower::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -154,10 +154,10 @@ WaypointFollower::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 WaypointFollower::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -167,14 +167,14 @@ WaypointFollower::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   gps_action_server_.reset();
   from_ll_to_map_client_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 WaypointFollower::on_shutdown(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 template<typename T>

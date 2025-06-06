@@ -27,7 +27,7 @@
 #include "nav2_costmap_2d/costmap_topic_collision_checker.hpp"
 #include "nav2_graceful_controller/smooth_control_law.hpp"
 #include "nav_msgs/msg/path.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 
 namespace opennav_docking
 {

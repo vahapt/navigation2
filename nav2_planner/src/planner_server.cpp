@@ -26,7 +26,7 @@
 
 #include "lifecycle_msgs/msg/state.hpp"
 #include "nav2_util/costmap.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_util/geometry_utils.hpp"
 #include "nav2_costmap_2d/cost_values.hpp"
 
@@ -40,7 +40,7 @@ namespace nav2_planner
 {
 
 PlannerServer::PlannerServer(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("planner_server", "", options),
+: nav2::LifecycleNode("planner_server", "", options),
   gp_loader_("nav2_core", "nav2_core::GlobalPlanner"),
   default_ids_{"GridBased"},
   default_types_{"nav2_navfn_planner::NavfnPlanner"},
@@ -77,7 +77,7 @@ PlannerServer::~PlannerServer()
   costmap_thread_.reset();
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 PlannerServer::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -92,7 +92,7 @@ PlannerServer::on_configure(const rclcpp_lifecycle::State & state)
   }
 
   // Launch a thread to run the costmap node
-  costmap_thread_ = std::make_unique<nav2_util::NodeThread>(costmap_ros_);
+  costmap_thread_ = std::make_unique<nav2::NodeThread>(costmap_ros_);
 
   RCLCPP_DEBUG(
     get_logger(), "Costmap size: %d,%d",
@@ -120,7 +120,7 @@ PlannerServer::on_configure(const rclcpp_lifecycle::State & state)
         get_logger(), "Failed to create global planner. Exception: %s",
         ex.what());
       on_cleanup(state);
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
@@ -168,10 +168,10 @@ PlannerServer::on_configure(const rclcpp_lifecycle::State & state)
     std::chrono::milliseconds(500),
     true);
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 PlannerServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -181,7 +181,7 @@ PlannerServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   action_server_poses_->activate();
   const auto costmap_ros_state = costmap_ros_->activate();
   if (costmap_ros_state.id() != lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE) {
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
   PlannerMap::iterator it;
@@ -191,8 +191,8 @@ PlannerServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
 
   auto node = shared_from_this();
 
-  is_path_valid_service_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::IsPathValid,
-      std::shared_ptr<nav2_util::LifecycleNode>>>(
+  is_path_valid_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::IsPathValid,
+      std::shared_ptr<nav2::LifecycleNode>>>(
     "is_path_valid",
     node,
     std::bind(&PlannerServer::isPathValid, this, std::placeholders::_1, std::placeholders::_2,
@@ -205,10 +205,10 @@ PlannerServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 PlannerServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -236,10 +236,10 @@ PlannerServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 PlannerServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -260,19 +260,19 @@ PlannerServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   planners_.clear();
   costmap_thread_.reset();
   costmap_ = nullptr;
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 PlannerServer::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 template<typename T>
 bool PlannerServer::isServerInactive(
-  std::unique_ptr<nav2_util::SimpleActionServer<T>> & action_server)
+  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server)
 {
   if (action_server == nullptr || !action_server->is_server_active()) {
     RCLCPP_DEBUG(get_logger(), "Action server unavailable or inactive. Stopping.");
@@ -297,7 +297,7 @@ void PlannerServer::waitForCostmap()
 
 template<typename T>
 bool PlannerServer::isCancelRequested(
-  std::unique_ptr<nav2_util::SimpleActionServer<T>> & action_server)
+  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server)
 {
   if (action_server->is_cancel_requested()) {
     RCLCPP_INFO(get_logger(), "Goal was canceled. Canceling planning action.");
@@ -310,7 +310,7 @@ bool PlannerServer::isCancelRequested(
 
 template<typename T>
 void PlannerServer::getPreemptedGoalIfRequested(
-  std::unique_ptr<nav2_util::SimpleActionServer<T>> & action_server,
+  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server,
   typename std::shared_ptr<const typename T::Goal> goal)
 {
   if (action_server->is_preempt_requested()) {

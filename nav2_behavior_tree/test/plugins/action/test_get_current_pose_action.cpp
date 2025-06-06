@@ -26,7 +26,7 @@
 #include "nav2_behavior_tree/utils/test_action_server.hpp"
 #include "nav2_behavior_tree/plugins/action/get_current_pose_action.hpp"
 #include "utils/test_behavior_tree_fixture.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 class GetCurrentPoseTestFixture : public nav2_behavior_tree::BehaviorTreeTestFixture
 {

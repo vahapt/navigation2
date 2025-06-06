@@ -21,7 +21,7 @@
 
 #include "tf2_ros/create_timer_ros.h"
 
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 using namespace std::chrono_literals;
 
@@ -29,7 +29,7 @@ namespace nav2_collision_monitor
 {
 
 CollisionDetector::CollisionDetector(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("collision_detector", "", options)
+: nav2::LifecycleNode("collision_detector", "", options)
 {
 }
 
@@ -39,7 +39,7 @@ CollisionDetector::~CollisionDetector()
   sources_.clear();
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionDetector::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -61,13 +61,13 @@ CollisionDetector::on_configure(const rclcpp_lifecycle::State & state)
   // Obtaining ROS parameters
   if (!getParameters()) {
     on_cleanup(state);
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionDetector::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -89,10 +89,10 @@ CollisionDetector::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // Creating bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionDetector::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -112,10 +112,10 @@ CollisionDetector::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // Destroying bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionDetector::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -129,14 +129,14 @@ CollisionDetector::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   tf_listener_.reset();
   tf_buffer_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionDetector::on_shutdown(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 bool CollisionDetector::getParameters()

@@ -20,7 +20,7 @@
 #include <string>
 #include <vector>
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "ceres/ceres.h"
 
 namespace nav2_constrained_smoother

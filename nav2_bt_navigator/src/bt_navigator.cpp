@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "nav2_util/geometry_utils.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_util/string_utils.hpp"
 #include "nav2_util/robot_utils.hpp"
 #include "nav2_behavior_tree/bt_utils.hpp"
@@ -33,7 +33,7 @@ namespace nav2_bt_navigator
 {
 
 BtNavigator::BtNavigator(rclcpp::NodeOptions options)
-: nav2_util::LifecycleNode("bt_navigator", "",
+: nav2::LifecycleNode("bt_navigator", "",
     options.automatically_declare_parameters_from_overrides(true)),
   class_loader_("nav2_core", "nav2_core::NavigatorBase")
 {
@@ -57,7 +57,7 @@ BtNavigator::~BtNavigator()
 {
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 BtNavigator::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -130,54 +130,54 @@ BtNavigator::on_configure(const rclcpp_lifecycle::State & state)
           node, plugin_lib_names, feedback_utils,
           &plugin_muxer_, odom_smoother_))
       {
-        return nav2_util::CallbackReturn::FAILURE;
+        return nav2::CallbackReturn::FAILURE;
       }
     } catch (const std::exception & ex) {
       RCLCPP_FATAL(
         get_logger(), "Failed to create navigator id %s."
         " Exception: %s", navigator_ids[i].c_str(), ex.what());
       on_cleanup(state);
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 BtNavigator::on_activate(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Activating");
   for (size_t i = 0; i != navigators_.size(); i++) {
     if (!navigators_[i]->on_activate()) {
       on_deactivate(state);
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
   // create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 BtNavigator::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
   for (size_t i = 0; i != navigators_.size(); i++) {
     if (!navigators_[i]->on_deactivate()) {
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
   // destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 BtNavigator::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -188,20 +188,20 @@ BtNavigator::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 
   for (size_t i = 0; i != navigators_.size(); i++) {
     if (!navigators_[i]->on_cleanup()) {
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
   navigators_.clear();
   RCLCPP_INFO(get_logger(), "Completed Cleaning up");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 BtNavigator::on_shutdown(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 }  // namespace nav2_bt_navigator

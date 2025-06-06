@@ -26,7 +26,7 @@ namespace nav2_costmap_2d
 {
 
 FootprintSubscriber::FootprintSubscriber(
-  const nav2_util::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   const std::string & topic_name,
   tf2_ros::Buffer & tf,
   std::string robot_base_frame,

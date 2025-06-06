@@ -41,13 +41,13 @@
 #include "nav_2d_utils/parameters.hpp"
 #include "pluginlib/class_list_macros.hpp"
 #include "dwb_core/exceptions.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace dwb_plugins
 {
 
 void StandardTrajectoryGenerator::initialize(
-  const nav2_util::LifecycleNode::SharedPtr & nh,
+  const nav2::LifecycleNode::SharedPtr & nh,
   const std::string & plugin_name)
 {
   plugin_name_ = plugin_name;
@@ -97,7 +97,7 @@ void StandardTrajectoryGenerator::initialize(
 }
 
 void StandardTrajectoryGenerator::initializeIterator(
-  const nav2_util::LifecycleNode::SharedPtr & nh)
+  const nav2::LifecycleNode::SharedPtr & nh)
 {
   velocity_iterator_ = std::make_shared<XYThetaIterator>();
   velocity_iterator_->initialize(nh, kinematics_handler_, plugin_name_);

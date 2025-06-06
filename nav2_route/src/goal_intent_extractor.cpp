@@ -24,7 +24,7 @@ namespace nav2_route
 static float EPSILON = 1e-6;
 
 void GoalIntentExtractor::configure(
-  nav2_util::LifecycleNode::SharedPtr node,
+  nav2::LifecycleNode::SharedPtr node,
   Graph & graph,
   GraphToIDMap * id_to_graph_map,
   std::shared_ptr<tf2_ros::Buffer> tf,

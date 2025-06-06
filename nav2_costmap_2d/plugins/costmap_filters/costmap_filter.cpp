@@ -83,7 +83,7 @@ void CostmapFilter::onInitialize()
     transform_tolerance_ = tf2::durationFromSec(transform_tolerance);
 
     // Costmap Filter enabling service
-    enable_service_ = std::make_shared<nav2_util::ServiceServer<std_srvs::srv::SetBool,
+    enable_service_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::SetBool,
         std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
       name_ + "/toggle_filter",
       node,

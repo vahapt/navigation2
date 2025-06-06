@@ -19,14 +19,14 @@
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
 
-using nav2_ros_common::sanitize_node_name;
-using nav2_ros_common::generate_internal_node_name;
-using nav2_ros_common::generate_internal_node;
-using nav2_ros_common::add_namespaces;
-using nav2_ros_common::time_to_string;
-using nav2_ros_common::declare_parameter_if_not_declared;
-using nav2_ros_common::declare_or_get_parameter;
-using nav2_ros_common::get_plugin_type_param;
+using nav2::sanitize_node_name;
+using nav2::generate_internal_node_name;
+using nav2::generate_internal_node;
+using nav2::add_namespaces;
+using nav2::time_to_string;
+using nav2::declare_parameter_if_not_declared;
+using nav2::declare_or_get_parameter;
+using nav2::get_plugin_type_param;
 
 TEST(SanitizeNodeName, SanitizeNodeName)
 {

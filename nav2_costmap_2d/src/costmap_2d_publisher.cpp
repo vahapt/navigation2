@@ -50,7 +50,7 @@ namespace nav2_costmap_2d
 char * Costmap2DPublisher::cost_translation_table_ = NULL;
 
 Costmap2DPublisher::Costmap2DPublisher(
-  const nav2_util::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   Costmap2D * costmap,
   std::string global_frame,
   std::string topic_name,
@@ -82,7 +82,7 @@ Costmap2DPublisher::Costmap2DPublisher(
     topic_name + "_raw_updates", custom_qos);
 
   // Create a service that will use the callback function to handle requests.
-  costmap_service_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::GetCostmap,
+  costmap_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::GetCostmap,
       std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
     std::string("get_") + topic_name,
     node,

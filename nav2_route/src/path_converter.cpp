@@ -24,7 +24,7 @@
 namespace nav2_route
 {
 
-void PathConverter::configure(nav2_util::LifecycleNode::SharedPtr node)
+void PathConverter::configure(nav2::LifecycleNode::SharedPtr node)
 {
   // Density to make path points
   nav2_util::declare_parameter_if_not_declared(

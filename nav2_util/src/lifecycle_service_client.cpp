@@ -21,7 +21,7 @@
 #include "lifecycle_msgs/srv/change_state.hpp"
 #include "lifecycle_msgs/srv/get_state.hpp"
 
-using nav2_ros_common::generate_internal_node;
+using nav2::generate_internal_node;
 using std::chrono::milliseconds;
 using std::make_shared;
 using std::string;

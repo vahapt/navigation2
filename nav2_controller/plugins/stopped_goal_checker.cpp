@@ -39,7 +39,7 @@
 #include <vector>
 #include "nav2_controller/plugins/stopped_goal_checker.hpp"
 #include "pluginlib/class_list_macros.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 using std::hypot;
 using std::fabs;

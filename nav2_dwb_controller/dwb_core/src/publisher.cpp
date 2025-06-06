@@ -42,7 +42,7 @@
 
 #include "sensor_msgs/point_cloud2_iterator.hpp"
 #include "nav_2d_utils/conversions.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "visualization_msgs/msg/marker_array.hpp"
 #include "visualization_msgs/msg/marker.hpp"
@@ -64,7 +64,7 @@ DWBPublisher::DWBPublisher(
   clock_ = node->get_clock();
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DWBPublisher::on_configure()
 {
   auto node = node_.lock();
@@ -112,10 +112,10 @@ DWBPublisher::on_configure()
   node->get_parameter(plugin_name_ + ".marker_lifetime", marker_lifetime);
   marker_lifetime_ = rclcpp::Duration::from_seconds(marker_lifetime);
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DWBPublisher::on_activate()
 {
   eval_pub_->on_activate();
@@ -125,10 +125,10 @@ DWBPublisher::on_activate()
   marker_pub_->on_activate();
   cost_grid_pc_pub_->on_activate();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DWBPublisher::on_deactivate()
 {
   eval_pub_->on_deactivate();
@@ -138,10 +138,10 @@ DWBPublisher::on_deactivate()
   marker_pub_->on_deactivate();
   cost_grid_pc_pub_->on_deactivate();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DWBPublisher::on_cleanup()
 {
   eval_pub_.reset();
@@ -151,7 +151,7 @@ DWBPublisher::on_cleanup()
   marker_pub_.reset();
   cost_grid_pc_pub_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 void

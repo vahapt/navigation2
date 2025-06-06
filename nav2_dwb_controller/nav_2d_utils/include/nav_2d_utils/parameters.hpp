@@ -39,8 +39,8 @@
 #include <memory>
 
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 // TODO(crdelsey): Remove when code is re-enabled
 #pragma GCC diagnostic push
@@ -61,7 +61,7 @@ namespace nav_2d_utils
  */
 template<class param_t>
 param_t searchAndGetParam(
-  const nav2_util::LifecycleNode::SharedPtr & nh, const std::string & param_name,
+  const nav2::LifecycleNode::SharedPtr & nh, const std::string & param_name,
   const param_t & default_value)
 {
   nav2_util::declare_parameter_if_not_declared(

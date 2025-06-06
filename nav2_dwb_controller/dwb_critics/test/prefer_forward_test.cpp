@@ -43,8 +43,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "dwb_critics/prefer_forward.hpp"
 #include "nav2_costmap_2d/costmap_2d.hpp"
-#include "nav2_util/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 static constexpr double default_penalty = 1.0;
 static constexpr double default_strafe_x = 0.1;
@@ -55,7 +55,7 @@ TEST(PreferForward, StartNode)
 {
   auto critic = std::make_shared<dwb_critics::PreferForwardCritic>();
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("test_global_costmap");
-  auto node = nav2_util::LifecycleNode::make_shared("costmap_tester");
+  auto node = nav2::LifecycleNode::make_shared("costmap_tester");
   node->configure();
   node->activate();
 
@@ -143,7 +143,7 @@ TEST(PreferForward, NoneDefaultValues)
 {
   auto critic = std::make_shared<dwb_critics::PreferForwardCritic>();
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("test_global_costmap");
-  auto node = nav2_util::LifecycleNode::make_shared("costmap_tester");
+  auto node = nav2::LifecycleNode::make_shared("costmap_tester");
   node->configure();
   node->activate();
 

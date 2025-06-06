@@ -26,7 +26,7 @@
 TEST(TwistSubscriber, Unstamped)
 {
   rclcpp::init(0, nullptr);
-  auto sub_node = std::make_shared<nav2_ros_common::LifecycleNode>("sub_node", "");
+  auto sub_node = std::make_shared<nav2::LifecycleNode>("sub_node", "");
   sub_node->configure();
   sub_node->activate();
   sub_node->declare_parameter("enable_stamped_cmd_vel", rclcpp::ParameterValue(false));
@@ -38,7 +38,7 @@ TEST(TwistSubscriber, Unstamped)
     [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;}
   );
 
-  auto pub_node = std::make_shared<nav2_ros_common::LifecycleNode>("pub_node", "");
+  auto pub_node = std::make_shared<nav2::LifecycleNode>("pub_node", "");
   pub_node->configure();
 
   geometry_msgs::msg::TwistStamped pub_msg {};
@@ -63,7 +63,7 @@ TEST(TwistSubscriber, Unstamped)
 TEST(TwistSubscriber, Stamped)
 {
   rclcpp::init(0, nullptr);
-  auto sub_node = std::make_shared<nav2_ros_common::LifecycleNode>("sub_node", "");
+  auto sub_node = std::make_shared<nav2::LifecycleNode>("sub_node", "");
   sub_node->declare_parameter("enable_stamped_cmd_vel", true);
   sub_node->configure();
   sub_node->activate();
@@ -75,7 +75,7 @@ TEST(TwistSubscriber, Stamped)
     [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;}
   );
 
-  auto pub_node = std::make_shared<nav2_ros_common::LifecycleNode>("pub_node", "");
+  auto pub_node = std::make_shared<nav2::LifecycleNode>("pub_node", "");
   pub_node->configure();
 
   geometry_msgs::msg::TwistStamped pub_msg {};

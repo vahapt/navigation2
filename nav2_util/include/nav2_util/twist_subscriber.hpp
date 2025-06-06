@@ -83,14 +83,14 @@ public:
     typename TwistStampedCallbackT
   >
   explicit TwistSubscriber(
-    nav2_ros_common::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic,
     const rclcpp::QoS & qos,
     TwistCallbackT && TwistCallback,
     TwistStampedCallbackT && TwistStampedCallback
   )
   {
-    nav2_ros_common::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, "enable_stamped_cmd_vel",
       rclcpp::ParameterValue(true));
     node->get_parameter("enable_stamped_cmd_vel", is_stamped_);
@@ -117,13 +117,13 @@ public:
   */
   template<typename TwistStampedCallbackT>
   explicit TwistSubscriber(
-    nav2_ros_common::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic,
     const rclcpp::QoS & qos,
     TwistStampedCallbackT && TwistStampedCallback
   )
   {
-    nav2_ros_common::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, "enable_stamped_cmd_vel",
       rclcpp::ParameterValue(true));
     node->get_parameter("enable_stamped_cmd_vel", is_stamped_);

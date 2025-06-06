@@ -32,7 +32,7 @@ using std::string;
 using std::replace_if;
 using std::isalnum;
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 /// Replace invalid characters in a potential node name
@@ -349,6 +349,6 @@ inline void setSoftRealTimePriority()
   }
 }
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 #endif  // NAV2_ROS_COMMON__NODE_UTILS_HPP_

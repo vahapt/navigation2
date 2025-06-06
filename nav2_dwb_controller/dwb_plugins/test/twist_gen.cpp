@@ -41,7 +41,7 @@
 #include "dwb_plugins/standard_traj_generator.hpp"
 #include "dwb_plugins/limited_accel_generator.hpp"
 #include "dwb_core/exceptions.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 using std::hypot;
 using std::fabs;

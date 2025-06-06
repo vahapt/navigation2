@@ -24,7 +24,7 @@ class TestCostmapSubscriberShould : public ::testing::Test
 {
 public:
   TestCostmapSubscriberShould()
-  : topicName("/costmap"), node(nav2_util::LifecycleNode::make_shared("test_subscriber"))
+  : topicName("/costmap"), node(nav2::LifecycleNode::make_shared("test_subscriber"))
   {
     dummyCostmapMsgSubscriber = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
       topicName, 10,
@@ -180,7 +180,7 @@ protected:
   std::string topicName;
   char * cost_translation_table_ = NULL;
 
-  nav2_util::LifecycleNode::SharedPtr node;
+  nav2::LifecycleNode::SharedPtr node;
   rclcpp::Logger logger {rclcpp::get_logger("test_costmap_subscriber_should")};
 
   std::unique_ptr<nav2_costmap_2d::CostmapSubscriber> costmapSubscriber;

@@ -38,7 +38,7 @@
 #include <string>
 #include <vector>
 #include "nav_2d_utils/parameters.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "dwb_core/exceptions.hpp"
 #include "pluginlib/class_list_macros.hpp"
 

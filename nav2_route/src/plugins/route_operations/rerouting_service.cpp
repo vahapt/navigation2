@@ -31,8 +31,8 @@ void ReroutingService::configure(
   logger_ = node->get_logger();
   reroute_.store(false);
   service_ =
-    std::make_shared<nav2_util::ServiceServer<std_srvs::srv::Trigger,
-      nav2_util::LifecycleNode::SharedPtr>>(
+    std::make_shared<nav2::ServiceServer<std_srvs::srv::Trigger,
+      nav2::LifecycleNode::SharedPtr>>(
       std::string(node->get_name()) + "/" + getName() + "/reroute",
       node,
       std::bind(&ReroutingService::serviceCb, this,

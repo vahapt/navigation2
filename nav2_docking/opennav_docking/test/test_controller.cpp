@@ -20,7 +20,7 @@
 #include "opennav_docking/controller.hpp"
 #include "nav2_costmap_2d/costmap_2d_ros.hpp"
 #include "nav2_util/geometry_utils.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "tf2_ros/buffer.h"
 #include "ament_index_cpp/get_package_share_directory.hpp"
 
@@ -55,7 +55,7 @@ public:
   }
 };
 
-class TestCollisionChecker : public nav2_util::LifecycleNode
+class TestCollisionChecker : public nav2::LifecycleNode
 {
 public:
   explicit TestCollisionChecker(std::string name)
@@ -69,7 +69,7 @@ public:
     costmap_pub_.reset();
   }
 
-  nav2_util::CallbackReturn on_configure(const rclcpp_lifecycle::State & /*state*/)
+  nav2::CallbackReturn on_configure(const rclcpp_lifecycle::State & /*state*/)
   {
     RCLCPP_INFO(this->get_logger(), "Configuring");
 
@@ -80,22 +80,22 @@ public:
     costmap_pub_ = std::make_shared<nav2_costmap_2d::Costmap2DPublisher>(
       shared_from_this(), costmap_.get(), "test_base_frame", "test_costmap", true);
 
-    return nav2_util::CallbackReturn::SUCCESS;
+    return nav2::CallbackReturn::SUCCESS;
   }
 
-  nav2_util::CallbackReturn on_activate(const rclcpp_lifecycle::State & /*state*/)
+  nav2::CallbackReturn on_activate(const rclcpp_lifecycle::State & /*state*/)
   {
     RCLCPP_INFO(this->get_logger(), "Activating");
     costmap_pub_->on_activate();
-    return nav2_util::CallbackReturn::SUCCESS;
+    return nav2::CallbackReturn::SUCCESS;
   }
 
-  nav2_util::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & /*state*/)
+  nav2::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   {
     RCLCPP_INFO(this->get_logger(), "Deactivating");
     costmap_pub_->on_deactivate();
     costmap_.reset();
-    return nav2_util::CallbackReturn::SUCCESS;
+    return nav2::CallbackReturn::SUCCESS;
   }
 
   void publishFootprint(

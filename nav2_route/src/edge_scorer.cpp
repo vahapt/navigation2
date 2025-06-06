@@ -23,7 +23,7 @@ namespace nav2_route
 {
 
 EdgeScorer::EdgeScorer(
-  nav2_util::LifecycleNode::SharedPtr node,
+  nav2::LifecycleNode::SharedPtr node,
   const std::shared_ptr<tf2_ros::Buffer> tf_buffer,
   const std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber)
 : plugin_loader_("nav2_route", "nav2_route::EdgeCostFunction")

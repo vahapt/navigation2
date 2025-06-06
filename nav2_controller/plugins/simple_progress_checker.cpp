@@ -20,7 +20,7 @@
 #include "nav_2d_utils/conversions.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/pose2_d.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "pluginlib/class_list_macros.hpp"
 
 using rcl_interfaces::msg::ParameterType;

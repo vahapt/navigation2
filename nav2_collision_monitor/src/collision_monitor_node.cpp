@@ -20,7 +20,7 @@
 
 #include "tf2_ros/create_timer_ros.h"
 
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_util/robot_utils.hpp"
 
 #include "nav2_collision_monitor/kinematics.hpp"
@@ -29,7 +29,7 @@ namespace nav2_collision_monitor
 {
 
 CollisionMonitor::CollisionMonitor(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("collision_monitor", "", options),
+: nav2::LifecycleNode("collision_monitor", "", options),
   process_active_(false), robot_action_prev_{DO_NOTHING, {-1.0, -1.0, -1.0}, ""},
   stop_stamp_{0, 0, get_clock()->get_clock_type()}, stop_pub_timeout_(1.0, 0.0)
 {
@@ -41,7 +41,7 @@ CollisionMonitor::~CollisionMonitor()
   sources_.clear();
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionMonitor::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -61,7 +61,7 @@ CollisionMonitor::on_configure(const rclcpp_lifecycle::State & state)
   // Obtaining ROS parameters
   if (!getParameters(cmd_vel_in_topic, cmd_vel_out_topic, state_topic)) {
     on_cleanup(state);
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
   cmd_vel_in_sub_ = std::make_unique<nav2_util::TwistSubscriber>(
@@ -88,18 +88,18 @@ CollisionMonitor::on_configure(const rclcpp_lifecycle::State & state)
   node->get_parameter("use_realtime_priority", use_realtime_priority);
   if (use_realtime_priority) {
     try {
-      nav2_util::setSoftRealTimePriority();
+      nav2::setSoftRealTimePriority();
     } catch (const std::runtime_error & e) {
       RCLCPP_ERROR(get_logger(), "%s", e.what());
       on_cleanup(state);
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionMonitor::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -126,10 +126,10 @@ CollisionMonitor::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // Creating bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionMonitor::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -155,10 +155,10 @@ CollisionMonitor::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // Destroying bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionMonitor::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -174,15 +174,15 @@ CollisionMonitor::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   tf_listener_.reset();
   tf_buffer_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 CollisionMonitor::on_shutdown(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 void CollisionMonitor::cmdVelInCallbackStamped(geometry_msgs::msg::TwistStamped::SharedPtr msg)

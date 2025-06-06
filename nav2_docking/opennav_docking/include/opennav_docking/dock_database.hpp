@@ -23,10 +23,10 @@
 #include "rclcpp/rclcpp.hpp"
 #include "pluginlib/class_loader.hpp"
 #include "pluginlib/class_list_macros.hpp"
-#include "nav2_util/service_server.hpp"
-#include "nav2_util/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
-#include "nav2_util/simple_action_server.hpp"
+#include "nav2_ros_common/service_server.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/node_utils.hpp"
+#include "nav2_ros_common/simple_action_server.hpp"
 #include "opennav_docking/utils.hpp"
 #include "opennav_docking/types.hpp"
 #include "nav2_msgs/srv/reload_dock_database.hpp"
@@ -133,7 +133,7 @@ protected:
   DockPluginMap dock_plugins_;
   DockMap dock_instances_;
   pluginlib::ClassLoader<opennav_docking_core::ChargingDock> dock_loader_;
-  nav2_util::ServiceServer<nav2_msgs::srv::ReloadDockDatabase,
+  nav2::ServiceServer<nav2_msgs::srv::ReloadDockDatabase,
     std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr reload_db_service_;
 };
 

@@ -24,7 +24,7 @@
 #include <limits>
 
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_msgs/msg/collision_monitor_state.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
@@ -96,25 +96,25 @@ class CollisionMonitorWrapper : public nav2_collision_monitor::CollisionMonitor
 public:
   void start()
   {
-    ASSERT_EQ(on_configure(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
-    ASSERT_EQ(on_activate(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_configure(get_current_state()), nav2::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_activate(get_current_state()), nav2::CallbackReturn::SUCCESS);
   }
 
   void stop()
   {
-    ASSERT_EQ(on_deactivate(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
-    ASSERT_EQ(on_cleanup(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
-    ASSERT_EQ(on_shutdown(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_deactivate(get_current_state()), nav2::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_cleanup(get_current_state()), nav2::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_shutdown(get_current_state()), nav2::CallbackReturn::SUCCESS);
   }
 
   void configure()
   {
-    ASSERT_EQ(on_configure(get_current_state()), nav2_util::CallbackReturn::SUCCESS);
+    ASSERT_EQ(on_configure(get_current_state()), nav2::CallbackReturn::SUCCESS);
   }
 
   void cant_configure()
   {
-    ASSERT_EQ(on_configure(get_current_state()), nav2_util::CallbackReturn::FAILURE);
+    ASSERT_EQ(on_configure(get_current_state()), nav2::CallbackReturn::FAILURE);
   }
 
   bool correctDataReceived(const double expected_dist, const rclcpp::Time & stamp)

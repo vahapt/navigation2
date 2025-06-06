@@ -30,8 +30,8 @@ void DynamicEdgesScorer::configure(
   name_ = name;
   logger_ = node->get_logger();
   service_ =
-    std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::DynamicEdges,
-      nav2_util::LifecycleNode::SharedPtr>>(
+    std::make_shared<nav2::ServiceServer<nav2_msgs::srv::DynamicEdges,
+      nav2::LifecycleNode::SharedPtr>>(
       std::string(node->get_name()) + "/" + getName() + "/adjust_edges",
       node,
       std::bind(&DynamicEdgesScorer::closedEdgesCb, this,

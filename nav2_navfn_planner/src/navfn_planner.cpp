@@ -35,7 +35,7 @@
 #include "builtin_interfaces/msg/duration.hpp"
 #include "nav2_navfn_planner/navfn.hpp"
 #include "nav2_util/costmap.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_costmap_2d/cost_values.hpp"
 
 using namespace std::chrono_literals;

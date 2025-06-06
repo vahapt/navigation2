@@ -46,7 +46,7 @@
 
 #include "nav2_costmap_2d/layered_costmap.hpp"
 #include "nav2_util/execution_timer.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "tf2_geometry_msgs/tf2_geometry_msgs.hpp"
 #include "tf2_ros/create_timer_ros.h"
 #include "nav2_util/robot_utils.hpp"
@@ -59,7 +59,7 @@ using rcl_interfaces::msg::ParameterType;
 namespace nav2_costmap_2d
 {
 Costmap2DROS::Costmap2DROS(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("costmap", "", options),
+: nav2::LifecycleNode("costmap", "", options),
   name_("costmap"),
   default_plugins_{"static_layer", "obstacle_layer", "inflation_layer"},
   default_types_{
@@ -106,7 +106,7 @@ Costmap2DROS::Costmap2DROS(
   const std::string & parent_namespace,
   const bool & use_sim_time,
   const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode(name, "",
+: nav2::LifecycleNode(name, "",
     // NodeOption arguments take precedence over the ones provided on the command line
     // use this to make sure the node is placed on the provided namespace
     // TODO(orduno) Pass a sub-node instead of creating a new node for better handling
@@ -158,7 +158,7 @@ Costmap2DROS::~Costmap2DROS()
 {
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -167,7 +167,7 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
   } catch (const std::exception & e) {
     RCLCPP_ERROR(
       get_logger(), "Failed to configure costmap! %s.", e.what());
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
   callback_group_ = create_callback_group(
@@ -210,7 +210,7 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
     } catch (const std::exception & e) {
       RCLCPP_ERROR(get_logger(), "Failed to initialize costmap plugin %s! %s.",
           plugin_names_[i].c_str(), e.what());
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
 
     lock.unlock();
@@ -275,8 +275,8 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
   }
 
   // Service to get the cost at a point
-  get_cost_service_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::GetCosts,
-      std::shared_ptr<nav2_util::LifecycleNode>>>(
+  get_cost_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::GetCosts,
+      std::shared_ptr<nav2::LifecycleNode>>>(
     std::string("get_cost_") + get_name(),
     shared_from_this(),
     std::bind(&Costmap2DROS::getCostsCallback, this, std::placeholders::_1, std::placeholders::_2,
@@ -287,11 +287,11 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
 
   executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
   executor_->add_callback_group(callback_group_, get_node_base_interface());
-  executor_thread_ = std::make_unique<nav2_util::NodeThread>(executor_);
-  return nav2_util::CallbackReturn::SUCCESS;
+  executor_thread_ = std::make_unique<nav2::NodeThread>(executor_);
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 Costmap2DROS::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -323,7 +323,7 @@ Costmap2DROS::on_activate(const rclcpp_lifecycle::State & /*state*/)
         "transform from %s to %s did not become available before timeout",
         get_name(), robot_base_frame_.c_str(), global_frame_.c_str());
 
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
 
     // The error string will accumulate and errors will typically be the same, so the last
@@ -353,10 +353,10 @@ Costmap2DROS::on_activate(const rclcpp_lifecycle::State & /*state*/)
   dyn_params_handler = this->add_on_set_parameters_callback(
     std::bind(&Costmap2DROS::dynamicParametersCallback, this, _1));
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 Costmap2DROS::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -380,10 +380,10 @@ Costmap2DROS::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
     layer_pub->on_deactivate();
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 Costmap2DROS::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -402,14 +402,14 @@ Costmap2DROS::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   footprint_sub_.reset();
   footprint_pub_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 Costmap2DROS::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 void

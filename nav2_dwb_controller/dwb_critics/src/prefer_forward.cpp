@@ -35,7 +35,7 @@
 #include "dwb_critics/prefer_forward.hpp"
 #include <math.h>
 #include "pluginlib/class_list_macros.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 PLUGINLIB_EXPORT_CLASS(dwb_critics::PreferForwardCritic, dwb_core::TrajectoryCritic)
 

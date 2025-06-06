@@ -26,19 +26,19 @@
 #include <windows.h>
 #endif
 
-class DummyNode : public nav2_ros_common::LifecycleNode
+class DummyNode : public nav2::LifecycleNode
 {
 public:
   DummyNode()
-  : nav2_ros_common::LifecycleNode("nav2_test_cli", "")
+  : nav2::LifecycleNode("nav2_test_cli", "")
   {
     activated = false;
   }
 
-  nav2_ros_common::CallbackReturn on_activate(const rclcpp_lifecycle::State & /*state*/)
+  nav2::CallbackReturn on_activate(const rclcpp_lifecycle::State & /*state*/)
   {
     activated = true;
-    return nav2_ros_common::CallbackReturn::SUCCESS;
+    return nav2::CallbackReturn::SUCCESS;
   }
 
   bool activated;
@@ -50,7 +50,7 @@ public:
   Handle()
   {
     node = std::make_shared<DummyNode>();
-    thread = std::make_shared<nav2_ros_common::NodeThread>(node->get_node_base_interface());
+    thread = std::make_shared<nav2::NodeThread>(node->get_node_base_interface());
   }
   ~Handle()
   {
@@ -58,7 +58,7 @@ public:
     node.reset();
   }
 
-  std::shared_ptr<nav2_ros_common::NodeThread> thread;
+  std::shared_ptr<nav2::NodeThread> thread;
   std::shared_ptr<DummyNode> node;
 };
 

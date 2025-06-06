@@ -31,19 +31,21 @@
 #include "bond/msg/constants.hpp"
 #include "nav2_ros_common/interface_factories.hpp"
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 using namespace std::chrono_literals;  // NOLINT
 
 /**
- * @class nav2_ros_common::LifecycleNode
+ * @class nav2::LifecycleNode
  * @brief A lifecycle node wrapper to enable common Nav2 needs such as manipulating parameters
  */
 class LifecycleNode : public rclcpp_lifecycle::LifecycleNode
 {
 public:
+  using SharedPtr = std::shared_ptr<nav2::LifecycleNode>;
+
   /**
    * @brief A lifecycle node constructor
    * @param node_name Name for the node
@@ -62,12 +64,12 @@ public:
       rclcpp::Parameter(
         bond::msg::Constants::DISABLE_HEARTBEAT_TIMEOUT_PARAM, true));
 
-    nav2_ros_common::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       this, "bond_heartbeat_period", rclcpp::ParameterValue(0.1));
     this->get_parameter("bond_heartbeat_period", bond_heartbeat_period);
 
     bool autostart_node = false;
-    nav2_ros_common::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       this, "autostart_node", rclcpp::ParameterValue(false));
     this->get_parameter("autostart_node", autostart_node);
     if (autostart_node) {
@@ -102,18 +104,32 @@ public:
    */
   template<
     typename MessageT,
-    typename CallbackT,
-    typename SubscriptionT>
-  std::shared_ptr<SubscriptionT>
+    typename CallbackT>
+  std::shared_ptr<rclcpp::Subscription<MessageT>>
   create_subscription(
     const std::string & topic_name,
     CallbackT && callback,
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::interfaces::create_subscription<MessageT>(
-      *this, topic_name,
+    return nav2::interfaces::create_subscription<LifecycleNode, MessageT>(
+      shared_from_this(), topic_name,
       std::forward<CallbackT>(callback), qos, callback_group);
+  }
+
+  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
+  template<
+    typename MessageT,
+    typename CallbackT>
+  std::shared_ptr<rclcpp::Subscription<MessageT>>
+  create_subscription(
+    const std::string & topic_name,
+    const int depth,
+    CallbackT && callback)
+  {
+    return nav2::interfaces::create_subscription<LifecycleNode, MessageT>(
+      shared_from_this(), topic_name,
+      std::forward<CallbackT>(callback), rclcpp::QoS(depth), nullptr);
   }
 
   /**
@@ -123,33 +139,41 @@ public:
    * @param callback_group The callback group to use (if provided)
    * @return A shared pointer to the created publisher
    */
-  template<
-    typename MessageT,
-    typename CallbackT,
-    typename PublisherT>
-  std::shared_ptr<PublisherT>
+  template<typename MessageT>
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<MessageT>>
   create_publisher(
     const std::string & topic_name,
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::interfaces::create_publisher<MessageT>(
-      *this, topic_name, qos, callback_group);
+    return nav2::interfaces::create_publisher<LifecycleNode, MessageT>(
+      shared_from_this(), topic_name, qos, callback_group);
+  }
+
+  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
+  template<typename MessageT>
+  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<MessageT>>
+  create_publisher(
+    const std::string & topic_name,
+    const int depth)
+  {
+    return nav2::interfaces::create_publisher<LifecycleNode, MessageT>(
+      shared_from_this(), topic_name, rclcpp::QoS(depth), nullptr);
   }
 
   /**
    * @brief Create a ServiceClient to interface with a service
    * @param service_name Name of service
    * @param use_internal_executor Whether to use the internal executor (default is false)
-   * @return A shared pointer to the created nav2_ros_common::ServiceClient
+   * @return A shared pointer to the created nav2::ServiceClient
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2_ros_common::ServiceClient<ServiceT, LifecycleNode::SharedPtr>>
+  std::shared_ptr<nav2::ServiceClient<ServiceT, LifecycleNode>>
   create_client(
     const std::string & service_name,
     bool use_internal_executor = false)
   {
-    return nav2::interfaces::create_client<ServiceT, LifecycleNode::SharedPtr>(
+    return nav2::interfaces::create_client<ServiceT, LifecycleNode>(
       shared_from_this(), service_name, use_internal_executor);
   }
 
@@ -158,16 +182,16 @@ public:
    * @param service_name Name of service
    * @param callback Callback function to handle service requests
    * @param callback_group The callback group to use (if provided)
-   * @return A shared pointer to the created nav2_ros_common::ServiceServer
+   * @return A shared pointer to the created nav2::ServiceServer
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2_ros_common::ServiceServer<ServiceT, LifecycleNode::SharedPtr>>
+  std::shared_ptr<nav2::ServiceServer<ServiceT, LifecycleNode>>
   create_service(
     const std::string & service_name,
-    typename nav2_ros_common::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType cb,
+    typename nav2::ServiceServer<ServiceT, LifecycleNode>::CallbackType cb,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
   {
-    return nav2::interfaces::create_service<ServiceT, LifecycleNode::SharedPtr>(
+    return nav2::interfaces::create_service<ServiceT, LifecycleNode>(
       shared_from_this(), service_name, cb, callback_group);
   }
 
@@ -179,14 +203,14 @@ public:
    * @param server_timeout Timeout for the action server (default is 500ms)
    * @param spin_thread Whether to spin with a dedicated thread internally (default is false)
    * @param realtime Whether the action server's worker thread should have elevated
-   * @return A shared pointer to the created nav2_ros_common::SimpleActionServer
+   * @return A shared pointer to the created nav2::SimpleActionServer
    */
   template<typename ActionT>
-  std::shared_ptr<nav2_ros_common::SimpleActionServer<ActionT>>
+  std::shared_ptr<nav2::SimpleActionServer<ActionT>>
   create_server(
     const std::string & action_name,
-    typename nav2_ros_common::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
-    typename nav2_ros_common::SimpleActionServer<ActionT>::CompletionCallback compl_cb = nullptr,
+    typename nav2::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
+    typename nav2::SimpleActionServer<ActionT>::CompletionCallback compl_cb = nullptr,
     std::chrono::milliseconds server_timeout = std::chrono::milliseconds(500),
     bool spin_thread = false,
     const bool realtime = false)
@@ -203,9 +227,9 @@ public:
   /**
    * @brief Get a shared pointer of this
    */
-  std::shared_ptr<nav2_ros_common::LifecycleNode> shared_from_this()
+  std::shared_ptr<nav2::LifecycleNode> shared_from_this()
   {
-    return std::static_pointer_cast<nav2_ros_common::LifecycleNode>(
+    return std::static_pointer_cast<nav2::LifecycleNode>(
       rclcpp_lifecycle::LifecycleNode::shared_from_this());
   }
 
@@ -215,12 +239,12 @@ public:
    * @param state State prior to error transition
    * @return Return type for success or failed transition to error state
    */
-  nav2_ros_common::CallbackReturn on_error(const rclcpp_lifecycle::State & /*state*/)
+  nav2::CallbackReturn on_error(const rclcpp_lifecycle::State & /*state*/)
   {
     RCLCPP_FATAL(
       get_logger(),
       "Lifecycle node %s does not have error state implemented", get_name());
-    return nav2_ros_common::CallbackReturn::SUCCESS;
+    return nav2::CallbackReturn::SUCCESS;
   }
 
   /**
@@ -354,6 +378,6 @@ protected:
   rclcpp::TimerBase::SharedPtr autostart_timer_;
 };
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 #endif  // NAV2_ROS_COMMON__LIFECYCLE_NODE_HPP_

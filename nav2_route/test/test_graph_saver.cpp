@@ -18,8 +18,8 @@
 
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_route/graph_loader.hpp"
 #include "nav2_route/graph_saver.hpp"
 #include "tf2_ros/static_transform_broadcaster.h"
@@ -36,7 +36,7 @@ using namespace nav2_route; //NOLINT
 
 TEST(GraphSaver, test_invalid_plugin)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("graph_saver_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("graph_saver_test");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   std::string frame = "map";
 
@@ -55,7 +55,7 @@ TEST(GraphSaver, test_invalid_plugin)
 
 TEST(GraphSaver, test_empty_filename)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("graph_saver_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("graph_saver_test");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   std::string frame = "map";
 
@@ -76,7 +76,7 @@ TEST(GraphSaver, test_empty_filename)
 
 TEST(GraphSaver, test_api)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("graph_saver_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("graph_saver_test");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   std::string frame = "map";
 
@@ -109,7 +109,7 @@ TEST(GraphSaver, test_api)
 
 TEST(GraphSaver, test_transformation_api)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("graph_saver_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("graph_saver_test");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   tf->setUsingDedicatedThread(true);
   auto tf_listener = std::make_shared<tf2_ros::TransformListener>(*tf);

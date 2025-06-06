@@ -85,6 +85,7 @@ public:
  */
 class PublisherOptions : public rclcpp::PublisherOptions
 {
+public:
   /**
    * @brief Constructor for PublisherOptions
    * @param allow_parameter_qos_overrides Whether to allow QoS overrides for this publisher
@@ -141,12 +142,12 @@ typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
   const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
   const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
 {
-  bool allow_parameter_qos_overrides = nav2_ros_common::declare_or_get_parameter<bool>(
+  bool allow_parameter_qos_overrides = nav2::declare_or_get_parameter<bool>(
     node, "allow_parameter_qos_overrides", true);
   return node->template create_subscription<MessageT>(
     topic_name,
-    std::forward<CallbackT>(callback),
     qos,
+    std::forward<CallbackT>(callback),
     nav2::interfaces::SubscriptionOptions(allow_parameter_qos_overrides, callback_group));
 }
 
@@ -159,13 +160,13 @@ typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
  * @return A shared pointer to the created publisher
  */
 template<typename NodeT, typename MessageT>
-typename rclcpp::Publisher<MessageT>::SharedPtr create_publisher(
+typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr create_publisher(
   const typename NodeT::SharedPtr & node,
   const std::string & topic_name,
   const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
   const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
 {
-  bool allow_parameter_qos_overrides = nav2_ros_common::declare_or_get_parameter<bool>(
+  bool allow_parameter_qos_overrides = nav2::declare_or_get_parameter<bool>(
     node, "allow_parameter_qos_overrides", true);
   return node->template create_publisher<MessageT>(
     topic_name,
@@ -178,15 +179,15 @@ typename rclcpp::Publisher<MessageT>::SharedPtr create_publisher(
  * @param node Node to create the service client on
  * @param service_name Name of service
  * @param use_internal_executor Whether to use the internal executor (default is false)
- * @return A shared pointer to the created nav2_ros_common::ServiceClient
+ * @return A shared pointer to the created nav2::ServiceClient
  */
 template<typename NodeT, typename SrvT>
-std::shared_ptr<nav2_ros_common::ServiceClient<SrvT, NodeT>> create_client(
+std::shared_ptr<nav2::ServiceClient<SrvT, NodeT>> create_client(
   const typename NodeT::SharedPtr & node,
   const std::string & service_name,
   bool use_internal_executor = false)
 {
-  return std::make_shared<nav2_ros_common::ServiceClient<SrvT, NodeT>>(
+  return std::make_shared<nav2::ServiceClient<SrvT, NodeT>>(
     service_name, node, use_internal_executor);
 }
 
@@ -196,16 +197,16 @@ std::shared_ptr<nav2_ros_common::ServiceClient<SrvT, NodeT>> create_client(
  * @param service_name Name of service
  * @param callback Callback function to handle service requests
  * @param callback_group The callback group to use (if provided)
- * @return A shared pointer to the created nav2_ros_common::ServiceServer
+ * @return A shared pointer to the created nav2::ServiceServer
  */
 template<typename NodeT, typename SrvT>
-std::shared_ptr<nav2_ros_common::ServiceServer<SrvT, NodeT>> create_service(
+std::shared_ptr<nav2::ServiceServer<SrvT, NodeT>> create_service(
   const typename NodeT::SharedPtr & node,
   const std::string & service_name,
-  typename nav2_ros_common::ServiceServer<SrvT, NodeT>::CallbackType callback,
+  typename nav2::ServiceServer<SrvT, NodeT>::CallbackType callback,
   rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
 {
-  return std::make_shared<nav2_ros_common::ServiceServer<SrvT, NodeT>>(
+  return std::make_shared<nav2::ServiceServer<SrvT, NodeT>>(
     service_name, node, callback, callback_group);
 }
 
@@ -219,19 +220,19 @@ std::shared_ptr<nav2_ros_common::ServiceServer<SrvT, NodeT>> create_service(
  * @param spin_thread Whether to spin with a dedicated thread internally (default is false)
  * @param realtime Whether the action server's worker thread
  * should have elevated prioritization (soft realtime)
- * @return A shared pointer to the created nav2_ros_common::SimpleActionServer
+ * @return A shared pointer to the created nav2::SimpleActionServer
  */
 template<typename NodeT, typename ActionT>
-std::shared_ptr<nav2_ros_common::SimpleActionServer<ActionT>> create_server(
+std::shared_ptr<nav2::SimpleActionServer<ActionT>> create_server(
   const NodeT & node,
   const std::string & action_name,
-  typename nav2_ros_common::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
-  typename nav2_ros_common::SimpleActionServer<ActionT>::CompletionCallback complete_cb = nullptr,
+  typename nav2::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
+  typename nav2::SimpleActionServer<ActionT>::CompletionCallback complete_cb = nullptr,
   std::chrono::milliseconds server_timeout = std::chrono::milliseconds(500),
   bool spin_thread = false,
   const bool realtime = false)
 {
-  return std::make_shared<nav2_ros_common::SimpleActionServer<ActionT>>(
+  return std::make_shared<nav2::SimpleActionServer<ActionT>>(
     node, action_name, execute_callback, complete_cb, server_timeout, spin_thread, realtime);
 }
 

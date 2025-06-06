@@ -45,7 +45,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "nav2_costmap_2d/costmap_2d.hpp"
 #include "nav2_costmap_2d/layered_costmap.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 
 namespace nav2_costmap_2d
 {
@@ -74,7 +74,7 @@ public:
     LayeredCostmap * parent,
     std::string name,
     tf2_ros::Buffer * tf,
-    const nav2_util::LifecycleNode::WeakPtr & node,
+    const nav2::LifecycleNode::WeakPtr & node,
     rclcpp::CallbackGroup::SharedPtr callback_group);
   /** @brief Stop publishers. */
   virtual void deactivate() {}

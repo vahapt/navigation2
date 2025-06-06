@@ -99,7 +99,7 @@ LifecycleManager::LifecycleManager(const rclcpp::NodeOptions & options)
       }
       auto executor = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
       executor->add_callback_group(callback_group_, get_node_base_interface());
-      service_thread_ = std::make_unique<nav2_util::NodeThread>(executor);
+      service_thread_ = std::make_unique<nav2::NodeThread>(executor);
     });
   diagnostics_updater_.setHardwareID("Nav2");
   diagnostics_updater_.add("Nav2 Health", this, &LifecycleManager::CreateDiagnostic);
@@ -201,18 +201,16 @@ void
 LifecycleManager::createLifecycleServiceServers()
 {
   message("Creating and initializing lifecycle service servers");
-  manager_srv_ = std::make_shared<nav2_util::ServiceServer<ManageLifecycleNodes>>(
+  manager_srv_ = std::make_shared<nav2::ServiceServer<ManageLifecycleNodes>>(
     get_name() + std::string("/manage_nodes"),
     shared_from_this(),
     std::bind(&LifecycleManager::managerCallback, this, _1, _2, _3),
-    rclcpp::SystemDefaultsQoS(),
     callback_group_);
 
-  is_active_srv_ = std::make_shared<nav2_util::ServiceServer<std_srvs::srv::Trigger>>(
+  is_active_srv_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::Trigger>>(
     get_name() + std::string("/is_active"),
     shared_from_this(),
     std::bind(&LifecycleManager::isActiveCallback, this, _1, _2, _3),
-    rclcpp::SystemDefaultsQoS(),
     callback_group_);
 }
 

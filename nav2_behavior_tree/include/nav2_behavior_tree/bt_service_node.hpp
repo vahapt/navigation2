@@ -21,11 +21,11 @@
 
 #include "behaviortree_cpp/action_node.h"
 #include "behaviortree_cpp/json_export.h"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "nav2_behavior_tree/bt_utils.hpp"
 #include "nav2_behavior_tree/json_utils.hpp"
-#include "nav2_util/service_client.hpp"
+#include "nav2_ros_common/service_client.hpp"
 
 namespace nav2_behavior_tree
 {
@@ -114,7 +114,7 @@ public:
     if (service_new != service_name_ || !service_client_) {
       service_name_ = service_new;
       node_ = config().blackboard->template get<rclcpp::Node::SharedPtr>("node");
-      service_client_ = std::make_shared<nav2_util::ServiceClient<ServiceT>>(
+      service_client_ = std::make_shared<nav2::ServiceClient<ServiceT>>(
       service_name_, node_, true /*creates and spins an internal executor*/);
     }
   }
@@ -262,7 +262,7 @@ protected:
   }
 
   std::string service_name_, service_node_name_;
-  typename nav2_util::ServiceClient<ServiceT>::SharedPtr service_client_;
+  typename nav2::ServiceClient<ServiceT>::SharedPtr service_client_;
   std::shared_ptr<typename ServiceT::Request> request_;
 
   // The node that will be used for any ROS operations

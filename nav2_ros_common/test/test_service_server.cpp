@@ -20,7 +20,7 @@
 #include "std_msgs/msg/empty.hpp"
 #include "gtest/gtest.h"
 
-using nav2_ros_common::ServiceServer;
+using nav2::ServiceServer;
 using std::string;
 
 class RclCppFixture

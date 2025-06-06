@@ -23,7 +23,7 @@
 #include "behaviortree_cpp/json_export.h"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "nav2_msgs/srv/is_path_valid.hpp"
-#include "nav2_util/service_client.hpp"
+#include "nav2_ros_common/service_client.hpp"
 #include "nav2_behavior_tree/bt_utils.hpp"
 #include "nav2_behavior_tree/json_utils.hpp"
 
@@ -82,7 +82,7 @@ public:
 
 private:
   rclcpp::Node::SharedPtr node_;
-  nav2_util::ServiceClient<nav2_msgs::srv::IsPathValid>::SharedPtr client_;
+  nav2::ServiceClient<nav2_msgs::srv::IsPathValid>::SharedPtr client_;
   // The timeout value while waiting for a response from the
   // is path valid service
   std::chrono::milliseconds server_timeout_;

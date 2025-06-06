@@ -42,7 +42,7 @@ public:
 
   void on_init()
   {
-    action_server_ = std::make_shared<nav2_ros_common::SimpleActionServer<Fibonacci>>(
+    action_server_ = std::make_shared<nav2::SimpleActionServer<Fibonacci>>(
       shared_from_this(),
       "fibonacci",
       std::bind(&FibonacciServerNode::execute, this));
@@ -136,7 +136,7 @@ preempted:
   }
 
 private:
-  std::shared_ptr<nav2_ros_common::SimpleActionServer<Fibonacci>> action_server_;
+  std::shared_ptr<nav2::SimpleActionServer<Fibonacci>> action_server_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr deactivate_subs_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr activate_subs_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr omit_preempt_subs_;
@@ -192,7 +192,7 @@ class ActionTestNode : public rclcpp::Node
 {
 public:
   ActionTestNode()
-  : rclcpp::Node(nav2_ros_common::generate_internal_node_name("action_test_node"))
+  : rclcpp::Node(nav2::generate_internal_node_name("action_test_node"))
   {
   }
 

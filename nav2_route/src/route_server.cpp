@@ -22,10 +22,10 @@ namespace nav2_route
 {
 
 RouteServer::RouteServer(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("route_server", "", options)
+: nav2::LifecycleNode("route_server", "", options)
 {}
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 RouteServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -52,7 +52,7 @@ RouteServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
     std::bind(&RouteServer::computeAndTrackRoute, this),
     nullptr, std::chrono::milliseconds(500), true);
 
-  set_graph_service_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::SetRouteGraph,
+  set_graph_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::SetRouteGraph,
       std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
     std::string(node->get_name()) + "/set_route_graph",
     node,
@@ -81,7 +81,7 @@ RouteServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
   try {
     graph_loader_ = std::make_shared<GraphLoader>(node, tf_, route_frame_);
     if (!graph_loader_->loadGraphFromParameter(graph_, id_to_graph_map_)) {
-      return nav2_util::CallbackReturn::FAILURE;
+      return nav2::CallbackReturn::FAILURE;
     }
 
     goal_intent_extractor_ = std::make_shared<GoalIntentExtractor>();
@@ -99,13 +99,13 @@ RouteServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
     path_converter_->configure(node);
   } catch (std::exception & e) {
     RCLCPP_FATAL(get_logger(), "Failed to configure route server: %s", e.what());
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 RouteServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -114,10 +114,10 @@ RouteServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   graph_vis_publisher_->on_activate();
   graph_vis_publisher_->publish(utils::toMsg(graph_, route_frame_, this->now()));
   createBond();
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 RouteServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -125,10 +125,10 @@ RouteServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   compute_and_track_route_server_->deactivate();
   graph_vis_publisher_->on_deactivate();
   destroyBond();
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 RouteServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -144,14 +144,14 @@ RouteServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   transform_listener_.reset();
   tf_.reset();
   graph_.clear();
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 RouteServer::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 rclcpp::Duration
@@ -171,7 +171,7 @@ RouteServer::findPlanningDuration(const rclcpp::Time & start_time)
 template<typename ActionT>
 bool
 RouteServer::isRequestValid(
-  std::shared_ptr<nav2_util::SimpleActionServer<ActionT>> & action_server)
+  std::shared_ptr<nav2::SimpleActionServer<ActionT>> & action_server)
 {
   if (!action_server || !action_server->is_server_active()) {
     RCLCPP_DEBUG(get_logger(), "Action server unavailable or inactive. Stopping.");
@@ -252,7 +252,7 @@ Route RouteServer::findRoute(
 template<typename ActionT>
 void
 RouteServer::processRouteRequest(
-  std::shared_ptr<nav2_util::SimpleActionServer<ActionT>> & action_server)
+  std::shared_ptr<nav2::SimpleActionServer<ActionT>> & action_server)
 {
   auto goal = action_server->get_current_goal();
   auto result = std::make_shared<typename ActionT::Result>();

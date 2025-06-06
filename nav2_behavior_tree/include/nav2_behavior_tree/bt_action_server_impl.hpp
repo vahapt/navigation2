@@ -26,7 +26,7 @@
 
 #include "nav2_msgs/action/navigate_to_pose.hpp"
 #include "nav2_behavior_tree/bt_action_server.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "rcl_action/action_server.h"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 

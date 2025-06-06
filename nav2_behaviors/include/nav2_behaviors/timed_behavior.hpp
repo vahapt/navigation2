@@ -31,7 +31,7 @@
 #include "geometry_msgs/msg/twist.hpp"
 #include "nav2_util/robot_utils.hpp"
 #include "nav2_util/twist_publisher.hpp"
-#include "nav2_util/simple_action_server.hpp"
+#include "nav2_ros_common/simple_action_server.hpp"
 #include "nav2_core/behavior.hpp"
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wpedantic"
@@ -66,7 +66,7 @@ template<typename ActionT>
 class TimedBehavior : public nav2_core::Behavior
 {
 public:
-  using ActionServer = nav2_util::SimpleActionServer<ActionT>;
+  using ActionServer = nav2::SimpleActionServer<ActionT>;
 
   /**
    * @brief A TimedBehavior constructor

@@ -22,7 +22,7 @@
 
 #include "nav2_core/smoother_exceptions.hpp"
 #include "nav2_smoother/nav2_smoother.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav_2d_utils/conversions.hpp"
 #include "nav_2d_utils/tf_help.hpp"
 #include "tf2_ros/create_timer_ros.h"
@@ -60,7 +60,7 @@ SmootherServer::~SmootherServer()
   smoothers_.clear();
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 SmootherServer::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring smoother server");
@@ -99,7 +99,7 @@ SmootherServer::on_configure(const rclcpp_lifecycle::State & state)
 
   if (!loadSmootherPlugins()) {
     on_cleanup(state);
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
   // Initialize pubs & subs
@@ -114,7 +114,7 @@ SmootherServer::on_configure(const rclcpp_lifecycle::State & state)
     std::chrono::milliseconds(500),
     true);
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 bool SmootherServer::loadSmootherPlugins()
@@ -155,7 +155,7 @@ bool SmootherServer::loadSmootherPlugins()
   return true;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 SmootherServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -170,10 +170,10 @@ SmootherServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 SmootherServer::on_deactivate(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -188,10 +188,10 @@ SmootherServer::on_deactivate(const rclcpp_lifecycle::State &)
   // destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 SmootherServer::on_cleanup(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -212,14 +212,14 @@ SmootherServer::on_cleanup(const rclcpp_lifecycle::State &)
   costmap_sub_.reset();
   collision_checker_.reset();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 SmootherServer::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 bool SmootherServer::findSmootherId(

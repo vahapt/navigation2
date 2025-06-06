@@ -27,7 +27,7 @@
 #include "nav2_smac_planner/node_hybrid.hpp"
 #include "nav2_smac_planner/smac_planner_2d.hpp"
 #include "nav2_smac_planner/smac_planner_hybrid.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 // SMAC smoke tests for plugin-level issues rather than algorithms

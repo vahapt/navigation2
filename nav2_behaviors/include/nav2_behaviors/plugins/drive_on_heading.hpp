@@ -25,7 +25,7 @@
 #include "nav2_behaviors/timed_behavior.hpp"
 #include "nav2_msgs/action/drive_on_heading.hpp"
 #include "nav2_msgs/action/back_up.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 
 namespace nav2_behaviors

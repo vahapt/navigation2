@@ -22,7 +22,7 @@
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "nav2_route/interfaces/edge_cost_function.hpp"
 #include "nav2_util/line_iterator.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_costmap_2d/costmap_subscriber.hpp"
 
 namespace nav2_route

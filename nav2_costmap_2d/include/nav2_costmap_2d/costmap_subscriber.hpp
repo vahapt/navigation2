@@ -22,7 +22,7 @@
 #include "nav2_costmap_2d/costmap_2d.hpp"
 #include "nav2_msgs/msg/costmap.hpp"
 #include "nav2_msgs/msg/costmap_update.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 
 namespace nav2_costmap_2d
 {
@@ -37,7 +37,7 @@ public:
    * @brief A constructor
    */
   CostmapSubscriber(
-    const nav2_util::LifecycleNode::WeakPtr & parent,
+    const nav2::LifecycleNode::WeakPtr & parent,
     const std::string & topic_name);
 
   /**

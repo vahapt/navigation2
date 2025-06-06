@@ -23,8 +23,8 @@
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "nav2_route/interfaces/route_operation.hpp"
 #include "nav2_core/route_exceptions.hpp"
-#include "nav2_util/node_utils.hpp"
-#include "nav2_util/service_client.hpp"
+#include "nav2_ros_common/node_utils.hpp"
+#include "nav2_ros_common/service_client.hpp"
 #include "std_srvs/srv/trigger.hpp"
 
 namespace nav2_route
@@ -118,7 +118,7 @@ protected:
     // indicate the endpoint for the particular service call.
     if (!main_srv_name_.empty()) {
       main_client_ =
-        std::make_shared<nav2_util::ServiceClient<SrvT,
+        std::make_shared<nav2::ServiceClient<SrvT,
           rclcpp_lifecycle::LifecycleNode::SharedPtr>>(main_srv_name_, node, true);
     }
   }
@@ -161,7 +161,7 @@ protected:
       } else {
         auto node = node_.lock();
         auto client =
-          std::make_shared<nav2_util::ServiceClient<SrvT,
+          std::make_shared<nav2::ServiceClient<SrvT,
             rclcpp_lifecycle::LifecycleNode::SharedPtr>>(srv_name, node, true);
         response = client->invoke(req, std::chrono::nanoseconds(500ms));
       }
@@ -194,7 +194,7 @@ protected:
   std::string name_, main_srv_name_;
   std::atomic_bool reroute_;
   rclcpp::Logger logger_{rclcpp::get_logger("RouteOperationClient")};
-  std::shared_ptr<nav2_util::ServiceClient<SrvT,
+  std::shared_ptr<nav2::ServiceClient<SrvT,
     rclcpp_lifecycle::LifecycleNode::SharedPtr>> main_client_;
   rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
 };

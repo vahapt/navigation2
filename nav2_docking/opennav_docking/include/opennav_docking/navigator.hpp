@@ -26,7 +26,7 @@
 #include "pluginlib/class_list_macros.hpp"
 
 #include "nav2_msgs/action/navigate_to_pose.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "opennav_docking/utils.hpp"
 #include "opennav_docking/types.hpp"
 

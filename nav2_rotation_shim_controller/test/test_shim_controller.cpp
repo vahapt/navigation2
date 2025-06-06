@@ -21,7 +21,7 @@
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
 #include "nav2_costmap_2d/costmap_2d.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_controller/plugins/simple_goal_checker.hpp"
 #include "nav2_rotation_shim_controller/nav2_rotation_shim_controller.hpp"
 #include "tf2_ros/transform_broadcaster.h"

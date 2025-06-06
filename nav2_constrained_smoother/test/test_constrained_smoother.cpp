@@ -38,7 +38,7 @@ class DummyCostmapSubscriber : public nav2_costmap_2d::CostmapSubscriber
 {
 public:
   DummyCostmapSubscriber(
-    nav2_util::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic_name)
   : CostmapSubscriber(node, topic_name)
   {

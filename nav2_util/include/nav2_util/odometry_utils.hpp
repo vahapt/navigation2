@@ -60,7 +60,7 @@ public:
    * @param odom_topic Topic on which odometry should be received
    */
   explicit OdomSmoother(
-    const nav2_ros_common::LifecycleNode::WeakPtr & parent,
+    const nav2::LifecycleNode::WeakPtr & parent,
     double filter_duration = 0.3,
     const std::string & odom_topic = "odom");
 

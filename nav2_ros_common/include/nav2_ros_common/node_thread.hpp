@@ -19,10 +19,10 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-namespace nav2_ros_common
+namespace nav2
 {
 /**
- * @class nav2_ros_common::NodeThread
+ * @class nav2::NodeThread
  * @brief A background thread to process node/executor callbacks
  */
 class NodeThread
@@ -84,6 +84,6 @@ protected:
   rclcpp::Executor::SharedPtr executor_;
 };
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 #endif  // NAV2_ROS_COMMON__NODE_THREAD_HPP_

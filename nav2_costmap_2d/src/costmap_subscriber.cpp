@@ -24,7 +24,7 @@ namespace nav2_costmap_2d
 constexpr int costmapUpdateQueueDepth = 10;
 
 CostmapSubscriber::CostmapSubscriber(
-  const nav2_util::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   const std::string & topic_name)
 : topic_name_(topic_name)
 {

@@ -122,7 +122,7 @@ class DummyCostmapSubscriber : public nav2_costmap_2d::CostmapSubscriber
 {
 public:
   DummyCostmapSubscriber(
-    nav2_util::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic_name)
   : CostmapSubscriber(node, topic_name)
   {
@@ -159,7 +159,7 @@ class DummyFootprintSubscriber : public nav2_costmap_2d::FootprintSubscriber
 {
 public:
   DummyFootprintSubscriber(
-    nav2_util::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     const std::string & topic_name,
     tf2_ros::Buffer & tf)
   : FootprintSubscriber(node, topic_name, tf)
@@ -200,11 +200,11 @@ public:
     default_types_.resize(1, "DummySmoother");
   }
 
-  nav2_util::CallbackReturn
+  nav2::CallbackReturn
   on_configure(const rclcpp_lifecycle::State & state)
   {
     auto result = SmootherServer::on_configure(state);
-    if (result != nav2_util::CallbackReturn::SUCCESS) {
+    if (result != nav2::CallbackReturn::SUCCESS) {
       return result;
     }
 

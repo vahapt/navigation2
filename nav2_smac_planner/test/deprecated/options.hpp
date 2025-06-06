@@ -17,7 +17,7 @@
 
 #include <string>
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 namespace nav2_smac_planner
 {

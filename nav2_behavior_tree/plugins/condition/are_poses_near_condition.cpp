@@ -17,7 +17,7 @@
 
 #include "nav2_util/robot_utils.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 #include "nav2_behavior_tree/plugins/condition/are_poses_near_condition.hpp"
 

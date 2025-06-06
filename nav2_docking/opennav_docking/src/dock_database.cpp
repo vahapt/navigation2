@@ -55,7 +55,7 @@ bool DockDatabase::initialize(
     "Docking Server has %u dock types and %u dock instances available.",
     this->plugin_size(), this->instance_size());
 
-  reload_db_service_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::ReloadDockDatabase,
+  reload_db_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::ReloadDockDatabase,
       std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
     "~/reload_database",
     node,

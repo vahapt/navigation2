@@ -28,7 +28,7 @@
 #include "nav2_msgs/srv/get_costmap.hpp"
 #include "nav2_msgs/srv/is_path_valid.hpp"
 #include "nav2_util/costmap.hpp"
-#include "nav2_util/node_thread.hpp"
+#include "nav2_ros_common/node_thread.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "nav2_planner/planner_server.hpp"
@@ -195,7 +195,7 @@ private:
   rclcpp::Client<nav2_msgs::srv::IsPathValid>::SharedPtr path_valid_client_;
 
   // A thread for spinning the ROS node
-  std::unique_ptr<nav2_util::NodeThread> spin_thread_;
+  std::unique_ptr<nav2::NodeThread> spin_thread_;
 
   // The tester must provide the robot pose through a transform
   std::unique_ptr<geometry_msgs::msg::TransformStamped> base_transform_;

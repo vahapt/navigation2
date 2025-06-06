@@ -20,14 +20,14 @@
 #include <chrono>
 #include "rclcpp/rclcpp.hpp"
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 /**
- * @class nav2_ros_common::ServiceClient
+ * @class nav2::ServiceClient
  * @brief A simple wrapper on ROS2 services client
  */
-template<class ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
+template<typename ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
 class ServiceClient
 {
 public:
@@ -227,6 +227,6 @@ protected:
   bool use_internal_executor_;
 };
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 #endif  // NAV2_ROS_COMMON__SERVICE_CLIENT_HPP_

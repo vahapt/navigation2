@@ -45,7 +45,7 @@
 #include "tf2_ros/create_timer_ros.h"
 
 #include "nav2_amcl/portable_utils.hpp"
-#include "nav2_util/validate_messages.hpp"
+#include "nav2_ros_common/validate_messages.hpp"
 
 using rcl_interfaces::msg::ParameterType;
 using namespace std::chrono_literals;
@@ -55,7 +55,7 @@ namespace nav2_amcl
 using nav2_util::geometry_utils::orientationAroundZAxis;
 
 AmclNode::AmclNode(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("amcl", "", options)
+: nav2::LifecycleNode("amcl", "", options)
 {
   RCLCPP_INFO(get_logger(), "Creating");
 
@@ -183,7 +183,7 @@ AmclNode::~AmclNode()
 {
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 AmclNode::on_configure(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Configuring");
@@ -199,11 +199,11 @@ AmclNode::on_configure(const rclcpp_lifecycle::State & /*state*/)
   initOdometry();
   executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
   executor_->add_callback_group(callback_group_, get_node_base_interface());
-  executor_thread_ = std::make_unique<nav2_util::NodeThread>(executor_);
-  return nav2_util::CallbackReturn::SUCCESS;
+  executor_thread_ = std::make_unique<nav2::NodeThread>(executor_);
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 AmclNode::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating");
@@ -243,10 +243,10 @@ AmclNode::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 AmclNode::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating");
@@ -264,10 +264,10 @@ AmclNode::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 AmclNode::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up");
@@ -334,14 +334,14 @@ AmclNode::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
         rclcpp::ParameterValue(tf2::getYaw(last_published_pose_.pose.pose.orientation))));
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 AmclNode::on_shutdown(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Shutting down");
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 bool
@@ -474,7 +474,7 @@ AmclNode::initialPoseReceived(geometry_msgs::msg::PoseWithCovarianceStamped::Sha
 
   RCLCPP_INFO(get_logger(), "initialPoseReceived");
 
-  if (!nav2_util::validateMsg(*msg)) {
+  if (!nav2::validateMsg(*msg)) {
     RCLCPP_ERROR(get_logger(), "Received initialpose message is malformed. Rejecting.");
     return;
   }
@@ -1346,7 +1346,7 @@ void
 AmclNode::mapReceived(const nav_msgs::msg::OccupancyGrid::SharedPtr msg)
 {
   RCLCPP_DEBUG(get_logger(), "AmclNode: A new map was received.");
-  if (!nav2_util::validateMsg(*msg)) {
+  if (!nav2::validateMsg(*msg)) {
     RCLCPP_ERROR(get_logger(), "Received map message is malformed. Rejecting.");
     return;
   }
@@ -1512,20 +1512,20 @@ AmclNode::initPubSub()
 void
 AmclNode::initServices()
 {
-  global_loc_srv_ = std::make_shared<nav2_util::ServiceServer<std_srvs::srv::Empty,
-      std::shared_ptr<nav2_util::LifecycleNode>>>(
+  global_loc_srv_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::Empty,
+      std::shared_ptr<nav2::LifecycleNode>>>(
     "reinitialize_global_localization", shared_from_this(),
     std::bind(&AmclNode::globalLocalizationCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
 
-  initial_guess_srv_ = std::make_shared<nav2_util::ServiceServer<nav2_msgs::srv::SetInitialPose,
-      std::shared_ptr<nav2_util::LifecycleNode>>>(
+  initial_guess_srv_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::SetInitialPose,
+      std::shared_ptr<nav2::LifecycleNode>>>(
     "set_initial_pose", shared_from_this(),
     std::bind(&AmclNode::initialPoseReceivedSrv, this, std::placeholders::_1, std::placeholders::_2,
       std::placeholders::_3));
 
-  nomotion_update_srv_ = std::make_shared<nav2_util::ServiceServer<std_srvs::srv::Empty,
-      std::shared_ptr<nav2_util::LifecycleNode>>>(
+  nomotion_update_srv_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::Empty,
+      std::shared_ptr<nav2::LifecycleNode>>>(
     "request_nomotion_update", shared_from_this(),
     std::bind(&AmclNode::nomotionUpdateCallback, this, std::placeholders::_1, std::placeholders::_2,
       std::placeholders::_3));

@@ -41,7 +41,7 @@
 #include <memory>
 #include "dwb_core/exceptions.hpp"
 #include "nav2_costmap_2d/cost_values.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 
 using std::abs;
 using costmap_queue::CellData;

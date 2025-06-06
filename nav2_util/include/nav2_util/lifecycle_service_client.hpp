@@ -55,8 +55,8 @@ public:
 
 protected:
   rclcpp::Node::SharedPtr node_;
-  nav2_ros_common::ServiceClient<lifecycle_msgs::srv::ChangeState> change_state_;
-  nav2_ros_common::ServiceClient<lifecycle_msgs::srv::GetState> get_state_;
+  nav2::ServiceClient<lifecycle_msgs::srv::ChangeState> change_state_;
+  nav2::ServiceClient<lifecycle_msgs::srv::GetState> get_state_;
 };
 
 }  // namespace nav2_util

@@ -40,7 +40,7 @@
 //             like the size of `map` should be equal to `height*width`
 //     3> Any other needed condition could be joint here in future
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 
@@ -172,8 +172,6 @@ bool validateMsg(const nav_msgs::msg::OccupancyGrid & msg)
   return true;
 }
 
-
-}  //  namespace nav2_ros_common
-
+}  //  namespace nav2
 
 #endif  // NAV2_ROS_COMMON__VALIDATE_MESSAGES_HPP_

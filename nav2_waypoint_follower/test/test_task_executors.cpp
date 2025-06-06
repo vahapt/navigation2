@@ -22,7 +22,7 @@
 
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_waypoint_follower/plugins/photo_at_waypoint.hpp"
 #include "nav2_waypoint_follower/plugins/wait_at_waypoint.hpp"
 #include "nav2_waypoint_follower/plugins/input_at_waypoint.hpp"

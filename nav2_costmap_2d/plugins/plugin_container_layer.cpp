@@ -16,7 +16,7 @@
 
 #include "nav2_costmap_2d/costmap_math.hpp"
 #include "nav2_costmap_2d/footprint.hpp"
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "rclcpp/parameter_events_filter.hpp"
 #include "pluginlib/class_list_macros.hpp"
 

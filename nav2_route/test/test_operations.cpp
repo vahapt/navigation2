@@ -19,9 +19,9 @@
 
 #include "gtest/gtest.h"
 #include "rclcpp/rclcpp.hpp"
-#include "nav2_util/lifecycle_node.hpp"
-#include "nav2_util/service_client.hpp"
-#include "nav2_util/node_thread.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
+#include "nav2_ros_common/service_client.hpp"
+#include "nav2_ros_common/node_thread.hpp"
 #include "nav2_msgs/msg/speed_limit.hpp"
 #include "std_srvs/srv/trigger.hpp"
 #include "nav2_route/operations_manager.hpp"
@@ -40,7 +40,7 @@ using namespace nav2_route;  // NOLINT
 
 TEST(OperationsManagerTest, test_lifecycle)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber;
   OperationsManager manager(node, costmap_subscriber);
 }
@@ -48,7 +48,7 @@ TEST(OperationsManagerTest, test_lifecycle)
 TEST(OperationsManagerTest, test_failed_plugins)
 {
   // This plugin does not exist
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
   node->declare_parameter("operations", rclcpp::ParameterValue(std::vector<std::string>{"hi"}));
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber;
   EXPECT_THROW(OperationsManager manager(node, costmap_subscriber), std::runtime_error);
@@ -56,7 +56,7 @@ TEST(OperationsManagerTest, test_failed_plugins)
 
 TEST(OperationsManagerTest, test_find_operations)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber;
   OperationsManager manager(node, costmap_subscriber);
 
@@ -95,7 +95,7 @@ TEST(OperationsManagerTest, test_find_operations)
 TEST(OperationsManagerTest, test_find_operations_failure2)
 {
   // This plugin does not exist
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
   node->declare_parameter("operations", rclcpp::ParameterValue(std::vector<std::string>{"hi"}));
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber;
   EXPECT_THROW(OperationsManager manager(node, costmap_subscriber), std::runtime_error);
@@ -103,7 +103,7 @@ TEST(OperationsManagerTest, test_find_operations_failure2)
 
 TEST(OperationsManagerTest, test_processing_fail)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
 
   // No operation plugins to trigger
   node->declare_parameter("operations", rclcpp::ParameterValue(std::vector<std::string>{}));
@@ -127,8 +127,8 @@ TEST(OperationsManagerTest, test_processing_fail)
 
 TEST(OperationsManagerTest, test_processing_speed_on_status)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> costmap_subscriber;
   OperationsManager manager(node, costmap_subscriber);
 
@@ -173,8 +173,8 @@ TEST(OperationsManagerTest, test_processing_speed_on_status)
 
 TEST(OperationsManagerTest, test_rerouting_service_on_query)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("route_server");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("route_server");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   auto node_int = std::make_shared<rclcpp::Node>("my_node2");
 
   // Enable rerouting service, which conducts on query (not status change)
@@ -205,7 +205,7 @@ TEST(OperationsManagerTest, test_rerouting_service_on_query)
   EXPECT_FALSE(result.reroute);
 
   auto srv_client =
-    nav2_util::ServiceClient<std_srvs::srv::Trigger>(
+    nav2::ServiceClient<std_srvs::srv::Trigger>(
     "route_server/ReroutingService/reroute", node_int);
   auto req = std::make_shared<std_srvs::srv::Trigger::Request>();
   auto resp = srv_client.invoke(req, std::chrono::nanoseconds(1000000000));
@@ -224,10 +224,10 @@ TEST(OperationsManagerTest, test_rerouting_service_on_query)
 
 TEST(OperationsManagerTest, test_trigger_event_on_graph)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   auto node_int = std::make_shared<rclcpp::Node>("my_node2");
-  auto node_thread_int = std::make_unique<nav2_util::NodeThread>(node_int);
+  auto node_thread_int = std::make_unique<nav2::NodeThread>(node_int);
 
   // Enable trigger event operation, which conducts on node or edge change
   // when a graph object contains the request for opening a door only.
@@ -307,10 +307,10 @@ TEST(OperationsManagerTest, test_trigger_event_on_graph)
 
 TEST(OperationsManagerTest, test_trigger_event_on_graph_global_service)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   auto node_int = std::make_shared<rclcpp::Node>("my_node2");
-  auto node_thread_int = std::make_unique<nav2_util::NodeThread>(node_int);
+  auto node_thread_int = std::make_unique<nav2::NodeThread>(node_int);
 
   // Set the global service to use instead of file settings for conflict testing
   node->declare_parameter(
@@ -395,8 +395,8 @@ TEST(OperationsManagerTest, test_trigger_event_on_graph_global_service)
 
 TEST(OperationsManagerTest, test_trigger_event_on_graph_failures)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   auto node_int = std::make_shared<rclcpp::Node>("my_node2");
 
   // Enable trigger event operation, which conducts on node or edge change
@@ -444,8 +444,8 @@ TEST(OperationsManagerTest, test_trigger_event_on_graph_failures)
 
 TEST(OperationsManagerTest, test_time_marker)
 {
-  auto node = std::make_shared<nav2_util::LifecycleNode>("operations_manager_test");
-  auto node_thread = std::make_unique<nav2_util::NodeThread>(node);
+  auto node = std::make_shared<nav2::LifecycleNode>("operations_manager_test");
+  auto node_thread = std::make_unique<nav2::NodeThread>(node);
   node->declare_parameter(
     "operations", rclcpp::ParameterValue(std::vector<std::string>{"TimeMarker"}));
   nav2_util::declare_parameter_if_not_declared(

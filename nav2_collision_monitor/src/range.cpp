@@ -20,14 +20,14 @@
 
 #include "tf2/transform_datatypes.hpp"
 
-#include "nav2_util/node_utils.hpp"
+#include "nav2_ros_common/node_utils.hpp"
 #include "nav2_util/robot_utils.hpp"
 
 namespace nav2_collision_monitor
 {
 
 Range::Range(
-  const nav2_util::LifecycleNode::WeakPtr & node,
+  const nav2::LifecycleNode::WeakPtr & node,
   const std::string & source_name,
   const std::shared_ptr<tf2_ros::Buffer> tf_buffer,
   const std::string & base_frame_id,

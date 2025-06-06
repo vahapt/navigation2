@@ -28,11 +28,11 @@
 #include "nav2_ros_common/node_thread.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 
-namespace nav2_ros_common
+namespace nav2
 {
 
 /**
- * @class nav2_ros_common::SimpleActionServer
+ * @class nav2::SimpleActionServer
  * @brief An action server wrapper to make applications simpler using Actions
  */
 template<typename ActionT>
@@ -130,7 +130,7 @@ public:
     if (spin_thread_) {
       executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
       executor_->add_callback_group(callback_group_, node_base_interface_);
-      executor_thread_ = std::make_unique<nav2_ros_common::NodeThread>(executor_);
+      executor_thread_ = std::make_unique<nav2::NodeThread>(executor_);
     }
   }
 
@@ -186,7 +186,7 @@ public:
   void setSoftRealTimePriority()
   {
     if (use_realtime_prioritization_) {
-      nav2_ros_common::setSoftRealTimePriority();
+      nav2::setSoftRealTimePriority();
       debug_msg("Soft realtime prioritization successfully set!");
     }
   }
@@ -548,7 +548,7 @@ protected:
   bool spin_thread_;
   rclcpp::CallbackGroup::SharedPtr callback_group_{nullptr};
   rclcpp::executors::SingleThreadedExecutor::SharedPtr executor_;
-  std::unique_ptr<nav2_ros_common::NodeThread> executor_thread_;
+  std::unique_ptr<nav2::NodeThread> executor_thread_;
 
   /**
    * @brief Generate an empty result object for an action type
@@ -664,6 +664,6 @@ protected:
   }
 };
 
-}  // namespace nav2_ros_common
+}  // namespace nav2
 
 #endif   // NAV2_ROS_COMMON__SIMPLE_ACTION_SERVER_HPP_

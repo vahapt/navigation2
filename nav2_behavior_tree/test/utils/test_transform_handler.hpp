@@ -24,7 +24,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
-#include "nav2_util/node_thread.hpp"
+#include "nav2_ros_common/node_thread.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
@@ -66,7 +66,7 @@ public:
     is_active_ = true;
 
     // Launch a thread to process the messages for this node
-    spin_thread_ = std::make_unique<nav2_util::NodeThread>(node_->get_node_base_interface());
+    spin_thread_ = std::make_unique<nav2::NodeThread>(node_->get_node_base_interface());
 
     startRobotTransform();
   }
@@ -148,7 +148,7 @@ private:
   bool is_active_;
 
   // A thread for spinning the ROS node
-  std::unique_ptr<nav2_util::NodeThread> spin_thread_;
+  std::unique_ptr<nav2::NodeThread> spin_thread_;
 
   // Subscriber
 

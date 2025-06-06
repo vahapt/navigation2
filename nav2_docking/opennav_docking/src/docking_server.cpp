@@ -25,7 +25,7 @@ namespace opennav_docking
 {
 
 DockingServer::DockingServer(const rclcpp::NodeOptions & options)
-: nav2_util::LifecycleNode("docking_server", "", options)
+: nav2::LifecycleNode("docking_server", "", options)
 {
   RCLCPP_INFO(get_logger(), "Creating %s", get_name());
 
@@ -45,7 +45,7 @@ DockingServer::DockingServer(const rclcpp::NodeOptions & options)
   declare_parameter("rotation_angular_tolerance", 0.05);
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DockingServer::on_configure(const rclcpp_lifecycle::State & state)
 {
   RCLCPP_INFO(get_logger(), "Configuring %s", get_name());
@@ -105,13 +105,13 @@ DockingServer::on_configure(const rclcpp_lifecycle::State & state)
   dock_db_ = std::make_unique<DockDatabase>(mutex_);
   if (!dock_db_->initialize(node, tf2_buffer_)) {
     on_cleanup(state);
-    return nav2_util::CallbackReturn::FAILURE;
+    return nav2::CallbackReturn::FAILURE;
   }
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DockingServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Activating %s", get_name());
@@ -133,10 +133,10 @@ DockingServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   // Create bond connection
   createBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DockingServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Deactivating %s", get_name());
@@ -154,10 +154,10 @@ DockingServer::on_deactivate(const rclcpp_lifecycle::State & /*state*/)
   // Destroy bond connection
   destroyBond();
 
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DockingServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
 {
   RCLCPP_INFO(get_logger(), "Cleaning up %s", get_name());
@@ -171,20 +171,20 @@ DockingServer::on_cleanup(const rclcpp_lifecycle::State & /*state*/)
   vel_publisher_.reset();
   dock_backwards_.reset();
   odom_sub_.reset();
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
-nav2_util::CallbackReturn
+nav2::CallbackReturn
 DockingServer::on_shutdown(const rclcpp_lifecycle::State &)
 {
   RCLCPP_INFO(get_logger(), "Shutting down %s", get_name());
-  return nav2_util::CallbackReturn::SUCCESS;
+  return nav2::CallbackReturn::SUCCESS;
 }
 
 template<typename ActionT>
 void DockingServer::getPreemptedGoalIfRequested(
   typename std::shared_ptr<const typename ActionT::Goal> goal,
-  const std::unique_ptr<nav2_util::SimpleActionServer<ActionT>> & action_server)
+  const std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server)
 {
   if (action_server->is_preempt_requested()) {
     goal = action_server->accept_pending_goal();
@@ -193,7 +193,7 @@ void DockingServer::getPreemptedGoalIfRequested(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfCancelled(
-  std::unique_ptr<nav2_util::SimpleActionServer<ActionT>> & action_server,
+  std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server,
   const std::string & name)
 {
   if (action_server->is_cancel_requested()) {
@@ -205,7 +205,7 @@ bool DockingServer::checkAndWarnIfCancelled(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfPreempted(
-  std::unique_ptr<nav2_util::SimpleActionServer<ActionT>> & action_server,
+  std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server,
   const std::string & name)
 {
   if (action_server->is_preempt_requested()) {
