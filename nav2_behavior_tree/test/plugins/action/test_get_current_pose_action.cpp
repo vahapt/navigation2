@@ -35,9 +35,9 @@ public:
   {
     config_->blackboard->set("robot_base_frame", "base_link");
     config_->blackboard->set("global_frame", "map");
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node_, "robot_base_frame", rclcpp::ParameterValue("base_link"));
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node_, "global_frame", rclcpp::ParameterValue("map"));
 
     BT::NodeBuilder builder =

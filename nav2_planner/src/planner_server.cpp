@@ -106,7 +106,7 @@ PlannerServer::on_configure(const rclcpp_lifecycle::State & state)
 
   for (size_t i = 0; i != planner_ids_.size(); i++) {
     try {
-      planner_types_[i] = nav2_util::get_plugin_type_param(
+      planner_types_[i] = nav2::get_plugin_type_param(
         node, planner_ids_[i]);
       nav2_core::GlobalPlanner::Ptr planner =
         gp_loader_.createUniqueInstance(planner_types_[i]);

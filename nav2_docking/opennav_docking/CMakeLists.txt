@@ -22,6 +22,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(nav2_ros_common REQUIRED)
 
 nav2_package()
 
@@ -35,6 +36,7 @@ target_include_directories(controller
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(controller PUBLIC
   ${geometry_msgs_TARGETS}
@@ -53,6 +55,7 @@ target_include_directories(${library_name}
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(${library_name} PUBLIC
   angles::angles
@@ -81,6 +84,7 @@ target_include_directories(pose_filter
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(pose_filter PUBLIC
   ${geometry_msgs_TARGETS}
@@ -97,6 +101,7 @@ target_include_directories(${executable_name}
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(${executable_name} PRIVATE ${library_name} rclcpp::rclcpp)
 
@@ -109,6 +114,7 @@ target_include_directories(simple_charging_dock
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(simple_charging_dock PUBLIC
   ${geometry_msgs_TARGETS}
@@ -134,6 +140,7 @@ target_include_directories(simple_non_charging_dock
   PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(simple_non_charging_dock PUBLIC
   ${geometry_msgs_TARGETS}
@@ -193,6 +200,7 @@ ament_export_dependencies(
   nav2_util
   opennav_docking_core
   pluginlib
+  nav2_ros_common
   rclcpp
   rclcpp_action
   rclcpp_lifecycle

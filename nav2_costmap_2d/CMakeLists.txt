@@ -22,6 +22,7 @@ find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(nav2_ros_common REQUIRED)
 find_package(tf2_sensor_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
 
@@ -45,6 +46,7 @@ target_include_directories(nav2_costmap_2d_core
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(nav2_costmap_2d_core PUBLIC
   ${geometry_msgs_TARGETS}
@@ -73,6 +75,7 @@ target_include_directories(layers
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(layers PUBLIC
   angles::angles
@@ -96,6 +99,7 @@ target_include_directories(filters
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(filters PUBLIC
   nav2_costmap_2d_core
@@ -112,6 +116,7 @@ target_include_directories(nav2_costmap_2d_client
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(nav2_costmap_2d_client PUBLIC
   nav2_costmap_2d_core
@@ -201,6 +206,7 @@ ament_export_dependencies(
   tf2
   tf2_ros
   tf2_sensor_msgs
+  nav2_ros_common
 )
 pluginlib_export_plugin_description_file(nav2_costmap_2d costmap_plugins.xml)
 ament_package()

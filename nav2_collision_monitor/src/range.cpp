@@ -137,7 +137,7 @@ void Range::getParameters(std::string & source_topic)
 
   getCommonParameters(source_topic);
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, source_name_ + ".obstacles_angle", rclcpp::ParameterValue(M_PI / 180));
   obstacles_angle_ = node->get_parameter(source_name_ + ".obstacles_angle").as_double();
 }

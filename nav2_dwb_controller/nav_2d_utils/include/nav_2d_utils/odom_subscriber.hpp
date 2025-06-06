@@ -65,7 +65,7 @@ public:
     nav2::LifecycleNode::SharedPtr nh,
     std::string default_topic = "odom")
   {
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       nh, "odom_topic", rclcpp::ParameterValue(default_topic));
 
     std::string odom_topic;

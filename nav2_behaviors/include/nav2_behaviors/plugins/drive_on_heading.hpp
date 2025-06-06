@@ -248,18 +248,18 @@ protected:
       throw std::runtime_error{"Failed to lock node"};
     }
 
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node,
       "simulate_ahead_time", rclcpp::ParameterValue(2.0));
     node->get_parameter("simulate_ahead_time", simulate_ahead_time_);
 
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, this->behavior_name_ + ".acceleration_limit",
       rclcpp::ParameterValue(2.5));
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, this->behavior_name_ + ".deceleration_limit",
       rclcpp::ParameterValue(-2.5));
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, this->behavior_name_ + ".minimum_speed",
       rclcpp::ParameterValue(0.10));
     node->get_parameter(this->behavior_name_ + ".acceleration_limit", acceleration_limit_);

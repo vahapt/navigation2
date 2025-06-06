@@ -153,11 +153,11 @@ bool BtActionServer<ActionT>::on_configure()
   // Declare parameters for common client node applications to share with BT nodes
   // Declare if not declared in case being used an external application, then copying
   // all of the main node's parameters to the client for BT nodes to obtain
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "global_frame", rclcpp::ParameterValue(std::string("map")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "robot_base_frame", rclcpp::ParameterValue(std::string("base_link")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "transform_tolerance", rclcpp::ParameterValue(0.1));
   rclcpp::copy_all_parameter_values(node, client_node_);
 

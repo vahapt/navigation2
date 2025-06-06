@@ -85,10 +85,10 @@ public:
   template<class T>
   typename T::Response::SharedPtr send_request(
     nav2::LifecycleNode::SharedPtr node,
-    typename rclcpp::Client<T>::SharedPtr client,
+    std::shared_ptr<nav2::ServiceClient<T, nav2::LifecycleNode::SharedPtr>> client,
     typename T::Request::SharedPtr request)
   {
-    auto result = client->async_send_request(request);
+    auto result = client->async_call(request);
 
     // Wait for the result
     if (rclcpp::spin_until_future_complete(node, result) == rclcpp::FutureReturnCode::SUCCESS) {

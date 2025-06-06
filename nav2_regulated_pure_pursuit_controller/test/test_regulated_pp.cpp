@@ -503,7 +503,7 @@ TEST(RegulatedPurePursuitTest, rotateTests)
   // --------------------------
   auto ctrl = std::make_shared<BasicAPIRPP>();
   auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "PathFollower.stateful", rclcpp::ParameterValue(false));
 
   std::string name = "PathFollower";
@@ -605,7 +605,7 @@ TEST(RegulatedPurePursuitTest, applyConstraints)
   costmap->on_configure(state);
 
   constexpr double approach_velocity_scaling_dist = 0.6;
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     name + ".approach_velocity_scaling_dist",
     rclcpp::ParameterValue(approach_velocity_scaling_dist));
@@ -826,7 +826,7 @@ protected:
   void configure_controller(double max_robot_pose_search_dist)
   {
     std::string plugin_name = "test_rpp";
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node_, plugin_name + ".max_robot_pose_search_dist",
       rclcpp::ParameterValue(max_robot_pose_search_dist));
     ctrl_->configure(node_, plugin_name, tf_buffer_, costmap_);

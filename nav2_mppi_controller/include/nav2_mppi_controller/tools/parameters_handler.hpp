@@ -215,7 +215,7 @@ void ParametersHandler::getParam(
 {
   auto node = node_.lock();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, name, rclcpp::ParameterValue(default_value));
 
   setParam<ParamT>(setting, name, node);

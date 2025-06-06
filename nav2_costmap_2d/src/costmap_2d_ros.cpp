@@ -94,7 +94,7 @@ rclcpp::NodeOptions getChildNodeOptions(
 {
   std::vector<std::string> new_arguments = parent_options.arguments();
   replaceOrAddArgument(new_arguments, "-r", "__ns",
-      "__ns:=" + nav2_util::add_namespaces(parent_namespace, name));
+      "__ns:=" + nav2::add_namespaces(parent_namespace, name));
   replaceOrAddArgument(new_arguments, "-r", "__node", name + ":" + "__node:=" + name);
   replaceOrAddArgument(new_arguments, "-p", "use_sim_time",
       "use_sim_time:=" + std::string(use_sim_time ? "true" : "false"));
@@ -443,7 +443,7 @@ Costmap2DROS::getParameters()
 
   if (plugin_names_ == default_plugins_) {
     for (size_t i = 0; i < default_plugins_.size(); ++i) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, default_plugins_[i] + ".plugin", rclcpp::ParameterValue(default_types_[i]));
     }
   }
@@ -452,10 +452,10 @@ Costmap2DROS::getParameters()
 
   // 1. All plugins must have 'plugin' param defined in their namespace to define the plugin type
   for (size_t i = 0; i < plugin_names_.size(); ++i) {
-    plugin_types_[i] = nav2_util::get_plugin_type_param(node, plugin_names_[i]);
+    plugin_types_[i] = nav2::get_plugin_type_param(node, plugin_names_[i]);
   }
   for (size_t i = 0; i < filter_names_.size(); ++i) {
-    filter_types_[i] = nav2_util::get_plugin_type_param(node, filter_names_[i]);
+    filter_types_[i] = nav2::get_plugin_type_param(node, filter_names_[i]);
   }
 
   // 2. The map publish frequency cannot be 0 (to avoid a divide-by-zero)

@@ -24,7 +24,7 @@
 namespace nav2_graceful_controller
 {
 
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 using rcl_interfaces::msg::ParameterType;
 
 ParameterHandler::ParameterHandler(

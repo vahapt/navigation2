@@ -22,7 +22,7 @@
 #include "nav2_velocity_smoother/velocity_smoother.hpp"
 
 using namespace std::chrono_literals;
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 using std::placeholders::_1;
 using rcl_interfaces::msg::ParameterType;
 

@@ -39,16 +39,16 @@ void PhotoAtWaypoint::initialize(
 
   curr_frame_msg_ = std::make_shared<sensor_msgs::msg::Image>();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".enabled",
     rclcpp::ParameterValue(true));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".image_topic",
     rclcpp::ParameterValue("/camera/color/image_raw"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".save_dir",
     rclcpp::ParameterValue("/tmp/waypoint_images"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".image_format",
     rclcpp::ParameterValue("png"));
 

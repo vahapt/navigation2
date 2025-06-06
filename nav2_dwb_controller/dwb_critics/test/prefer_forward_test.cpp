@@ -155,16 +155,16 @@ TEST(PreferForward, NoneDefaultValues)
   std::string name = "test";
   std::string ns = "ns";
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, ns + "." + name + ".penalty",
     rclcpp::ParameterValue(penalty));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, ns + "." + name + ".strafe_x",
     rclcpp::ParameterValue(strafe_x));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, ns + "." + name + ".strafe_theta",
     rclcpp::ParameterValue(strafe_theta));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, ns + "." + name + ".theta_scale",
     rclcpp::ParameterValue(theta_scale));
 

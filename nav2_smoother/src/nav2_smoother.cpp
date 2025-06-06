@@ -70,7 +70,7 @@ SmootherServer::on_configure(const rclcpp_lifecycle::State & state)
   get_parameter("smoother_plugins", smoother_ids_);
   if (smoother_ids_ == default_ids_) {
     for (size_t i = 0; i < default_ids_.size(); ++i) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, default_ids_[i] + ".plugin",
         rclcpp::ParameterValue(default_types_[i]));
     }
@@ -126,7 +126,7 @@ bool SmootherServer::loadSmootherPlugins()
   for (size_t i = 0; i != smoother_ids_.size(); i++) {
     try {
       smoother_types_[i] =
-        nav2_util::get_plugin_type_param(node, smoother_ids_[i]);
+        nav2::get_plugin_type_param(node, smoother_ids_[i]);
       nav2_core::Smoother::Ptr smoother =
         lp_loader_.createUniqueInstance(smoother_types_[i]);
       RCLCPP_INFO(

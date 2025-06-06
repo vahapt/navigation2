@@ -24,7 +24,8 @@ class TestCostmapSubscriberShould : public ::testing::Test
 {
 public:
   TestCostmapSubscriberShould()
-  : topicName("/costmap"), node(nav2::LifecycleNode::make_shared("test_subscriber"))
+  : topicName("/costmap"),
+    node(std::make_shared<nav2::LifecycleNode>("test_subscriber"))
   {
     dummyCostmapMsgSubscriber = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
       topicName, 10,

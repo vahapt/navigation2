@@ -42,7 +42,7 @@
 #include "nav2_ros_common/node_utils.hpp"
 #include "nav2_costmap_2d/costmap_filters/filter_values.hpp"
 
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 using rcl_interfaces::msg::ParameterType;
 using std::placeholders::_1;
 

@@ -214,7 +214,7 @@ protected:
   visualization_msgs::msg::MarkerArray::SharedPtr collision_points_marker_msg_;
 
   // Service client for setting CollisionMonitor parameters
-  rclcpp::Client<rcl_interfaces::srv::SetParameters>::SharedPtr parameters_client_;
+  std::shared_ptr<nav2::ServiceClient<rcl_interfaces::srv::SetParameters, nav2::LifecycleNode::SharedPtr>> parameters_client_;
 };  // Tester
 
 Tester::Tester()
@@ -1349,7 +1349,7 @@ TEST_F(Tester, testPolygonNotEnabled)
   parameter_msg->value.type = rcl_interfaces::msg::ParameterType::PARAMETER_BOOL;
   parameter_msg->value.bool_value = false;
   set_parameters_msg->parameters.push_back(*parameter_msg);
-  auto result_future = parameters_client_->async_send_request(set_parameters_msg).future.share();
+  auto result_future = parameters_client_->async_call(set_parameters_msg);
   ASSERT_TRUE(waitFuture(result_future, 2s));
 
   // Check that robot does not stop when polygon is disabled
@@ -1404,7 +1404,7 @@ TEST_F(Tester, testSourceNotEnabled)
   parameter_msg->value.type = rcl_interfaces::msg::ParameterType::PARAMETER_BOOL;
   parameter_msg->value.bool_value = false;
   set_parameters_msg->parameters.push_back(*parameter_msg);
-  auto result_future = parameters_client_->async_send_request(set_parameters_msg).future.share();
+  auto result_future = parameters_client_->async_call(set_parameters_msg);
   ASSERT_TRUE(waitFuture(result_future, 2s));
 
   // Check that robot does not stop when source is disabled

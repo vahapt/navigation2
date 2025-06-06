@@ -82,7 +82,7 @@ Layer::declareParameter(
     throw std::runtime_error{"Failed to lock node"};
   }
   local_params_.insert(param_name);
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getFullName(param_name), value);
 }
 
@@ -96,7 +96,7 @@ Layer::declareParameter(
     throw std::runtime_error{"Failed to lock node"};
   }
   local_params_.insert(param_name);
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getFullName(param_name), param_type);
 }
 

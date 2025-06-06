@@ -30,100 +30,88 @@ namespace interfaces
 {
 
 /**
- * @class nav2_qos::SubscriptionOptions
- * @brief Nav2's subscription options to extend rclcpp's configurability
+ * @brief Create a SubscriptionOptions object with Nav2's QoS profiles and options
+ * @param allow_parameter_qos_overrides Whether to allow QoS overrides for this subscription
+ * @param callback_group_ptr Pointer to the callback group to use for this subscription
+ * @param qos_message_lost_callback Callback for when a QoS message is lost
+ * @param subscription_matched_callback Callback when a subscription is matched with a publisher
+ * @param incompatible_qos_callback Callback for when an incompatible QoS is requested
+ * @param qos_requested_incompatible_qos_callback Callback for when a QoS request is incompatible
+ * @param qos_deadline_requested_callback Callback for when a QoS deadline is missed
+ * @param qos_liveliness_changed_callback Callback for when a QoS liveliness change occurs
+ * @return A rclcpp::SubscriptionOptions object with the specified configurations
  */
-class SubscriptionOptions : public rclcpp::SubscriptionOptions
+inline rclcpp::SubscriptionOptions createSubscriptionOptions(
+  const bool allow_parameter_qos_overrides = true,
+  const rclcpp::CallbackGroup::SharedPtr callback_group_ptr = nullptr,
+  rclcpp::QOSMessageLostCallbackType qos_message_lost_callback = nullptr,
+  rclcpp::SubscriptionMatchedCallbackType subscription_matched_callback = nullptr,
+  rclcpp::IncompatibleTypeCallbackType incompatible_qos_callback = nullptr,
+  rclcpp::QOSRequestedIncompatibleQoSCallbackType requested_incompatible_qos_callback = nullptr,
+  rclcpp::QOSDeadlineRequestedCallbackType qos_deadline_requested_callback = nullptr,
+  rclcpp::QOSLivelinessChangedCallbackType qos_liveliness_changed_callback = nullptr)
 {
-public:
-  /**
-   * @brief Constructor for SubscriptionOptions
-   * @param allow_parameter_qos_overrides Whether to allow QoS overrides for this subscription
-   * @param callback_group_ptr Pointer to the callback group to use for this subscription
-   * @param qos_message_lost_callback Callback for when a QoS message is lost
-   * @param subscription_matched_callback Callback when a subscription is matched with a publisher
-   * @param incompatible_qos_callback Callback for when an incompatible QoS is requested
-   * @param qos_requested_incompatible_qos_callback Callback for when a QoS request is incompatible
-   * @param qos_deadline_requested_callback Callback for when a QoS deadline is missed
-   * @param qos_liveliness_changed_callback Callback for when a QoS liveliness change occurs
-   */
-  explicit
-  SubscriptionOptions(
-    const bool allow_parameter_qos_overrides = true,
-    const rclcpp::CallbackGroup::SharedPtr callback_group_ptr = nullptr,
-    rclcpp::QOSMessageLostCallbackType qos_message_lost_callback = nullptr,
-    rclcpp::SubscriptionMatchedCallbackType subscription_matched_callback = nullptr,
-    rclcpp::IncompatibleTypeCallbackType incompatible_qos_callback = nullptr,
-    rclcpp::QOSRequestedIncompatibleQoSCallbackType requested_incompatible_qos_callback = nullptr,
-    rclcpp::QOSDeadlineRequestedCallbackType qos_deadline_requested_callback = nullptr,
-    rclcpp::QOSLivelinessChangedCallbackType qos_liveliness_changed_callback = nullptr)
-  {
-    // Allow for all topics to have QoS overrides
-    if (allow_parameter_qos_overrides) {
-      this->qos_overriding_options = rclcpp::QosOverridingOptions(
-        {rclcpp::QosPolicyKind::Depth, rclcpp::QosPolicyKind::Durability,
-          rclcpp::QosPolicyKind::Reliability, rclcpp::QosPolicyKind::History});
-    }
-
-    // Set the callback group to use for this subscription, if given
-    this->callback_group = callback_group_ptr;
-
-    // Set the event callbacks
-    this->event_callbacks.deadline_callback = qos_deadline_requested_callback;
-    this->event_callbacks.liveliness_callback = qos_liveliness_changed_callback;
-    this->event_callbacks.incompatible_qos_callback =
-      requested_incompatible_qos_callback;
-    this->event_callbacks.message_lost_callback = qos_message_lost_callback;
-    this->event_callbacks.incompatible_type_callback = incompatible_qos_callback;
-    this->event_callbacks.matched_callback = subscription_matched_callback;
+  rclcpp::SubscriptionOptions options;
+  // Allow for all topics to have QoS overrides
+  if (allow_parameter_qos_overrides) {
+    options.qos_overriding_options = rclcpp::QosOverridingOptions(
+      {rclcpp::QosPolicyKind::Depth, rclcpp::QosPolicyKind::Durability,
+        rclcpp::QosPolicyKind::Reliability, rclcpp::QosPolicyKind::History});
   }
-};
+
+  // Set the callback group to use for this subscription, if given
+  options.callback_group = callback_group_ptr;
+
+  // Set the event callbacks
+  options.event_callbacks.deadline_callback = qos_deadline_requested_callback;
+  options.event_callbacks.liveliness_callback = qos_liveliness_changed_callback;
+  options.event_callbacks.incompatible_qos_callback =
+    requested_incompatible_qos_callback;
+  options.event_callbacks.message_lost_callback = qos_message_lost_callback;
+  options.event_callbacks.incompatible_type_callback = incompatible_qos_callback;
+  options.event_callbacks.matched_callback = subscription_matched_callback;
+  return options;
+}
 
 /**
- * @class nav2_qos::PublisherOptions
- * @brief Nav2's Publisher options to extend rclcpp's configurability
+ * @brief Create a PublisherOptions object with Nav2's QoS profiles and options
+ * @param allow_parameter_qos_overrides Whether to allow QoS overrides for this publisher
+ * @param callback_group_ptr Pointer to the callback group to use for this publisher
+ * @param publisher_matched_callback Callback when a publisher is matched with a subscriber
+ * @param incompatible_qos_callback Callback for when an incompatible QoS is requested
+ * @param offered_incompatible_qos_cb Callback for when a QoS request is incompatible
+ * @param qos_deadline_offered_callback Callback for when a QoS deadline is missed
+ * @param qos_liveliness_lost_callback Callback for when a QoS liveliness change occurs
+ * @return A rclcpp::PublisherOptions object with the specified configurations
  */
-class PublisherOptions : public rclcpp::PublisherOptions
+inline rclcpp::PublisherOptions createPublisherOptions(
+  const bool allow_parameter_qos_overrides = true,
+  const rclcpp::CallbackGroup::SharedPtr callback_group_ptr = nullptr,
+  rclcpp::PublisherMatchedCallbackType publisher_matched_callback = nullptr,
+  rclcpp::IncompatibleTypeCallbackType incompatible_qos_callback = nullptr,
+  rclcpp::QOSOfferedIncompatibleQoSCallbackType offered_incompatible_qos_cb = nullptr,
+  rclcpp::QOSDeadlineOfferedCallbackType qos_deadline_offered_callback = nullptr,
+  rclcpp::QOSLivelinessLostCallbackType qos_liveliness_lost_callback = nullptr)
 {
-public:
-  /**
-   * @brief Constructor for PublisherOptions
-   * @param allow_parameter_qos_overrides Whether to allow QoS overrides for this publisher
-   * @param callback_group_ptr Pointer to the callback group to use for this subscription
-   * @param publisher_matched_callback Callback when a publisher is matched with a subscriber
-   * @param qos_offered_incompatible_qos_callback Callback for when a QoS request is incompatible
-   * @param incompatible_qos_callback Callback for when an incompatible QoS is requested
-   * @param qos_deadline_offered_callback Callback for when a QoS deadline is missed
-   * @param qos_liveliness_lost_callback Callback for when a QoS liveliness change occurs
-   */
-  explicit
-  PublisherOptions(
-    const bool allow_parameter_qos_overrides = true,
-    const rclcpp::CallbackGroup::SharedPtr callback_group_ptr = nullptr,
-    rclcpp::PublisherMatchedCallbackType publisher_matched_callback = nullptr,
-    rclcpp::IncompatibleTypeCallbackType incompatible_qos_callback = nullptr,
-    rclcpp::QOSOfferedIncompatibleQoSCallbackType offered_incompatible_qos_cb = nullptr,
-    rclcpp::QOSDeadlineOfferedCallbackType qos_deadline_offered_callback = nullptr,
-    rclcpp::QOSLivelinessLostCallbackType qos_liveliness_lost_callback = nullptr)
-  {
-    // Allow for all topics to have QoS overrides
-    if (allow_parameter_qos_overrides) {
-      this->qos_overriding_options = rclcpp::QosOverridingOptions(
-        {rclcpp::QosPolicyKind::Depth, rclcpp::QosPolicyKind::Durability,
-          rclcpp::QosPolicyKind::Reliability, rclcpp::QosPolicyKind::History});
-    }
-
-    // Set the callback group to use for this publisher, if given
-    this->callback_group = callback_group_ptr;
-
-    // Set the event callbacks
-    this->event_callbacks.deadline_callback = qos_deadline_offered_callback;
-    this->event_callbacks.liveliness_callback = qos_liveliness_lost_callback;
-    this->event_callbacks.incompatible_qos_callback = offered_incompatible_qos_cb;
-    this->event_callbacks.incompatible_type_callback = incompatible_qos_callback;
-    this->event_callbacks.matched_callback = publisher_matched_callback;
+  rclcpp::PublisherOptions options;
+  // Allow for all topics to have QoS overrides
+  if (allow_parameter_qos_overrides) {
+    options.qos_overriding_options = rclcpp::QosOverridingOptions(
+      {rclcpp::QosPolicyKind::Depth, rclcpp::QosPolicyKind::Durability,
+        rclcpp::QosPolicyKind::Reliability, rclcpp::QosPolicyKind::History});
   }
-};
+
+  // Set the callback group to use for this publisher, if given
+  options.callback_group = callback_group_ptr;
+
+  // Set the event callbacks
+  options.event_callbacks.deadline_callback = qos_deadline_offered_callback;
+  options.event_callbacks.liveliness_callback = qos_liveliness_lost_callback;
+  options.event_callbacks.incompatible_qos_callback = offered_incompatible_qos_cb;
+  options.event_callbacks.incompatible_type_callback = incompatible_qos_callback;
+  options.event_callbacks.matched_callback = publisher_matched_callback;
+  return options;
+}
 
 /**
  * @brief Create a subscription to a topic using Nav2 QoS profiles and SubscriptionOptions
@@ -136,7 +124,7 @@ public:
  */
 template<typename NodeT, typename MessageT, typename CallbackT>
 typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
-  const typename NodeT::SharedPtr & node,
+  const NodeT & node,
   const std::string & topic_name,
   CallbackT && callback,
   const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
@@ -144,11 +132,16 @@ typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
 {
   bool allow_parameter_qos_overrides = nav2::declare_or_get_parameter<bool>(
     node, "allow_parameter_qos_overrides", true);
-  return node->template create_subscription<MessageT>(
+
+  auto params_interface = node->get_node_parameters_interface();
+  auto topics_interface = node->get_node_topics_interface();
+  return rclcpp::create_subscription<MessageT, CallbackT>(
+    params_interface,
+    topics_interface,
     topic_name,
     qos,
     std::forward<CallbackT>(callback),
-    nav2::interfaces::SubscriptionOptions(allow_parameter_qos_overrides, callback_group));
+    createSubscriptionOptions(allow_parameter_qos_overrides, callback_group));
 }
 
 /**
@@ -161,17 +154,20 @@ typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
  */
 template<typename NodeT, typename MessageT>
 typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr create_publisher(
-  const typename NodeT::SharedPtr & node,
+  const NodeT & node,
   const std::string & topic_name,
   const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
   const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
 {
   bool allow_parameter_qos_overrides = nav2::declare_or_get_parameter<bool>(
     node, "allow_parameter_qos_overrides", true);
-  return node->template create_publisher<MessageT>(
+  using PublisherT = rclcpp_lifecycle::LifecyclePublisher<MessageT, std::allocator<void>>;
+  auto pub = rclcpp::create_publisher<MessageT, std::allocator<void>, PublisherT>(
+    *node,
     topic_name,
     qos,
-    nav2::interfaces::PublisherOptions(allow_parameter_qos_overrides, callback_group));
+    createPublisherOptions(allow_parameter_qos_overrides, callback_group));
+  return pub;
 }
 
 /**
@@ -181,9 +177,9 @@ typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr create_publis
  * @param use_internal_executor Whether to use the internal executor (default is false)
  * @return A shared pointer to the created nav2::ServiceClient
  */
-template<typename NodeT, typename SrvT>
+template<typename SrvT, typename NodeT>
 std::shared_ptr<nav2::ServiceClient<SrvT, NodeT>> create_client(
-  const typename NodeT::SharedPtr & node,
+  const NodeT & node,
   const std::string & service_name,
   bool use_internal_executor = false)
 {
@@ -199,15 +195,23 @@ std::shared_ptr<nav2::ServiceClient<SrvT, NodeT>> create_client(
  * @param callback_group The callback group to use (if provided)
  * @return A shared pointer to the created nav2::ServiceServer
  */
-template<typename NodeT, typename SrvT>
+template<typename SrvT, typename NodeT, typename CallbackT>
 std::shared_ptr<nav2::ServiceServer<SrvT, NodeT>> create_service(
-  const typename NodeT::SharedPtr & node,
+  const NodeT & node,
   const std::string & service_name,
-  typename nav2::ServiceServer<SrvT, NodeT>::CallbackType callback,
+  CallbackT && callback,
   rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
 {
+  using Request = typename SrvT::Request;
+  using Response = typename SrvT::Response;
+  using CallbackFn = std::function<void(
+    const std::shared_ptr<rmw_request_id_t>,
+    const std::shared_ptr<Request>,
+    std::shared_ptr<Response>)>;
+  CallbackFn cb = std::forward<CallbackT>(callback);
+
   return std::make_shared<nav2::ServiceServer<SrvT, NodeT>>(
-    service_name, node, callback, callback_group);
+    service_name, node, cb, callback_group);
 }
 
 /**

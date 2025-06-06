@@ -53,7 +53,7 @@
 #include "nav_msgs/msg/path.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 using nav2_util::geometry_utils::euclidean_distance;
 
 namespace dwb_core
@@ -66,7 +66,7 @@ DWBLocalPlanner::DWBLocalPlanner()
 }
 
 void DWBLocalPlanner::configure(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {

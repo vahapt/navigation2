@@ -30,14 +30,14 @@ void StartPoseOrientationScorer::configure(
   name_ = name;
   logger_ = node->get_logger();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     getName() + ".orientation_tolerance", rclcpp::ParameterValue(M_PI / 2.0));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getName() + ".orientation_weight", rclcpp::ParameterValue(1.0));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getName() + ".use_orientation_threshold", rclcpp::ParameterValue(false));
 
   orientation_tolerance_ = node->get_parameter(getName() + ".orientation_tolerance").as_double();

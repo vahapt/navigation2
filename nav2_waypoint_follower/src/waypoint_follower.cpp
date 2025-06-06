@@ -39,10 +39,10 @@ WaypointFollower::WaypointFollower(const rclcpp::NodeOptions & options)
 
   declare_parameter("global_frame_id", "map");
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     this, std::string("waypoint_task_executor_plugin"),
     rclcpp::ParameterValue(std::string("wait_at_waypoint")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     this, std::string("wait_at_waypoint.plugin"),
     rclcpp::ParameterValue(std::string("nav2_waypoint_follower::WaitAtWaypoint")));
 }
@@ -104,7 +104,7 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
       500), false);
 
   try {
-    waypoint_task_executor_type_ = nav2_util::get_plugin_type_param(
+    waypoint_task_executor_type_ = nav2::get_plugin_type_param(
       this,
       waypoint_task_executor_id_);
     waypoint_task_executor_ = waypoint_task_executor_loader_.createUniqueInstance(

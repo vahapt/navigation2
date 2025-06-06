@@ -34,55 +34,55 @@ void SimpleChargingDock::configure(
   }
 
   // Optionally use battery info to check when charging, else say charging if docked
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".use_battery_status", rclcpp::ParameterValue(true));
 
   // Parameters for optional external detection of dock pose
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".use_external_detection_pose", rclcpp::ParameterValue(false));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_timeout", rclcpp::ParameterValue(1.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_translation_x", rclcpp::ParameterValue(-0.20));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_translation_y", rclcpp::ParameterValue(0.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_rotation_yaw", rclcpp::ParameterValue(0.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_rotation_pitch", rclcpp::ParameterValue(1.57));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".external_detection_rotation_roll", rclcpp::ParameterValue(-1.57));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".filter_coef", rclcpp::ParameterValue(0.1));
 
   // Charging threshold from BatteryState message
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".charging_threshold", rclcpp::ParameterValue(0.5));
 
   // Optionally determine if docked via stall detection using joint_states
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".use_stall_detection", rclcpp::ParameterValue(false));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".stall_joint_names", rclcpp::PARAMETER_STRING_ARRAY);
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".stall_velocity_threshold", rclcpp::ParameterValue(1.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".stall_effort_threshold", rclcpp::ParameterValue(1.0));
 
   // If not using stall detection, this is how close robot should get to pose
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".docking_threshold", rclcpp::ParameterValue(0.05));
 
   // Staging pose configuration
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".staging_x_offset", rclcpp::ParameterValue(-0.7));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".staging_yaw_offset", rclcpp::ParameterValue(0.0));
 
   // Direction of docking and if we should rotate to dock
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".dock_direction", rclcpp::ParameterValue(std::string("forward")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node_, name + ".rotate_to_dock", rclcpp::ParameterValue(false));
 
   node_->get_parameter(name + ".use_battery_status", use_battery_status_);

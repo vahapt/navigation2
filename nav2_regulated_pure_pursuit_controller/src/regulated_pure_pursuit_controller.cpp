@@ -37,7 +37,7 @@ namespace nav2_regulated_pure_pursuit_controller
 {
 
 void RegulatedPurePursuitController::configure(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros)
 {

@@ -64,7 +64,7 @@ param_t searchAndGetParam(
   const nav2::LifecycleNode::SharedPtr & nh, const std::string & param_name,
   const param_t & default_value)
 {
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh, param_name,
     rclcpp::ParameterValue(default_value));
   return nh->get_parameter(param_name).get_value<param_t>();

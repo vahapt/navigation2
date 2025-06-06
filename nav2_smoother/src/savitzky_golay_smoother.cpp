@@ -23,7 +23,7 @@ namespace nav2_smoother
 using namespace smoother_utils;  // NOLINT
 using namespace nav2_util::geometry_utils;  // NOLINT
 using namespace std::chrono;  // NOLINT
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 
 void SavitzkyGolaySmoother::configure(
   const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,

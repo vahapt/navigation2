@@ -112,7 +112,7 @@ public:
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::interfaces::create_subscription<LifecycleNode, MessageT>(
+    return nav2::interfaces::create_subscription<LifecycleNode::SharedPtr, MessageT>(
       shared_from_this(), topic_name,
       std::forward<CallbackT>(callback), qos, callback_group);
   }
@@ -127,9 +127,23 @@ public:
     const int depth,
     CallbackT && callback)
   {
-    return nav2::interfaces::create_subscription<LifecycleNode, MessageT>(
+    return nav2::interfaces::create_subscription<LifecycleNode::SharedPtr, MessageT>(
       shared_from_this(), topic_name,
       std::forward<CallbackT>(callback), rclcpp::QoS(depth), nullptr);
+  }
+  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
+  template<
+    typename MessageT,
+    typename CallbackT>
+  std::shared_ptr<rclcpp::Subscription<MessageT>>
+  create_subscription(
+    const std::string & topic_name,
+    const rclcpp::QoS & profile,
+    CallbackT && callback)
+  {
+    return nav2::interfaces::create_subscription<LifecycleNode::SharedPtr, MessageT>(
+      shared_from_this(), topic_name,
+      std::forward<CallbackT>(callback), profile, nullptr);
   }
 
   /**
@@ -146,8 +160,10 @@ public:
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
     const rclcpp::CallbackGroup::SharedPtr & callback_group = nullptr)
   {
-    return nav2::interfaces::create_publisher<LifecycleNode, MessageT>(
+    auto pub = nav2::interfaces::create_publisher<LifecycleNode::SharedPtr, MessageT>(
       shared_from_this(), topic_name, qos, callback_group);
+    this->add_managed_entity(pub);
+    return pub;
   }
 
   // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
@@ -157,8 +173,10 @@ public:
     const std::string & topic_name,
     const int depth)
   {
-    return nav2::interfaces::create_publisher<LifecycleNode, MessageT>(
+    auto pub = nav2::interfaces::create_publisher<LifecycleNode::SharedPtr, MessageT>(
       shared_from_this(), topic_name, rclcpp::QoS(depth), nullptr);
+    this->add_managed_entity(pub);
+    return pub;
   }
 
   /**
@@ -168,12 +186,12 @@ public:
    * @return A shared pointer to the created nav2::ServiceClient
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2::ServiceClient<ServiceT, LifecycleNode>>
+  std::shared_ptr<nav2::ServiceClient<ServiceT, LifecycleNode::SharedPtr>>
   create_client(
     const std::string & service_name,
     bool use_internal_executor = false)
   {
-    return nav2::interfaces::create_client<ServiceT, LifecycleNode>(
+    return nav2::interfaces::create_client<ServiceT, LifecycleNode::SharedPtr>(
       shared_from_this(), service_name, use_internal_executor);
   }
 
@@ -185,13 +203,13 @@ public:
    * @return A shared pointer to the created nav2::ServiceServer
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2::ServiceServer<ServiceT, LifecycleNode>>
+  std::shared_ptr<nav2::ServiceServer<ServiceT, LifecycleNode::SharedPtr>>
   create_service(
     const std::string & service_name,
-    typename nav2::ServiceServer<ServiceT, LifecycleNode>::CallbackType cb,
+    typename nav2::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType cb,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
   {
-    return nav2::interfaces::create_service<ServiceT, LifecycleNode>(
+    return nav2::interfaces::create_service<ServiceT, LifecycleNode::SharedPtr>(
       shared_from_this(), service_name, cb, callback_group);
   }
 

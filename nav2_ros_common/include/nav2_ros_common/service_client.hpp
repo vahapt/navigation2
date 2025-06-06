@@ -51,10 +51,14 @@ public:
           node_->get_node_base_interface());
     }
     // When a nullptr is passed, the client will use the default callback group
-    client_ = node_->template create_client<ServiceT>(
+    client_ = rclcpp::create_client<ServiceT>(
+      node_->get_node_base_interface(),
+      node_->get_node_graph_interface(),
+      node_->get_node_services_interface(),
       service_name,
       rclcpp::ServicesQoS(),  // Use consistent QoS settings
       callback_group_);
+
     rcl_service_introspection_state_t introspection_state = RCL_SERVICE_INTROSPECTION_OFF;
     if (!node_->has_parameter("service_introspection_mode")) {
       node_->declare_parameter("service_introspection_mode", "disabled");

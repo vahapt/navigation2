@@ -27,7 +27,7 @@
 
 #include "nav2_behavior_tree/plugins_list.hpp"
 
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 
 namespace nav2_bt_navigator
 {
@@ -121,7 +121,7 @@ BtNavigator::on_configure(const rclcpp_lifecycle::State & state)
   // Load navigator plugins
   for (size_t i = 0; i != navigator_ids.size(); i++) {
     try {
-      std::string navigator_type = nav2_util::get_plugin_type_param(node, navigator_ids[i]);
+      std::string navigator_type = nav2::get_plugin_type_param(node, navigator_ids[i]);
       RCLCPP_INFO(
         get_logger(), "Creating navigator id %s of type %s",
         navigator_ids[i].c_str(), navigator_type.c_str());

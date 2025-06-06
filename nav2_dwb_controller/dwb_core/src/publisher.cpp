@@ -49,7 +49,7 @@
 
 using std::max;
 using std::string;
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 
 namespace dwb_core
 {

@@ -68,7 +68,7 @@ void MapGridCritic::onInit()
     throw std::runtime_error{"Failed to lock node"};
   }
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     dwb_plugin_name_ + "." + name_ + ".aggregation_type",
     rclcpp::ParameterValue(std::string("last")));

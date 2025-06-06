@@ -240,15 +240,15 @@ TEST(GracefulControllerTest, dynamicParameters) {
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
   // Set max search distant to negative so it warns
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(-2.0));
 
   // Set initial rotation and allow backward to true so it warns and allow backward is false
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.initial_rotation", rclcpp::ParameterValue(true));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.allow_backward", rclcpp::ParameterValue(true));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.use_collision_detection", rclcpp::ParameterValue(true));
 
   // Create controller
@@ -508,7 +508,7 @@ TEST(GracefulControllerTest, emptyPlan) {
   costmap_ros->on_configure(rclcpp_lifecycle::State());
 
   // Set max search distant
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(5.0));
 
   // Create controller
@@ -559,7 +559,7 @@ TEST(GracefulControllerTest, poseOutsideCostmap) {
   costmap_ros->on_configure(rclcpp_lifecycle::State());
 
   // Set max search distant
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(5.0));
 
   // Create controller
@@ -614,7 +614,7 @@ TEST(GracefulControllerTest, noPruningPlan) {
   costmap_ros->on_configure(rclcpp_lifecycle::State());
 
   // Set max search distant
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(5.0));
 
   // Create controller
@@ -680,7 +680,7 @@ TEST(GracefulControllerTest, pruningPlan) {
   costmap_ros->on_configure(rclcpp_lifecycle::State());
 
   // Set max search distant
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(9.0));
 
   // Create controller
@@ -757,7 +757,7 @@ TEST(GracefulControllerTest, pruningPlanOutsideCostmap) {
   costmap_ros->on_configure(rclcpp_lifecycle::State());
 
   // Set max search distant
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.max_robot_pose_search_dist", rclcpp::ParameterValue(15.0));
 
   // Create controller
@@ -809,9 +809,9 @@ TEST(GracefulControllerTest, computeVelocityCommandRotate) {
   auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.v_angular_max", rclcpp::ParameterValue(1.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.rotation_scaling_factor", rclcpp::ParameterValue(0.5));
 
   // Create a costmap of 10x10 meters
@@ -966,9 +966,9 @@ TEST(GracefulControllerTest, computeVelocityCommandRegularBackwards) {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Set initial rotation false and allow backward to true
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.initial_rotation", rclcpp::ParameterValue(false));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "test.allow_backward", rclcpp::ParameterValue(true));
 
   // Create a costmap of 10x10 meters

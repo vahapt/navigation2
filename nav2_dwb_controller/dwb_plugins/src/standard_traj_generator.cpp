@@ -55,27 +55,27 @@ void StandardTrajectoryGenerator::initialize(
   kinematics_handler_->initialize(nh, plugin_name_);
   initializeIterator(nh);
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".sim_time", rclcpp::ParameterValue(1.7));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".discretize_by_time", rclcpp::ParameterValue(false));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".time_granularity", rclcpp::ParameterValue(0.5));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".linear_granularity", rclcpp::ParameterValue(0.5));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".angular_granularity", rclcpp::ParameterValue(0.025));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".include_last_point", rclcpp::ParameterValue(true));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".limit_vel_cmd_in_traj", rclcpp::ParameterValue(false));
 

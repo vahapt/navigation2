@@ -32,15 +32,15 @@ void AssistedTeleop::onConfigure()
   }
 
   // set up parameters
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     "projection_time", rclcpp::ParameterValue(1.0));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     "simulation_time_step", rclcpp::ParameterValue(0.1));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     "cmd_vel_teleop", rclcpp::ParameterValue(std::string("cmd_vel_teleop")));
 

@@ -38,7 +38,7 @@ void PoseProgressChecker::initialize(
   SimpleProgressChecker::initialize(parent, plugin_name);
   auto node = parent.lock();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".required_movement_angle", rclcpp::ParameterValue(0.5));
   node->get_parameter_or(plugin_name + ".required_movement_angle", required_movement_angle_, 0.5);
 

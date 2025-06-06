@@ -33,41 +33,41 @@ Controller::Controller(
   logger_ = node->get_logger();
   clock_ = node->get_clock();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.k_phi", rclcpp::ParameterValue(3.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.k_delta", rclcpp::ParameterValue(2.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.beta", rclcpp::ParameterValue(0.4));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.lambda", rclcpp::ParameterValue(2.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.v_linear_min", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.v_linear_max", rclcpp::ParameterValue(0.25));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.v_angular_max", rclcpp::ParameterValue(0.75));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.slowdown_radius", rclcpp::ParameterValue(0.25));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
       node, "controller.rotate_to_heading_angular_vel", rclcpp::ParameterValue(1.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
       node, "controller.rotate_to_heading_max_angular_accel", rclcpp::ParameterValue(3.2));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.use_collision_detection", rclcpp::ParameterValue(true));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.costmap_topic",
     rclcpp::ParameterValue(std::string("local_costmap/costmap_raw")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.footprint_topic", rclcpp::ParameterValue(
       std::string("local_costmap/published_footprint")));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.transform_tolerance", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.projection_time", rclcpp::ParameterValue(5.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.simulation_time_step", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.dock_collision_threshold", rclcpp::ParameterValue(0.3));
 
   node->get_parameter("controller.k_phi", k_phi_);

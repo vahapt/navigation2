@@ -30,12 +30,12 @@ void SemanticScorer::configure(
   name_ = name;
 
   // Find the semantic data
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getName() + ".semantic_classes", rclcpp::ParameterValue(std::vector<std::string>{}));
   std::vector<std::string> classes =
     node->get_parameter(getName() + ".semantic_classes").as_string_array();
   for (auto & cl : classes) {
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, getName() + "." + cl, rclcpp::ParameterType::PARAMETER_DOUBLE);
     const double cost = node->get_parameter(getName() + "." + cl).as_double();
     semantic_info_[cl] = static_cast<float>(cost);
@@ -43,12 +43,12 @@ void SemanticScorer::configure(
 
   // Find the key to look for semantic data for within the metadata. If set to empty string,
   // will search instead for any key in the metadata.
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getName() + ".semantic_key", rclcpp::ParameterValue(std::string("class")));
   key_ = node->get_parameter(getName() + ".semantic_key").as_string();
 
   // Find the proportional weight to apply, if multiple cost functions
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, getName() + ".weight", rclcpp::ParameterValue(1.0));
   weight_ = static_cast<float>(node->get_parameter(getName() + ".weight").as_double());
 }

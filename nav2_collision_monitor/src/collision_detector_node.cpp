@@ -147,24 +147,24 @@ bool CollisionDetector::getParameters()
 
   auto node = shared_from_this();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "frequency", rclcpp::ParameterValue(10.0));
   frequency_ = get_parameter("frequency").as_double();
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "base_frame_id", rclcpp::ParameterValue("base_footprint"));
   base_frame_id = get_parameter("base_frame_id").as_string();
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "odom_frame_id", rclcpp::ParameterValue("odom"));
   odom_frame_id = get_parameter("odom_frame_id").as_string();
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "transform_tolerance", rclcpp::ParameterValue(0.1));
   transform_tolerance =
     tf2::durationFromSec(get_parameter("transform_tolerance").as_double());
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "source_timeout", rclcpp::ParameterValue(2.0));
   source_timeout =
     rclcpp::Duration::from_seconds(get_parameter("source_timeout").as_double());
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "base_shift_correction", rclcpp::ParameterValue(true));
   const bool base_shift_correction =
     get_parameter("base_shift_correction").as_bool();
@@ -191,12 +191,12 @@ bool CollisionDetector::configurePolygons(
     auto node = shared_from_this();
 
     // Leave it to be not initialized: to intentionally cause an error if it will not set
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, "polygons", rclcpp::PARAMETER_STRING_ARRAY);
     std::vector<std::string> polygon_names = get_parameter("polygons").as_string_array();
     for (std::string polygon_name : polygon_names) {
       // Leave it not initialized: the will cause an error if it will not set
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, polygon_name + ".type", rclcpp::PARAMETER_STRING);
       const std::string polygon_type = get_parameter(polygon_name + ".type").as_string();
 
@@ -255,11 +255,11 @@ bool CollisionDetector::configureSources(
     auto node = shared_from_this();
 
     // Leave it to be not initialized to intentionally cause an error if it will not set
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, "observation_sources", rclcpp::PARAMETER_STRING_ARRAY);
     std::vector<std::string> source_names = get_parameter("observation_sources").as_string_array();
     for (std::string source_name : source_names) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, source_name + ".type",
         rclcpp::ParameterValue("scan"));  // Laser scanner by default
       const std::string source_type = get_parameter(source_name + ".type").as_string();

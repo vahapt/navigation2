@@ -53,7 +53,7 @@ public:
     * @param costmap_ros Costmap2DROS object of environment
     */
   void configure(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+    const nav2::LifecycleNode::WeakPtr & parent,
     std::string name, const std::shared_ptr<tf2_ros::Buffer> tf,
     const std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
 
@@ -114,7 +114,7 @@ protected:
     const Eigen::ArrayXXf & optimal_trajectory);
 
   std::string name_;
-  rclcpp_lifecycle::LifecycleNode::WeakPtr parent_;
+  nav2::LifecycleNode::WeakPtr parent_;
   rclcpp::Logger logger_{rclcpp::get_logger("MPPIController")};
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros_;
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;

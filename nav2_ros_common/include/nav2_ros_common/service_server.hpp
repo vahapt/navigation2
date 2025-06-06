@@ -44,7 +44,9 @@ public:
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
   : service_name_(service_name), callback_(callback)
   {
-    server_ = node->template create_service<ServiceT>(
+    server_ = rclcpp::create_service<ServiceT>(
+      node->get_node_base_interface(),
+      node->get_node_services_interface(),
       service_name,
       [this](const std::shared_ptr<rmw_request_id_t> request_header,
       const std::shared_ptr<RequestType> request, std::shared_ptr<ResponseType> response) {

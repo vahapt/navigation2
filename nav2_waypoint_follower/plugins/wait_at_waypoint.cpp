@@ -43,11 +43,11 @@ void WaitAtWaypoint::initialize(
   }
   logger_ = node->get_logger();
   clock_ = node->get_clock();
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     plugin_name + ".waypoint_pause_duration",
     rclcpp::ParameterValue(0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     plugin_name + ".enabled",
     rclcpp::ParameterValue(true));

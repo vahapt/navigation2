@@ -52,7 +52,7 @@ void LimitedAccelGenerator::initialize(
   StandardTrajectoryGenerator::initialize(nh, plugin_name_);
 
   try {
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       nh, plugin_name + ".sim_period", rclcpp::PARAMETER_DOUBLE);
     if (!nh->get_parameter(plugin_name + ".sim_period", acceleration_time_)) {
       // This actually should never appear, since declare_parameter_if_not_declared()

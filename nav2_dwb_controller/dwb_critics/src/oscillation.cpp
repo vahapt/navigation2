@@ -110,7 +110,7 @@ void OscillationCritic::onInit()
       node,
       dwb_plugin_name_ + "." + name_ + ".oscillation_reset_time", -1.0));
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node,
     dwb_plugin_name_ + "." + name_ + ".x_only_threshold", rclcpp::ParameterValue(0.05));
 

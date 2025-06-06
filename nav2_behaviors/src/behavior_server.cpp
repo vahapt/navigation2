@@ -107,7 +107,7 @@ BehaviorServer::loadBehaviorPlugins()
 
   for (size_t i = 0; i != behavior_ids_.size(); i++) {
     try {
-      behavior_types_[i] = nav2_util::get_plugin_type_param(node, behavior_ids_[i]);
+      behavior_types_[i] = nav2::get_plugin_type_param(node, behavior_ids_[i]);
       RCLCPP_INFO(
         get_logger(), "Creating behavior plugin %s of type %s",
         behavior_ids_[i].c_str(), behavior_types_[i].c_str());

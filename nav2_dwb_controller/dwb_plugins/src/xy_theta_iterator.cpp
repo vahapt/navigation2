@@ -50,13 +50,13 @@ void XYThetaIterator::initialize(
 {
   kinematics_handler_ = kinematics;
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".vx_samples", rclcpp::ParameterValue(20));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".vy_samples", rclcpp::ParameterValue(5));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     nh,
     plugin_name + ".vtheta_samples", rclcpp::ParameterValue(20));
 

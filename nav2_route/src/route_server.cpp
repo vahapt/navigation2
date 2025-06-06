@@ -14,7 +14,7 @@
 
 #include "nav2_route/route_server.hpp"
 
-using nav2_util::declare_parameter_if_not_declared;
+using nav2::declare_parameter_if_not_declared;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
@@ -72,7 +72,7 @@ RouteServer::on_configure(const rclcpp_lifecycle::State & /*state*/)
   max_planning_time_ = node->get_parameter("max_planning_time").as_double();
 
   // Create costmap subscriber
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "costmap_topic",
     rclcpp::ParameterValue(std::string("global_costmap/costmap_raw")));
   std::string costmap_topic = node->get_parameter("costmap_topic").as_string();

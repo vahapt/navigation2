@@ -77,22 +77,22 @@ struct SmootherParams
     std::string local_name = name + std::string(".smoother.");
 
     // Smoother params
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "tolerance", rclcpp::ParameterValue(1e-10));
     node->get_parameter(local_name + "tolerance", tolerance_);
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "max_iterations", rclcpp::ParameterValue(1000));
     node->get_parameter(local_name + "max_iterations", max_its_);
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "w_data", rclcpp::ParameterValue(0.2));
     node->get_parameter(local_name + "w_data", w_data_);
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "w_smooth", rclcpp::ParameterValue(0.3));
     node->get_parameter(local_name + "w_smooth", w_smooth_);
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "do_refinement", rclcpp::ParameterValue(true));
     node->get_parameter(local_name + "do_refinement", do_refinement_);
-    nav2_util::declare_parameter_if_not_declared(
+    nav2::declare_parameter_if_not_declared(
       node, local_name + "refinement_num", rclcpp::ParameterValue(2));
     node->get_parameter(local_name + "refinement_num", refinement_num_);
   }

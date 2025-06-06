@@ -194,7 +194,7 @@ TEST(ControllerTests, ObjectLifecycle)
   tf->setUsingDedicatedThread(true);  // One-thread broadcasting-listening model
 
   // Skip collision detection
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.use_collision_detection", rclcpp::ParameterValue(false));
 
   auto controller = std::make_unique<opennav_docking::Controller>(
@@ -273,15 +273,15 @@ TEST(ControllerTests, CollisionCheckerDockForward) {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   tf->setUsingDedicatedThread(true);  // One-thread broadcasting-listening model
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.footprint_topic", rclcpp::ParameterValue("test_footprint"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.costmap_topic", rclcpp::ParameterValue("test_costmap_raw"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.projection_time", rclcpp::ParameterValue(10.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.simulation_time_step", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.dock_collision_threshold", rclcpp::ParameterValue(0.3));
 
   auto controller = std::make_unique<opennav_docking::ControllerFixture>(
@@ -338,15 +338,15 @@ TEST(ControllerTests, CollisionCheckerDockBackward) {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   tf->setUsingDedicatedThread(true);  // One-thread broadcasting-listening model
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.footprint_topic", rclcpp::ParameterValue("test_footprint"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.costmap_topic", rclcpp::ParameterValue("test_costmap_raw"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.projection_time", rclcpp::ParameterValue(10.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.simulation_time_step", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.dock_collision_threshold", rclcpp::ParameterValue(0.3));
 
   auto controller = std::make_unique<opennav_docking::ControllerFixture>(
@@ -403,15 +403,15 @@ TEST(ControllerTests, CollisionCheckerUndockBackward) {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   tf->setUsingDedicatedThread(true);  // One-thread broadcasting-listening model
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.footprint_topic", rclcpp::ParameterValue("test_footprint"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.costmap_topic", rclcpp::ParameterValue("test_costmap_raw"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.projection_time", rclcpp::ParameterValue(10.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.simulation_time_step", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.dock_collision_threshold", rclcpp::ParameterValue(0.3));
 
   auto controller = std::make_unique<opennav_docking::ControllerFixture>(
@@ -476,15 +476,15 @@ TEST(ControllerTests, CollisionCheckerUndockForward) {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   tf->setUsingDedicatedThread(true);  // One-thread broadcasting-listening model
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.footprint_topic", rclcpp::ParameterValue("test_footprint"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.costmap_topic", rclcpp::ParameterValue("test_costmap_raw"));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.projection_time", rclcpp::ParameterValue(10.0));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.simulation_time_step", rclcpp::ParameterValue(0.1));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.dock_collision_threshold", rclcpp::ParameterValue(0.3));
 
   auto controller = std::make_unique<opennav_docking::ControllerFixture>(
@@ -547,10 +547,10 @@ TEST(ControllerTests, RotateToHeading) {
 
   float rotate_to_heading_angular_vel = 1.0;
   float rotate_to_heading_max_angular_accel = 3.2;
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.rotate_to_heading_angular_vel",
       rclcpp::ParameterValue(rotate_to_heading_angular_vel));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, "controller.rotate_to_heading_max_angular_accel",
       rclcpp::ParameterValue(rotate_to_heading_max_angular_accel));
 

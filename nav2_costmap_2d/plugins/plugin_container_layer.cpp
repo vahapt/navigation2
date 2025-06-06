@@ -35,11 +35,11 @@ void PluginContainerLayer::onInitialize()
     throw std::runtime_error{"Failed to lock node"};
   }
 
-  nav2_util::declare_parameter_if_not_declared(node, name_ + "." + "enabled",
+  nav2::declare_parameter_if_not_declared(node, name_ + "." + "enabled",
       rclcpp::ParameterValue(true));
-  nav2_util::declare_parameter_if_not_declared(node, name_ + "." + "plugins",
+  nav2::declare_parameter_if_not_declared(node, name_ + "." + "plugins",
       rclcpp::ParameterValue(std::vector<std::string>{}));
-  nav2_util::declare_parameter_if_not_declared(node, name_ + "." + "combination_method",
+  nav2::declare_parameter_if_not_declared(node, name_ + "." + "combination_method",
       rclcpp::ParameterValue(1));
 
   node->get_parameter(name_ + "." + "enabled", enabled_);
@@ -58,7 +58,7 @@ void PluginContainerLayer::onInitialize()
   plugin_types_.resize(plugin_names_.size());
 
   for (unsigned int i = 0; i < plugin_names_.size(); ++i) {
-    plugin_types_[i] = nav2_util::get_plugin_type_param(node, name_ + "." + plugin_names_[i]);
+    plugin_types_[i] = nav2::get_plugin_type_param(node, name_ + "." + plugin_names_[i]);
     std::shared_ptr<Layer> plugin = plugin_loader_.createSharedInstance(plugin_types_[i]);
     addPlugin(plugin, plugin_names_[i]);
   }

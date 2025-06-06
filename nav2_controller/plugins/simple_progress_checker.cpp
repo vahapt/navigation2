@@ -37,9 +37,9 @@ void SimpleProgressChecker::initialize(
 
   clock_ = node->get_clock();
 
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".required_movement_radius", rclcpp::ParameterValue(0.5));
-  nav2_util::declare_parameter_if_not_declared(
+  nav2::declare_parameter_if_not_declared(
     node, plugin_name + ".movement_time_allowance", rclcpp::ParameterValue(10.0));
   // Scale is set to 0 by default, so if it was not set otherwise, set to 0
   node->get_parameter_or(plugin_name + ".required_movement_radius", radius_, 0.5);

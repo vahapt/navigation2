@@ -90,7 +90,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
   get_parameter("progress_checker_plugins", progress_checker_ids_);
   if (progress_checker_ids_ == default_progress_checker_ids_) {
     for (size_t i = 0; i < default_progress_checker_ids_.size(); ++i) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, default_progress_checker_ids_[i] + ".plugin",
         rclcpp::ParameterValue(default_progress_checker_types_[i]));
     }
@@ -100,7 +100,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
   get_parameter("goal_checker_plugins", goal_checker_ids_);
   if (goal_checker_ids_ == default_goal_checker_ids_) {
     for (size_t i = 0; i < default_goal_checker_ids_.size(); ++i) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, default_goal_checker_ids_[i] + ".plugin",
         rclcpp::ParameterValue(default_goal_checker_types_[i]));
     }
@@ -109,7 +109,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
   get_parameter("controller_plugins", controller_ids_);
   if (controller_ids_ == default_ids_) {
     for (size_t i = 0; i < default_ids_.size(); ++i) {
-      nav2_util::declare_parameter_if_not_declared(
+      nav2::declare_parameter_if_not_declared(
         node, default_ids_[i] + ".plugin",
         rclcpp::ParameterValue(default_types_[i]));
     }
@@ -137,7 +137,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
 
   for (size_t i = 0; i != progress_checker_ids_.size(); i++) {
     try {
-      progress_checker_types_[i] = nav2_util::get_plugin_type_param(
+      progress_checker_types_[i] = nav2::get_plugin_type_param(
         node, progress_checker_ids_[i]);
       nav2_core::ProgressChecker::Ptr progress_checker =
         progress_checker_loader_.createUniqueInstance(progress_checker_types_[i]);
@@ -165,7 +165,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
 
   for (size_t i = 0; i != goal_checker_ids_.size(); i++) {
     try {
-      goal_checker_types_[i] = nav2_util::get_plugin_type_param(node, goal_checker_ids_[i]);
+      goal_checker_types_[i] = nav2::get_plugin_type_param(node, goal_checker_ids_[i]);
       nav2_core::GoalChecker::Ptr goal_checker =
         goal_checker_loader_.createUniqueInstance(goal_checker_types_[i]);
       RCLCPP_INFO(
@@ -192,7 +192,7 @@ ControllerServer::on_configure(const rclcpp_lifecycle::State & state)
 
   for (size_t i = 0; i != controller_ids_.size(); i++) {
     try {
-      controller_types_[i] = nav2_util::get_plugin_type_param(node, controller_ids_[i]);
+      controller_types_[i] = nav2::get_plugin_type_param(node, controller_ids_[i]);
       nav2_core::Controller::Ptr controller =
         lp_loader_.createUniqueInstance(controller_types_[i]);
       RCLCPP_INFO(
