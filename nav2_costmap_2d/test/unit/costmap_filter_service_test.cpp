@@ -17,9 +17,7 @@
 #include <string>
 #include <memory>
 
-#include "rclcpp/rclcpp.hpp"
 #include "nav2_ros_common/lifecycle_node.hpp"
-
 #include "nav2_costmap_2d/costmap_filters/costmap_filter.hpp"
 #include "std_srvs/srv/set_bool.hpp"
 
@@ -85,7 +83,7 @@ public:
   template<class T>
   typename T::Response::SharedPtr send_request(
     nav2::LifecycleNode::SharedPtr node,
-    nav2::ServiceClient<T, nav2::LifecycleNode::SharedPtr>::SharedPtr client,
+    typename nav2::ServiceClient<T, nav2::LifecycleNode::SharedPtr>::SharedPtr client,
     typename T::Request::SharedPtr request)
   {
     auto result = client->async_call(request);

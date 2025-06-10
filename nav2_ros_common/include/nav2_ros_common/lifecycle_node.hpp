@@ -44,8 +44,8 @@ using namespace std::chrono_literals;  // NOLINT
 class LifecycleNode : public rclcpp_lifecycle::LifecycleNode
 {
 public:
-  using SharedPtr = nav2::LifecycleNode::SharedPtr;
-  using WeakPtr = nav2::LifecycleNode::WeakPtr;
+  using SharedPtr = std::shared_ptr<nav2::LifecycleNode>;
+  using WeakPtr = std::weak_ptr<nav2::LifecycleNode>;
 
   /**
    * @brief A lifecycle node constructor
@@ -167,7 +167,7 @@ public:
    * @return A shared pointer to the created publisher
    */
   template<typename MessageT>
-  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<MessageT>>
+  typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr
   create_publisher(
     const std::string & topic_name,
     const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS(),
@@ -181,7 +181,7 @@ public:
 
   // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
   template<typename MessageT>
-  std::shared_ptr<rclcpp_lifecycle::LifecyclePublisher<MessageT>>
+  typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr
   create_publisher(
     const std::string & topic_name,
     const int depth)
