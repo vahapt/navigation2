@@ -102,7 +102,7 @@ TEST(LifecycleNode, OnPreshutdownCbFires)
 public:
     MyNodeType(
       const std::string & node_name)
-    : nav2::LifecycleNode(node_name) {}
+    : nav2::LifecycleNode(node_name, rclcpp::NodeOptions()) {}
 
     bool fired = false;
 

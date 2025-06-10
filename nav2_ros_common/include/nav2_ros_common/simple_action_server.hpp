@@ -39,6 +39,9 @@ template<typename ActionT>
 class SimpleActionServer
 {
 public:
+  using SharedPtr = std::shared_ptr<nav2::SimpleActionServer<ActionT>>;
+  using UniquePtr = std::unique_ptr<nav2::SimpleActionServer<ActionT>>;
+
   // Callback function to complete main work. This should itself deal with its
   // own exceptions, but if for some reason one is thrown, it will be caught
   // in SimpleActionServer and terminate the action itself.

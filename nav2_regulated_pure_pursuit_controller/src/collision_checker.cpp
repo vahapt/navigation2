@@ -27,7 +27,7 @@ namespace nav2_regulated_pure_pursuit_controller
 using namespace nav2_costmap_2d;  // NOLINT
 
 CollisionChecker::CollisionChecker(
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node,
+  nav2::LifecycleNode::SharedPtr node,
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros,
   Parameters * params)
 {

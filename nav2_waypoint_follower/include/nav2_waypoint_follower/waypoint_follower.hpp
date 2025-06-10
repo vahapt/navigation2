@@ -207,8 +207,8 @@ protected:
 
   // Our action server for GPS waypoint following
   std::unique_ptr<ActionServerGPS> gps_action_server_;
-  std::unique_ptr<nav2::ServiceClient<robot_localization::srv::FromLL,
-    std::shared_ptr<nav2::LifecycleNode>>> from_ll_to_map_client_;
+  nav2::ServiceClient<robot_localization::srv::FromLL,
+    nav2::LifecycleNode::SharedPtr>::UniquePtr from_ll_to_map_client_;
 
   bool stop_on_failure_;
   int loop_rate_;

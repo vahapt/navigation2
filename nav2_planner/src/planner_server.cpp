@@ -192,7 +192,7 @@ PlannerServer::on_activate(const rclcpp_lifecycle::State & /*state*/)
   auto node = shared_from_this();
 
   is_path_valid_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::IsPathValid,
-      std::shared_ptr<nav2::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     "is_path_valid",
     node,
     std::bind(&PlannerServer::isPathValid, this, std::placeholders::_1, std::placeholders::_2,
@@ -272,7 +272,7 @@ PlannerServer::on_shutdown(const rclcpp_lifecycle::State &)
 
 template<typename T>
 bool PlannerServer::isServerInactive(
-  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server)
+  nav2::SimpleActionServer<T>::UniquePtr & action_server)
 {
   if (action_server == nullptr || !action_server->is_server_active()) {
     RCLCPP_DEBUG(get_logger(), "Action server unavailable or inactive. Stopping.");
@@ -297,7 +297,7 @@ void PlannerServer::waitForCostmap()
 
 template<typename T>
 bool PlannerServer::isCancelRequested(
-  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server)
+  nav2::SimpleActionServer<T>::UniquePtr & action_server)
 {
   if (action_server->is_cancel_requested()) {
     RCLCPP_INFO(get_logger(), "Goal was canceled. Canceling planning action.");
@@ -310,7 +310,7 @@ bool PlannerServer::isCancelRequested(
 
 template<typename T>
 void PlannerServer::getPreemptedGoalIfRequested(
-  std::unique_ptr<nav2::SimpleActionServer<T>> & action_server,
+  nav2::SimpleActionServer<T>::UniquePtr & action_server,
   typename std::shared_ptr<const typename T::Goal> goal)
 {
   if (action_server->is_preempt_requested()) {

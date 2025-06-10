@@ -83,7 +83,7 @@ protected:
 
 TEST(NavigatorTests, TestNavigatorReconfigure)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("test_node");
   auto navigator = std::make_unique<Navigator>(node);
   node->configure();
   node->activate();
@@ -106,7 +106,7 @@ TEST(NavigatorTests, TestNavigatorReconfigure)
 TEST(NavigatorTests, TestNavigator)
 {
   auto dummy_navigator_node = std::make_shared<DummyNavigationServer>();
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("test_node");
   auto navigator = std::make_unique<Navigator>(node);
   navigator->activate();
 

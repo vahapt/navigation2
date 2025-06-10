@@ -87,7 +87,7 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
 
   from_ll_to_map_client_ = std::make_unique<
     nav2::ServiceClient<robot_localization::srv::FromLL,
-    std::shared_ptr<nav2::LifecycleNode>>>(
+    nav2::LifecycleNode::SharedPtr>>(
     "/fromLL",
     node,
     true /*creates and spins an internal executor*/);

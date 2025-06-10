@@ -453,7 +453,7 @@ TEST_F(DenoiseLayerTester, updateCosts) {
 }
 
 std::shared_ptr<nav2_costmap_2d::DenoiseLayer> constructLayer(
-  std::shared_ptr<nav2::LifecycleNode> node =
+  nav2::LifecycleNode::SharedPtr node =
   std::make_shared<nav2::LifecycleNode>("test_node"))
 {
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());

@@ -123,7 +123,7 @@ protected:
    * @return SUCCESS or FAILURE
    */
   template<typename T>
-  bool isServerInactive(std::unique_ptr<nav2::SimpleActionServer<T>> & action_server);
+  bool isServerInactive(nav2::SimpleActionServer<T>::UniquePtr & action_server);
 
   /**
    * @brief Check if an action server has a cancellation request pending
@@ -131,7 +131,7 @@ protected:
    * @return SUCCESS or FAILURE
    */
   template<typename T>
-  bool isCancelRequested(std::unique_ptr<nav2::SimpleActionServer<T>> & action_server);
+  bool isCancelRequested(nav2::SimpleActionServer<T>::UniquePtr & action_server);
 
   /**
    * @brief Wait for costmap to be valid with updated sensor data or repopulate after a
@@ -147,7 +147,7 @@ protected:
    */
   template<typename T>
   void getPreemptedGoalIfRequested(
-    std::unique_ptr<nav2::SimpleActionServer<T>> & action_server,
+    nav2::SimpleActionServer<T>::UniquePtr & action_server,
     typename std::shared_ptr<const typename T::Goal> goal);
 
   /**
@@ -263,7 +263,7 @@ protected:
 
   // Service to determine if the path is valid
   nav2::ServiceServer<nav2_msgs::srv::IsPathValid,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr is_path_valid_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr is_path_valid_service_;
 };
 
 }  // namespace nav2_planner

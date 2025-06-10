@@ -417,7 +417,7 @@ protected:
 
   // Services
   nav2::ServiceServer<nav2_msgs::srv::GetCosts,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr get_cost_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr get_cost_service_;
   std::unique_ptr<ClearCostmapService> clear_costmap_service_;
 
   // Dynamic parameters handler

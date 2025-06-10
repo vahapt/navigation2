@@ -184,7 +184,7 @@ protected:
   std::string name_;
   tf2_ros::Buffer * tf_;
   rclcpp::CallbackGroup::SharedPtr callback_group_;
-  rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
+  nav2::LifecycleNode::WeakPtr node_;
   rclcpp::Clock::SharedPtr clock_;
   rclcpp::Logger logger_{rclcpp::get_logger("nav2_costmap_2d")};
 

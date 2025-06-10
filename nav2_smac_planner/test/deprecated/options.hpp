@@ -16,7 +16,7 @@
 #define DEPRECATED__OPTIONS_HPP_
 
 #include <string>
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 
 namespace nav2_smac_planner
@@ -40,7 +40,7 @@ struct SmootherParams
    * @param node_ Ptr to node
    * @param name Name of plugin
    */
-  void get(rclcpp_lifecycle::LifecycleNode * node, const std::string & name)
+  void get(nav2::LifecycleNode * node, const std::string & name)
   {
     std::string local_name = name + std::string(".smoother.smoother.");
 
@@ -110,7 +110,7 @@ struct OptimizerParams
      * @param node_ Ptr to node
      * @param name Name of plugin
      */
-    void get(rclcpp_lifecycle::LifecycleNode * node, const std::string & name)
+    void get(nav2::LifecycleNode * node, const std::string & name)
     {
       std::string local_name = name + std::string(".smoother.optimizer.advanced.");
 
@@ -164,7 +164,7 @@ struct OptimizerParams
    * @param node_ Ptr to node
    * @param name Name of plugin
    */
-  void get(rclcpp_lifecycle::LifecycleNode * node, const std::string & name)
+  void get(nav2::LifecycleNode * node, const std::string & name)
   {
     std::string local_name = name + std::string(".smoother.optimizer.");
 

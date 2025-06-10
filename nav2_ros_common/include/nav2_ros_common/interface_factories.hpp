@@ -178,7 +178,7 @@ typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr create_publis
  * @return A shared pointer to the created nav2::ServiceClient
  */
 template<typename SrvT, typename NodeT>
-std::shared_ptr<nav2::ServiceClient<SrvT, NodeT>> create_client(
+typename nav2::ServiceClient<SrvT, NodeT>::SharedPtr create_client(
   const NodeT & node,
   const std::string & service_name,
   bool use_internal_executor = false)
@@ -196,7 +196,7 @@ std::shared_ptr<nav2::ServiceClient<SrvT, NodeT>> create_client(
  * @return A shared pointer to the created nav2::ServiceServer
  */
 template<typename SrvT, typename NodeT, typename CallbackT>
-std::shared_ptr<nav2::ServiceServer<SrvT, NodeT>> create_service(
+typename nav2::ServiceServer<SrvT, NodeT>::SharedPtr create_service(
   const NodeT & node,
   const std::string & service_name,
   CallbackT && callback,
@@ -227,7 +227,7 @@ std::shared_ptr<nav2::ServiceServer<SrvT, NodeT>> create_service(
  * @return A shared pointer to the created nav2::SimpleActionServer
  */
 template<typename NodeT, typename ActionT>
-std::shared_ptr<nav2::SimpleActionServer<ActionT>> create_server(
+typename nav2::SimpleActionServer<ActionT>::SharedPtr create_server(
   const NodeT & node,
   const std::string & action_name,
   typename nav2::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,

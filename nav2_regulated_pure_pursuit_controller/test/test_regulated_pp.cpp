@@ -117,7 +117,7 @@ public:
 
 TEST(RegulatedPurePursuitTest, basicAPI)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPP");
   std::string name = "PathFollower";
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap = std::make_shared<nav2_costmap_2d::Costmap2DROS>("fake_costmap");
@@ -169,7 +169,7 @@ TEST(RegulatedPurePursuitTest, createCarrotMsg)
 
 TEST(RegulatedPurePursuitTest, findVelocitySignChange)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPPfindVelocitySignChange");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPPfindVelocitySignChange");
   auto ctrl = std::make_shared<BasicAPIRPP>();
 
   std::string name = "PathFollower";
@@ -333,7 +333,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 TEST(RegulatedPurePursuitTest, projectCarrotPastGoal) {
   auto ctrl = std::make_shared<BasicAPIRPP>();
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPP");
   std::string name = "PathFollower";
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap =
@@ -443,7 +443,7 @@ TEST(RegulatedPurePursuitTest, projectCarrotPastGoal) {
 TEST(RegulatedPurePursuitTest, lookaheadAPI)
 {
   auto ctrl = std::make_shared<BasicAPIRPP>();
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPP");
   std::string name = "PathFollower";
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap = std::make_shared<nav2_costmap_2d::Costmap2DROS>("fake_costmap");
@@ -502,7 +502,7 @@ TEST(RegulatedPurePursuitTest, rotateTests)
   // Non-Stateful Configuration
   // --------------------------
   auto ctrl = std::make_shared<BasicAPIRPP>();
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPP");
   nav2::declare_parameter_if_not_declared(
     node, "PathFollower.stateful", rclcpp::ParameterValue(false));
 
@@ -597,7 +597,7 @@ TEST(RegulatedPurePursuitTest, rotateTests)
 TEST(RegulatedPurePursuitTest, applyConstraints)
 {
   auto ctrl = std::make_shared<BasicAPIRPP>();
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+  auto node = std::make_shared<nav2::LifecycleNode>("testRPP");
   std::string name = "PathFollower";
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap = std::make_shared<nav2_costmap_2d::Costmap2DROS>("fake_costmap");
@@ -697,7 +697,7 @@ TEST(RegulatedPurePursuitTest, applyConstraints)
 
 TEST(RegulatedPurePursuitTest, testDynamicParameter)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("Smactest");
+  auto node = std::make_shared<nav2::LifecycleNode>("Smactest");
   auto costmap = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
   costmap->on_configure(rclcpp_lifecycle::State());
   auto ctrl =
@@ -797,7 +797,7 @@ protected:
   void SetUp() override
   {
     ctrl_ = std::make_shared<BasicAPIRPP>();
-    node_ = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testRPP");
+    node_ = std::make_shared<nav2::LifecycleNode>("testRPP");
     costmap_ = std::make_shared<nav2_costmap_2d::Costmap2DROS>("fake_costmap");
     tf_buffer_ = std::make_shared<tf2_ros::Buffer>(node_->get_clock());
   }
@@ -871,7 +871,7 @@ protected:
   static constexpr char ROBOT_FRAME[] = "test_robot_frame";
 
   std::shared_ptr<BasicAPIRPP> ctrl_;
-  std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node_;
+  nav2::LifecycleNode::SharedPtr node_;
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_;
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
   rclcpp::Time transform_time_;

@@ -31,7 +31,7 @@
 
 TEST(AStarTest, test_a_star_2d)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   nav2_smac_planner::AStarAlgorithm<nav2_smac_planner::Node2D> a_star(
     nav2_smac_planner::MotionModel::TWOD, info);
@@ -135,7 +135,7 @@ TEST(AStarTest, test_a_star_2d)
 
 TEST(AStarTest, test_a_star_se2)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.1;
   info.non_straight_penalty = 1.1;
@@ -212,7 +212,7 @@ TEST(AStarTest, test_a_star_se2)
 
 TEST(AStarTest, test_a_star_analytic_expansion)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.0;
   info.non_straight_penalty = 1.1;
@@ -274,7 +274,7 @@ TEST(AStarTest, test_a_star_analytic_expansion)
 
 TEST(AStarTest, test_a_star_lattice)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.05;
   info.non_straight_penalty = 1.05;
@@ -349,7 +349,7 @@ TEST(AStarTest, test_a_star_lattice)
 
 TEST(AStarTest, test_se2_single_pose_path)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.1;
   info.non_straight_penalty = 1.1;

@@ -62,7 +62,7 @@ public:
   TestNode()
   {
     const std::string node_name = NODE_NAME;
-    node_ = nav2::LifecycleNode::make_shared(node_name);
+    node_ = std::make_shared<nav2::LifecycleNode>(node_name);
 
     node_->declare_parameter(
       node_name + ".max_vel_x", rclcpp::ParameterValue(MAX_VEL_X));

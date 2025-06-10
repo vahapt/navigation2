@@ -85,7 +85,7 @@ public:
   template<class T>
   typename T::Response::SharedPtr send_request(
     nav2::LifecycleNode::SharedPtr node,
-    std::shared_ptr<nav2::ServiceClient<T, nav2::LifecycleNode::SharedPtr>> client,
+    nav2::ServiceClient<T, nav2::LifecycleNode::SharedPtr>::SharedPtr client,
     typename T::Request::SharedPtr request)
   {
     auto result = client->async_call(request);

@@ -29,7 +29,7 @@
 
 TEST(NodeHybridTest, test_node_hybrid)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto node = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.1;
   info.non_straight_penalty = 1.1;
@@ -143,7 +143,7 @@ TEST(NodeHybridTest, test_node_hybrid)
 
 TEST(NodeHybridTest, test_obstacle_heuristic)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto node = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 0.1;
   info.non_straight_penalty = 1.1;
@@ -304,7 +304,7 @@ TEST(NodeHybridTest, test_interpolation_prims2)
 
 TEST(NodeHybridTest, test_node_reeds_neighbors)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   info.change_penalty = 1.2;
   info.non_straight_penalty = 1.4;

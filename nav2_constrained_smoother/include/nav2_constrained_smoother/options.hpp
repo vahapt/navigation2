@@ -19,7 +19,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 #include "ceres/ceres.h"
 
@@ -44,7 +44,7 @@ struct SmootherParams
    * @param node_ Ptr to node
    * @param name Name of plugin
    */
-  void get(rclcpp_lifecycle::LifecycleNode * node, const std::string & name)
+  void get(nav2::LifecycleNode * node, const std::string & name)
   {
     std::string local_name = name + std::string(".");
 
@@ -146,7 +146,7 @@ struct OptimizerParams
    * @param node_ Ptr to node
    * @param name Name of plugin
    */
-  void get(rclcpp_lifecycle::LifecycleNode * node, const std::string & name)
+  void get(nav2::LifecycleNode * node, const std::string & name)
   {
     std::string local_name = name + std::string(".optimizer.");
 

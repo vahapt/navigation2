@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <mutex>
 
-#include "rclcpp/rclcpp.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_costmap_2d/costmap_2d_ros.hpp"
 #include "nav2_costmap_2d/footprint_collision_checker.hpp"
 #include "nav2_util/odometry_utils.hpp"
@@ -47,7 +47,7 @@ public:
    * @brief Constructor for nav2_regulated_pure_pursuit_controller::CollisionChecker
    */
   CollisionChecker(
-    rclcpp_lifecycle::LifecycleNode::SharedPtr node,
+    nav2::LifecycleNode::SharedPtr node,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros, Parameters * params);
 
   /**

@@ -44,7 +44,7 @@ class ThetaStarPlanner : public nav2_core::GlobalPlanner
 {
 public:
   void configure(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+    const nav2::LifecycleNode::WeakPtr & parent,
     std::string name, std::shared_ptr<tf2_ros::Buffer> tf,
     std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros) override;
 
@@ -74,7 +74,7 @@ protected:
   bool use_final_approach_orientation_;
 
   // parent node weak ptr
-  rclcpp_lifecycle::LifecycleNode::WeakPtr parent_node_;
+  nav2::LifecycleNode::WeakPtr parent_node_;
 
   std::unique_ptr<theta_star::ThetaStar> planner_;
 

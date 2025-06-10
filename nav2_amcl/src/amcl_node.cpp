@@ -1469,7 +1469,7 @@ AmclNode::initMessageFilters()
   auto sub_opt = rclcpp::SubscriptionOptions();
   sub_opt.callback_group = callback_group_;
   laser_scan_sub_ = std::make_unique<message_filters::Subscriber<sensor_msgs::msg::LaserScan,
-      rclcpp_lifecycle::LifecycleNode>>(
+      nav2::LifecycleNode>>(
     shared_from_this(), scan_topic_, rmw_qos_profile_sensor_data, sub_opt);
 
   laser_scan_filter_ = std::make_unique<tf2_ros::MessageFilter<sensor_msgs::msg::LaserScan>>(
@@ -1513,19 +1513,19 @@ void
 AmclNode::initServices()
 {
   global_loc_srv_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::Empty,
-      std::shared_ptr<nav2::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     "reinitialize_global_localization", shared_from_this(),
     std::bind(&AmclNode::globalLocalizationCallback, this, std::placeholders::_1,
       std::placeholders::_2, std::placeholders::_3));
 
   initial_guess_srv_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::SetInitialPose,
-      std::shared_ptr<nav2::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     "set_initial_pose", shared_from_this(),
     std::bind(&AmclNode::initialPoseReceivedSrv, this, std::placeholders::_1, std::placeholders::_2,
       std::placeholders::_3));
 
   nomotion_update_srv_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::Empty,
-      std::shared_ptr<nav2::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     "request_nomotion_update", shared_from_this(),
     std::bind(&AmclNode::nomotionUpdateCallback, this, std::placeholders::_1, std::placeholders::_2,
       std::placeholders::_3));

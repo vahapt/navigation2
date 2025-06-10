@@ -40,9 +40,8 @@
 #include <string>
 
 #include "nav2_costmap_2d/costmap_2d_ros.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "tf2_ros/transform_listener.h"
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
 #include "pluginlib/class_loader.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"

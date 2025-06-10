@@ -25,7 +25,7 @@ using namespace mppi;  // NOLINT
 
 TEST(TrajectoryVisualizerTests, StateTransition)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("my_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("my_node");
   std::string name = "test";
   auto parameters_handler = std::make_unique<ParametersHandler>(node, name);
 
@@ -38,7 +38,7 @@ TEST(TrajectoryVisualizerTests, StateTransition)
 
 TEST(TrajectoryVisualizerTests, VisPathRepub)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("my_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("my_node");
   std::string name = "test";
   auto parameters_handler = std::make_unique<ParametersHandler>(node, name);
   nav_msgs::msg::Path received_path;
@@ -62,7 +62,7 @@ TEST(TrajectoryVisualizerTests, VisPathRepub)
 
 TEST(TrajectoryVisualizerTests, VisOptimalTrajectory)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("my_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("my_node");
   std::string name = "test";
   auto parameters_handler = std::make_unique<ParametersHandler>(node, name);
 
@@ -125,7 +125,7 @@ TEST(TrajectoryVisualizerTests, VisOptimalTrajectory)
 
 TEST(TrajectoryVisualizerTests, VisCandidateTrajectories)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("my_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("my_node");
   std::string name = "test";
   auto parameters_handler = std::make_unique<ParametersHandler>(node, name);
 
@@ -153,7 +153,7 @@ TEST(TrajectoryVisualizerTests, VisCandidateTrajectories)
 
 TEST(TrajectoryVisualizerTests, VisOptimalPath)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("my_node");
+  auto node = std::make_shared<nav2::LifecycleNode>("my_node");
   std::string name = "test";
   auto parameters_handler = std::make_unique<ParametersHandler>(node, name);
   builtin_interfaces::msg::Time cmd_stamp;

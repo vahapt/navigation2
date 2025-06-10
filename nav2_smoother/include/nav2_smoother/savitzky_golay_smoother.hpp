@@ -54,7 +54,7 @@ public:
   ~SavitzkyGolaySmoother() override = default;
 
   void configure(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr &,
+    const nav2::LifecycleNode::WeakPtr &,
     std::string name, std::shared_ptr<tf2_ros::Buffer>,
     std::shared_ptr<nav2_costmap_2d::CostmapSubscriber>,
     std::shared_ptr<nav2_costmap_2d::FootprintSubscriber>) override;

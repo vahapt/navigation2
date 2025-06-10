@@ -20,7 +20,7 @@ namespace opennav_docking
 
 using namespace std::chrono_literals;  // NOLINT
 
-Navigator::Navigator(const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent)
+Navigator::Navigator(const nav2::LifecycleNode::WeakPtr & parent)
 : node_(parent)
 {
   auto node = node_.lock();

@@ -44,7 +44,8 @@ using namespace std::chrono_literals;  // NOLINT
 class LifecycleNode : public rclcpp_lifecycle::LifecycleNode
 {
 public:
-  using SharedPtr = std::shared_ptr<nav2::LifecycleNode>;
+  using SharedPtr = nav2::LifecycleNode::SharedPtr;
+  using WeakPtr = nav2::LifecycleNode::WeakPtr;
 
   /**
    * @brief A lifecycle node constructor
@@ -54,7 +55,7 @@ public:
    */
   LifecycleNode(
     const std::string & node_name,
-    const std::string & ns = "",
+    const std::string & ns,
     const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
   : rclcpp_lifecycle::LifecycleNode(node_name, ns, options)
   {
@@ -80,6 +81,17 @@ public:
 
     register_rcl_preshutdown_callback();
   }
+
+  /**
+   * @brief A lifecycle node constructor with no namespace
+   * @param node_name Name for the node
+   * @param options Node options
+   */
+  LifecycleNode(
+    const std::string & node_name,
+    const rclcpp::NodeOptions & options = rclcpp::NodeOptions())
+  : nav2::LifecycleNode(node_name, "", options)
+  {}
 
   virtual ~LifecycleNode()
   {
@@ -139,11 +151,12 @@ public:
   create_subscription(
     const std::string & topic_name,
     const rclcpp::QoS & profile,
-    CallbackT && callback)
+    CallbackT && callback,
+    const rclcpp::SubscriptionOptions & options = rclcpp::SubscriptionOptions())
   {
     return nav2::interfaces::create_subscription<LifecycleNode::SharedPtr, MessageT>(
       shared_from_this(), topic_name,
-      std::forward<CallbackT>(callback), profile, nullptr);
+      std::forward<CallbackT>(callback), profile, options.callback_group);
   }
 
   /**
@@ -186,7 +199,7 @@ public:
    * @return A shared pointer to the created nav2::ServiceClient
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2::ServiceClient<ServiceT, LifecycleNode::SharedPtr>>
+  typename nav2::ServiceClient<ServiceT, LifecycleNode::SharedPtr>::SharedPtr
   create_client(
     const std::string & service_name,
     bool use_internal_executor = false)
@@ -203,7 +216,7 @@ public:
    * @return A shared pointer to the created nav2::ServiceServer
    */
   template<typename ServiceT>
-  std::shared_ptr<nav2::ServiceServer<ServiceT, LifecycleNode::SharedPtr>>
+  typename nav2::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::SharedPtr
   create_service(
     const std::string & service_name,
     typename nav2::ServiceServer<ServiceT, LifecycleNode::SharedPtr>::CallbackType cb,
@@ -224,7 +237,7 @@ public:
    * @return A shared pointer to the created nav2::SimpleActionServer
    */
   template<typename ActionT>
-  std::shared_ptr<nav2::SimpleActionServer<ActionT>>
+  typename nav2::SimpleActionServer<ActionT>::SharedPtr
   create_server(
     const std::string & action_name,
     typename nav2::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
@@ -245,7 +258,7 @@ public:
   /**
    * @brief Get a shared pointer of this
    */
-  std::shared_ptr<nav2::LifecycleNode> shared_from_this()
+  nav2::LifecycleNode::SharedPtr shared_from_this()
   {
     return std::static_pointer_cast<nav2::LifecycleNode>(
       rclcpp_lifecycle::LifecycleNode::shared_from_this());

@@ -19,7 +19,7 @@ namespace mppi
 {
 
 void TrajectoryVisualizer::on_configure(
-  rclcpp_lifecycle::LifecycleNode::WeakPtr parent, const std::string & name,
+  nav2::LifecycleNode::WeakPtr parent, const std::string & name,
   const std::string & frame_id, ParametersHandler * parameters_handler)
 {
   auto node = parent.lock();

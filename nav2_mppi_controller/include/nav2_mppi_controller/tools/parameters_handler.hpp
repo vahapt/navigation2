@@ -22,6 +22,7 @@
 #include <utility>
 #include <vector>
 
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/parameter_value.hpp"
@@ -55,7 +56,7 @@ public:
     * @param parent Weak ptr to node
     */
   explicit ParametersHandler(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent, std::string & name);
+    const nav2::LifecycleNode::WeakPtr & parent, std::string & name);
 
   /**
     * @brief Destructor for mppi::ParametersHandler
@@ -165,7 +166,7 @@ protected:
   rclcpp::Logger logger_{rclcpp::get_logger("MPPIController")};
   rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr
     on_set_param_handler_;
-  rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
+  nav2::LifecycleNode::WeakPtr node_;
   std::string node_name_;
   std::string name_;
 

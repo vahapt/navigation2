@@ -35,8 +35,8 @@
 // System tests in nav2_system_tests will actually plan with this work
 
 TEST(SmacTest, test_smac_2d) {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node2D =
-    std::make_shared<rclcpp_lifecycle::LifecycleNode>("Smac2DTest");
+  nav2::LifecycleNode::SharedPtr node2D =
+    std::make_shared<nav2::LifecycleNode>("Smac2DTest");
 
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros =
     std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
@@ -86,8 +86,8 @@ TEST(SmacTest, test_smac_2d) {
 }
 
 TEST(SmacTest, test_smac_2d_reconfigure) {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node2D =
-    std::make_shared<rclcpp_lifecycle::LifecycleNode>("Smac2DTest");
+  nav2::LifecycleNode::SharedPtr node2D =
+    std::make_shared<nav2::LifecycleNode>("Smac2DTest");
 
   std::shared_ptr<nav2_costmap_2d::Costmap2DROS> costmap_ros =
     std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");

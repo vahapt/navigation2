@@ -29,7 +29,7 @@ class TestLifecycleNode : public nav2::LifecycleNode
 {
 public:
   TestLifecycleNode(bool bond, std::string name)
-  : nav2::LifecycleNode(name)
+  : nav2::LifecycleNode(name, rclcpp::NodeOptions())
   {
     state = "";
     enable_bond = bond;

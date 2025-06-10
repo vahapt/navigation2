@@ -25,7 +25,7 @@
 
 TEST(NavfnTest, testDynamicParameter)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("Navfntest");
+  auto node = std::make_shared<nav2::LifecycleNode>("Navfntest");
   auto costmap = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
   costmap->on_configure(rclcpp_lifecycle::State());
   auto planner =

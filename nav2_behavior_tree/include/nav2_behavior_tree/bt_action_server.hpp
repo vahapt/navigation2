@@ -26,8 +26,6 @@
 #include "nav2_behavior_tree/ros_topic_logger.hpp"
 #include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/simple_action_server.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
 
 namespace nav2_behavior_tree
 {
@@ -35,7 +33,7 @@ namespace nav2_behavior_tree
  * @class nav2_behavior_tree::BtActionServer
  * @brief An action server that uses behavior tree to execute an action
  */
-template<class ActionT>
+template<class ActionT, class NodeT>
 class BtActionServer
 {
 public:
@@ -51,7 +49,7 @@ public:
    * @brief A constructor for nav2_behavior_tree::BtActionServer class
    */
   explicit BtActionServer(
-    const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+    const typename NodeT::WeakPtr & parent,
     const std::string & action_name,
     const std::vector<std::string> & plugin_lib_names,
     const std::string & default_bt_xml_filename,
@@ -261,7 +259,7 @@ protected:
   rclcpp::Node::SharedPtr client_node_;
 
   // Parent node
-  rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
+  typename NodeT::WeakPtr node_;
 
   // Clock
   rclcpp::Clock::SharedPtr clock_;

@@ -64,7 +64,7 @@ CostmapFilter::~CostmapFilter()
 
 void CostmapFilter::onInitialize()
 {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node = node_.lock();
+  nav2::LifecycleNode::SharedPtr node = node_.lock();
   if (!node) {
     throw std::runtime_error{"Failed to lock node"};
   }
@@ -84,7 +84,7 @@ void CostmapFilter::onInitialize()
 
     // Costmap Filter enabling service
     enable_service_ = std::make_shared<nav2::ServiceServer<std_srvs::srv::SetBool,
-        std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
+        nav2::LifecycleNode::SharedPtr>>(
       name_ + "/toggle_filter",
       node,
       std::bind(&CostmapFilter::enableCallback, this, std::placeholders::_1,

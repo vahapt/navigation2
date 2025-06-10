@@ -83,7 +83,7 @@ Costmap2DPublisher::Costmap2DPublisher(
 
   // Create a service that will use the callback function to handle requests.
   costmap_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::GetCostmap,
-      std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     std::string("get_") + topic_name,
     node,
     std::bind(

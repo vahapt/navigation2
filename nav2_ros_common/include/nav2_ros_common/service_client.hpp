@@ -31,6 +31,9 @@ template<typename ServiceT, typename NodeT = rclcpp::Node::SharedPtr>
 class ServiceClient
 {
 public:
+  using SharedPtr = std::shared_ptr<nav2::ServiceClient<ServiceT, NodeT>>;
+  using UniquePtr = std::unique_ptr<nav2::ServiceClient<ServiceT, NodeT>>;
+
   /**
   * @brief A constructor
   * @param service_name name of the service to call
@@ -77,7 +80,6 @@ public:
 
   using RequestType = typename ServiceT::Request;
   using ResponseType = typename ServiceT::Response;
-  using SharedPtr = std::shared_ptr<ServiceClient<ServiceT, NodeT>>;
 
   /**
   * @brief Invoke the service and block until completed or timed out

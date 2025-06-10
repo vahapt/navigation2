@@ -16,17 +16,17 @@
 #include <memory>
 #include <chrono>
 #include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_thread.hpp"
 #include "nav2_lifecycle_manager/lifecycle_manager_client.hpp"
 
 using CallbackReturn = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
-class LifecycleNodeTest : public rclcpp_lifecycle::LifecycleNode
+class LifecycleNodeTest : public nav2::LifecycleNode
 {
 public:
   LifecycleNodeTest()
-  : rclcpp_lifecycle::LifecycleNode("lifecycle_node_test") {}
+  : nav2::LifecycleNode("lifecycle_node_test") {}
 
   CallbackReturn on_configure(const rclcpp_lifecycle::State & /*state*/) override
   {

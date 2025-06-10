@@ -217,7 +217,7 @@ protected:
    */
   virtual void loadCritics();
 
-  rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
+  nav2::LifecycleNode::WeakPtr node_;
   rclcpp::Clock::SharedPtr clock_;
   rclcpp::Logger logger_{rclcpp::get_logger("DWBLocalPlanner")};
 

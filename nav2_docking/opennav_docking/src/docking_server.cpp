@@ -184,7 +184,7 @@ DockingServer::on_shutdown(const rclcpp_lifecycle::State &)
 template<typename ActionT>
 void DockingServer::getPreemptedGoalIfRequested(
   typename std::shared_ptr<const typename ActionT::Goal> goal,
-  const std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server)
+  const nav2::SimpleActionServer<ActionT>::UniquePtr & action_server)
 {
   if (action_server->is_preempt_requested()) {
     goal = action_server->accept_pending_goal();
@@ -193,7 +193,7 @@ void DockingServer::getPreemptedGoalIfRequested(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfCancelled(
-  std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server,
+  nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
   const std::string & name)
 {
   if (action_server->is_cancel_requested()) {
@@ -205,7 +205,7 @@ bool DockingServer::checkAndWarnIfCancelled(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfPreempted(
-  std::unique_ptr<nav2::SimpleActionServer<ActionT>> & action_server,
+  nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
   const std::string & name)
 {
   if (action_server->is_preempt_requested()) {

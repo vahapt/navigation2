@@ -78,7 +78,7 @@ public:
    * main service name and existence.
    */
   virtual void configureEvent(
-    const rclcpp_lifecycle::LifecycleNode::SharedPtr /*node*/,
+    const nav2::LifecycleNode::SharedPtr /*node*/,
     const std::string & /*name*/) {}
 
   /**
@@ -98,7 +98,7 @@ protected:
    * @brief Configure
    */
   void configure(
-    const rclcpp_lifecycle::LifecycleNode::SharedPtr node,
+    const nav2::LifecycleNode::SharedPtr node,
     std::shared_ptr<nav2_costmap_2d::CostmapSubscriber>,
     const std::string & name) final
   {
@@ -119,7 +119,7 @@ protected:
     if (!main_srv_name_.empty()) {
       main_client_ =
         std::make_shared<nav2::ServiceClient<SrvT,
-          rclcpp_lifecycle::LifecycleNode::SharedPtr>>(main_srv_name_, node, true);
+          nav2::LifecycleNode::SharedPtr>>(main_srv_name_, node, true);
     }
   }
 
@@ -162,7 +162,7 @@ protected:
         auto node = node_.lock();
         auto client =
           std::make_shared<nav2::ServiceClient<SrvT,
-            rclcpp_lifecycle::LifecycleNode::SharedPtr>>(srv_name, node, true);
+            nav2::LifecycleNode::SharedPtr>>(srv_name, node, true);
         response = client->invoke(req, std::chrono::nanoseconds(500ms));
       }
     } catch (const std::exception & e) {
@@ -194,9 +194,9 @@ protected:
   std::string name_, main_srv_name_;
   std::atomic_bool reroute_;
   rclcpp::Logger logger_{rclcpp::get_logger("RouteOperationClient")};
-  std::shared_ptr<nav2::ServiceClient<SrvT,
-    rclcpp_lifecycle::LifecycleNode::SharedPtr>> main_client_;
-  rclcpp_lifecycle::LifecycleNode::WeakPtr node_;
+  nav2::ServiceClient<SrvT,
+    nav2::LifecycleNode::SharedPtr>::SharedPtr main_client_;
+  nav2::LifecycleNode::WeakPtr node_;
 };
 
 }  // namespace nav2_route

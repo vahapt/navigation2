@@ -28,14 +28,14 @@
 #include "nav2_behavior_tree/bt_action_server.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 #include "rcl_action/action_server.h"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 
 namespace nav2_behavior_tree
 {
 
-template<class ActionT>
-BtActionServer<ActionT>::BtActionServer(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+template<class ActionT, class NodeT>
+BtActionServer<ActionT, NodeT>::BtActionServer(
+  const typename NodeT::WeakPtr & parent,
   const std::string & action_name,
   const std::vector<std::string> & plugin_lib_names,
   const std::string & default_bt_xml_filename,
@@ -121,12 +121,12 @@ BtActionServer<ActionT>::BtActionServer(
   }
 }
 
-template<class ActionT>
-BtActionServer<ActionT>::~BtActionServer()
+template<class ActionT, class NodeT>
+BtActionServer<ActionT, NodeT>::~BtActionServer()
 {}
 
-template<class ActionT>
-bool BtActionServer<ActionT>::on_configure()
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::on_configure()
 {
   auto node = node_.lock();
   if (!node) {
@@ -166,7 +166,7 @@ bool BtActionServer<ActionT>::on_configure()
     node->get_node_clock_interface(),
     node->get_node_logging_interface(),
     node->get_node_waitables_interface(),
-    action_name_, std::bind(&BtActionServer<ActionT>::executeCallback, this),
+    action_name_, std::bind(&BtActionServer<ActionT, NodeT>::executeCallback, this),
     nullptr, std::chrono::milliseconds(500), false);
 
   // Get parameters for BT timeouts
@@ -201,8 +201,8 @@ bool BtActionServer<ActionT>::on_configure()
   return true;
 }
 
-template<class ActionT>
-bool BtActionServer<ActionT>::on_activate()
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::on_activate()
 {
   resetInternalError();
   if (!loadBehaviorTree(default_bt_xml_filename_)) {
@@ -213,15 +213,15 @@ bool BtActionServer<ActionT>::on_activate()
   return true;
 }
 
-template<class ActionT>
-bool BtActionServer<ActionT>::on_deactivate()
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::on_deactivate()
 {
   action_server_->deactivate();
   return true;
 }
 
-template<class ActionT>
-bool BtActionServer<ActionT>::on_cleanup()
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::on_cleanup()
 {
   client_node_.reset();
   action_server_.reset();
@@ -235,15 +235,15 @@ bool BtActionServer<ActionT>::on_cleanup()
   return true;
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::setGrootMonitoring(const bool enable, const unsigned server_port)
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::setGrootMonitoring(const bool enable, const unsigned server_port)
 {
   enable_groot_monitoring_ = enable;
   groot_server_port_ = server_port;
 }
 
-template<class ActionT>
-bool BtActionServer<ActionT>::loadBehaviorTree(const std::string & bt_xml_filename)
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::loadBehaviorTree(const std::string & bt_xml_filename)
 {
   // Empty filename is default for backward compatibility
   auto filename = bt_xml_filename.empty() ? default_bt_xml_filename_ : bt_xml_filename;
@@ -299,8 +299,8 @@ bool BtActionServer<ActionT>::loadBehaviorTree(const std::string & bt_xml_filena
   return true;
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::executeCallback()
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::executeCallback()
 {
   if (!on_goal_received_callback_(action_server_->get_current_goal())) {
     // Give server an opportunity to populate the result message
@@ -368,8 +368,8 @@ void BtActionServer<ActionT>::executeCallback()
   cleanErrorCodes();
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::setInternalError(uint16_t error_code, const std::string & error_msg)
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::setInternalError(uint16_t error_code, const std::string & error_msg)
 {
   internal_error_code_ = error_code;
   internal_error_msg_ = error_msg;
@@ -377,15 +377,15 @@ void BtActionServer<ActionT>::setInternalError(uint16_t error_code, const std::s
     internal_error_code_, internal_error_msg_.c_str());
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::resetInternalError(void)
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::resetInternalError(void)
 {
   internal_error_code_ = ActionT::Result::NONE;
   internal_error_msg_ = "";
 }
 
-template<class ActionT>
-bool BtActionServer<ActionT>::populateInternalError(
+template<class ActionT, class NodeT>
+bool BtActionServer<ActionT, NodeT>::populateInternalError(
   typename std::shared_ptr<typename ActionT::Result> result)
 {
   if (internal_error_code_ != ActionT::Result::NONE) {
@@ -396,8 +396,8 @@ bool BtActionServer<ActionT>::populateInternalError(
   return false;
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::populateErrorCode(
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::populateErrorCode(
   typename std::shared_ptr<typename ActionT::Result> result)
 {
   int highest_priority_error_code = std::numeric_limits<int>::max();
@@ -432,8 +432,8 @@ void BtActionServer<ActionT>::populateErrorCode(
   }
 }
 
-template<class ActionT>
-void BtActionServer<ActionT>::cleanErrorCodes()
+template<class ActionT, class NodeT>
+void BtActionServer<ActionT, NodeT>::cleanErrorCodes()
 {
   std::string name;
   for (const auto & error_code_name_prefix : error_code_name_prefixes_) {

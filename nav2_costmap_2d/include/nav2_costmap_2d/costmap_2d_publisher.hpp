@@ -182,7 +182,7 @@ private:
 
   // Service for getting the costmaps
   nav2::ServiceServer<nav2_msgs::srv::GetCostmap,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr
+    nav2::LifecycleNode::SharedPtr>::SharedPtr
     costmap_service_;
 
   float grid_resolution_;

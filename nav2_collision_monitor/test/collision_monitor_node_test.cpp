@@ -214,7 +214,7 @@ protected:
   visualization_msgs::msg::MarkerArray::SharedPtr collision_points_marker_msg_;
 
   // Service client for setting CollisionMonitor parameters
-  std::shared_ptr<nav2::ServiceClient<rcl_interfaces::srv::SetParameters, nav2::LifecycleNode::SharedPtr>> parameters_client_;
+  nav2::ServiceClient<rcl_interfaces::srv::SetParameters, nav2::LifecycleNode::SharedPtr>::SharedPtr parameters_client_;
 };  // Tester
 
 Tester::Tester()

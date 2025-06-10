@@ -276,7 +276,7 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
 
   // Service to get the cost at a point
   get_cost_service_ = std::make_shared<nav2::ServiceServer<nav2_msgs::srv::GetCosts,
-      std::shared_ptr<nav2::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     std::string("get_cost_") + get_name(),
     shared_from_this(),
     std::bind(&Costmap2DROS::getCostsCallback, this, std::placeholders::_1, std::placeholders::_2,

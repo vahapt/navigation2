@@ -83,7 +83,7 @@ std::vector<rclcpp::Parameter> getDefaultKinematicParameters()
   return parameters;
 }
 
-rclcpp_lifecycle::LifecycleNode::SharedPtr makeTestNode(
+nav2::LifecycleNode::SharedPtr makeTestNode(
   const std::string & name,
   const std::vector<rclcpp::Parameter> & overrides = {})
 {
@@ -92,7 +92,7 @@ rclcpp_lifecycle::LifecycleNode::SharedPtr makeTestNode(
   node_options.parameter_overrides().insert(
     node_options.parameter_overrides().end(), overrides.begin(), overrides.end());
 
-  auto node = rclcpp_lifecycle::LifecycleNode::make_shared(name, node_options);
+  auto node = std::make_shared<nav2::LifecycleNode>(name, "", node_options);
   node->on_configure(node->get_current_state());
   node->on_activate(node->get_current_state());
 

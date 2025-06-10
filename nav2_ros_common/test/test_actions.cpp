@@ -136,7 +136,7 @@ preempted:
   }
 
 private:
-  std::shared_ptr<nav2::SimpleActionServer<Fibonacci>> action_server_;
+  nav2::SimpleActionServer<Fibonacci>::SharedPtr action_server_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr deactivate_subs_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr activate_subs_;
   rclcpp::Subscription<std_msgs::msg::Empty>::SharedPtr omit_preempt_subs_;

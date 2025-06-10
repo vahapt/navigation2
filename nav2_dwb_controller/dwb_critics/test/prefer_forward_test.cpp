@@ -55,7 +55,7 @@ TEST(PreferForward, StartNode)
 {
   auto critic = std::make_shared<dwb_critics::PreferForwardCritic>();
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("test_global_costmap");
-  auto node = nav2::LifecycleNode::make_shared("costmap_tester");
+  auto node = std::make_shared<nav2::LifecycleNode>("costmap_tester");
   node->configure();
   node->activate();
 
@@ -143,7 +143,7 @@ TEST(PreferForward, NoneDefaultValues)
 {
   auto critic = std::make_shared<dwb_critics::PreferForwardCritic>();
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("test_global_costmap");
-  auto node = nav2::LifecycleNode::make_shared("costmap_tester");
+  auto node = std::make_shared<nav2::LifecycleNode>("costmap_tester");
   node->configure();
   node->activate();
 

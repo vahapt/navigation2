@@ -138,7 +138,7 @@ protected:
    */
   template<typename ActionT>
   void processRouteRequest(
-    std::shared_ptr<nav2::SimpleActionServer<ActionT>> & action_server);
+    nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
 
   /**
    * @brief Find the planning duration of the request and log warnings
@@ -153,7 +153,7 @@ protected:
    * @return if the request is valid
    */
   template<typename ActionT>
-  bool isRequestValid(std::shared_ptr<nav2::SimpleActionServer<ActionT>> & action_server);
+  bool isRequestValid(nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
 
   /**
    * @brief Populate result for compute route action
@@ -213,7 +213,7 @@ protected:
 
   // Set or modify graph
   nav2::ServiceServer<nav2_msgs::srv::SetRouteGraph,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr set_graph_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr set_graph_service_;
 
   // Internal tools
   std::shared_ptr<GraphLoader> graph_loader_;

@@ -548,7 +548,7 @@ class TestRouteOperations : public nav2_route::RouteOperation
 {
 public:
   void configure(
-    const rclcpp_lifecycle::LifecycleNode::SharedPtr,
+    const nav2::LifecycleNode::SharedPtr,
     std::shared_ptr<nav2_costmap_2d::CostmapSubscriber>,
     const std::string &) override
   {

@@ -172,7 +172,7 @@ protected:
    */
   void initMessageFilters();
   std::unique_ptr<message_filters::Subscriber<sensor_msgs::msg::LaserScan,
-    rclcpp_lifecycle::LifecycleNode>> laser_scan_sub_;
+    nav2::LifecycleNode>> laser_scan_sub_;
   std::unique_ptr<tf2_ros::MessageFilter<sensor_msgs::msg::LaserScan>> laser_scan_filter_;
   message_filters::Connection laser_scan_connection_;
 
@@ -202,7 +202,7 @@ protected:
    */
   void initServices();
   nav2::ServiceServer<std_srvs::srv::Empty,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr global_loc_srv_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr global_loc_srv_;
   /*
    * @brief Service callback for a global relocalization request
    */
@@ -213,7 +213,7 @@ protected:
 
   // service server for providing an initial pose guess
   nav2::ServiceServer<nav2_msgs::srv::SetInitialPose,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr initial_guess_srv_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr initial_guess_srv_;
   /*
    * @brief Service callback for an initial pose guess request
    */
@@ -224,7 +224,7 @@ protected:
 
   // Let amcl update samples without requiring motion
   nav2::ServiceServer<std_srvs::srv::Empty,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr nomotion_update_srv_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr nomotion_update_srv_;
   /*
    * @brief Request an AMCL update even though the robot hasn't moved
    */

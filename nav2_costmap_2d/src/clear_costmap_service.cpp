@@ -41,7 +41,7 @@ ClearCostmapService::ClearCostmapService(
   reset_value_ = costmap_.getCostmap()->getDefaultValue();
 
   clear_except_service_ = std::make_shared<nav2::ServiceServer<ClearExceptRegion,
-      std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     std::string("clear_except_") + costmap_.getName(),
     node,
     std::bind(
@@ -49,7 +49,7 @@ ClearCostmapService::ClearCostmapService(
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
   clear_around_service_ = std::make_shared<nav2::ServiceServer<ClearAroundRobot,
-      std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     std::string("clear_around_") + costmap_.getName(),
     node,
     std::bind(
@@ -57,7 +57,7 @@ ClearCostmapService::ClearCostmapService(
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
   clear_entire_service_ = std::make_shared<nav2::ServiceServer<ClearEntirely,
-      std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>>(
+      nav2::LifecycleNode::SharedPtr>>(
     std::string("clear_entirely_") + costmap_.getName(),
     node,
     std::bind(

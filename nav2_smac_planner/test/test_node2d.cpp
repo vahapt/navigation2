@@ -26,7 +26,7 @@
 
 TEST(Node2DTest, test_node_2d)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto node = std::make_shared<nav2::LifecycleNode>("test");
   nav2_costmap_2d::Costmap2D costmapA(10, 10, 0.05, 0.0, 0.0, 0);
 
   // Convert raw costmap into a costmap ros object
@@ -101,7 +101,7 @@ TEST(Node2DTest, test_node_2d)
 
 TEST(Node2DTest, test_node_2d_neighbors)
 {
-  auto lnode = std::make_shared<rclcpp_lifecycle::LifecycleNode>("test");
+  auto lnode = std::make_shared<nav2::LifecycleNode>("test");
   nav2_smac_planner::SearchInfo info;
   unsigned int size_x = 10u;
   unsigned int size_y = 10u;

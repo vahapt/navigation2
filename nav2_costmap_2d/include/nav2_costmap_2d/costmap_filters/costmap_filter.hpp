@@ -243,7 +243,7 @@ protected:
    * @brief: A service to enable/disable costmap filter
    */
   nav2::ServiceServer<std_srvs::srv::SetBool,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr enable_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr enable_service_;
 
 private:
   /**

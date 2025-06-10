@@ -55,7 +55,7 @@ namespace dwb_core
 {
 
 DWBPublisher::DWBPublisher(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   const std::string & plugin_name)
 : node_(parent),
   plugin_name_(plugin_name)

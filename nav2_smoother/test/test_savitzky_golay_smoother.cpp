@@ -36,8 +36,8 @@ using namespace std::chrono_literals;  // NOLINT
 
 TEST(SmootherTest, test_sg_smoother_basics)
 {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node =
-    std::make_shared<rclcpp_lifecycle::LifecycleNode>("SmacSGSmootherTest");
+  nav2::LifecycleNode::SharedPtr node =
+    std::make_shared<nav2::LifecycleNode>("SmacSGSmootherTest");
 
   std::shared_ptr<nav2_msgs::msg::Costmap> costmap_msg =
     std::make_shared<nav2_msgs::msg::Costmap>();
@@ -48,7 +48,7 @@ TEST(SmootherTest, test_sg_smoother_basics)
   costmap_msg->metadata.size_x = 100;
   costmap_msg->metadata.size_y = 100;
 
-  std::weak_ptr<rclcpp_lifecycle::LifecycleNode> parent = node;
+  nav2::LifecycleNode::WeakPtr parent = node;
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> dummy_costmap;
   dummy_costmap = std::make_shared<nav2_costmap_2d::CostmapSubscriber>(parent, "dummy_topic");
   dummy_costmap->costmapCallback(costmap_msg);
@@ -110,8 +110,8 @@ TEST(SmootherTest, test_sg_smoother_basics)
 
 TEST(SmootherTest, test_sg_smoother_noisey_path)
 {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node =
-    std::make_shared<rclcpp_lifecycle::LifecycleNode>("SmacSGSmootherTest");
+  nav2::LifecycleNode::SharedPtr node =
+    std::make_shared<nav2::LifecycleNode>("SmacSGSmootherTest");
 
   std::shared_ptr<nav2_msgs::msg::Costmap> costmap_msg =
     std::make_shared<nav2_msgs::msg::Costmap>();
@@ -122,7 +122,7 @@ TEST(SmootherTest, test_sg_smoother_noisey_path)
   costmap_msg->metadata.size_x = 100;
   costmap_msg->metadata.size_y = 100;
 
-  std::weak_ptr<rclcpp_lifecycle::LifecycleNode> parent = node;
+  nav2::LifecycleNode::WeakPtr parent = node;
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> dummy_costmap;
   dummy_costmap = std::make_shared<nav2_costmap_2d::CostmapSubscriber>(parent, "dummy_topic");
   dummy_costmap->costmapCallback(costmap_msg);
@@ -211,8 +211,8 @@ TEST(SmootherTest, test_sg_smoother_noisey_path)
 
 TEST(SmootherTest, test_sg_smoother_reversing)
 {
-  rclcpp_lifecycle::LifecycleNode::SharedPtr node =
-    std::make_shared<rclcpp_lifecycle::LifecycleNode>("SmacSGSmootherTest");
+  nav2::LifecycleNode::SharedPtr node =
+    std::make_shared<nav2::LifecycleNode>("SmacSGSmootherTest");
 
   std::shared_ptr<nav2_msgs::msg::Costmap> costmap_msg =
     std::make_shared<nav2_msgs::msg::Costmap>();
@@ -223,7 +223,7 @@ TEST(SmootherTest, test_sg_smoother_reversing)
   costmap_msg->metadata.size_x = 100;
   costmap_msg->metadata.size_y = 100;
 
-  std::weak_ptr<rclcpp_lifecycle::LifecycleNode> parent = node;
+  nav2::LifecycleNode::WeakPtr parent = node;
   std::shared_ptr<nav2_costmap_2d::CostmapSubscriber> dummy_costmap;
   dummy_costmap = std::make_shared<nav2_costmap_2d::CostmapSubscriber>(parent, "dummy_topic");
   dummy_costmap->costmapCallback(costmap_msg);

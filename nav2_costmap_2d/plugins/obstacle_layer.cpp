@@ -232,15 +232,15 @@ void ObstacleLayer::onInitialize()
     // create a callback for the topic
     if (data_type == "LaserScan") {
       std::shared_ptr<message_filters::Subscriber<sensor_msgs::msg::LaserScan,
-        rclcpp_lifecycle::LifecycleNode>> sub;
+        nav2::LifecycleNode>> sub;
 
       // For Jazzy compatibility
       #if RCLCPP_VERSION_GTE(29, 0, 0)
       sub = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::LaserScan,
-          rclcpp_lifecycle::LifecycleNode>>(node, topic, custom_qos_profile, sub_opt);
+          nav2::LifecycleNode>>(node, topic, custom_qos_profile, sub_opt);
       #else
       sub = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::LaserScan,
-          rclcpp_lifecycle::LifecycleNode>>(
+          nav2::LifecycleNode>>(
           node, topic, custom_qos_profile.get_rmw_qos_profile(), sub_opt);
       #endif
 
@@ -272,15 +272,15 @@ void ObstacleLayer::onInitialize()
 
     } else {
       std::shared_ptr<message_filters::Subscriber<sensor_msgs::msg::PointCloud2,
-        rclcpp_lifecycle::LifecycleNode>> sub;
+        nav2::LifecycleNode>> sub;
 
       // For Jazzy compatibility
       #if RCLCPP_VERSION_GTE(29, 0, 0)
       sub = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::PointCloud2,
-          rclcpp_lifecycle::LifecycleNode>>(node, topic, custom_qos_profile, sub_opt);
+          nav2::LifecycleNode>>(node, topic, custom_qos_profile, sub_opt);
       #else
       sub = std::make_shared<message_filters::Subscriber<sensor_msgs::msg::PointCloud2,
-          rclcpp_lifecycle::LifecycleNode>>(
+          nav2::LifecycleNode>>(
           node, topic, custom_qos_profile.get_rmw_qos_profile(), sub_opt);
       #endif
 

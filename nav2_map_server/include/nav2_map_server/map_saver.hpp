@@ -113,7 +113,7 @@ protected:
   const std::string save_map_service_name_{"save_map"};
   // A service to save the map to a file at run time (SaveMap)
   nav2::ServiceServer<nav2_msgs::srv::SaveMap,
-    std::shared_ptr<nav2::LifecycleNode>>::SharedPtr save_map_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr save_map_service_;
 };
 
 }  // namespace nav2_map_server

@@ -77,7 +77,7 @@ private:
 
   // Server for clearing the costmap
   nav2::ServiceServer<nav2_msgs::srv::ClearCostmapExceptRegion,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr clear_except_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr clear_except_service_;
   /**
    * @brief Callback to clear costmap except in a given region
    */
@@ -87,7 +87,7 @@ private:
     const std::shared_ptr<nav2_msgs::srv::ClearCostmapExceptRegion::Response> response);
 
   nav2::ServiceServer<nav2_msgs::srv::ClearCostmapAroundRobot,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr clear_around_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr clear_around_service_;
   /**
    * @brief Callback to clear costmap in a given region
    */
@@ -97,7 +97,7 @@ private:
     const std::shared_ptr<nav2_msgs::srv::ClearCostmapAroundRobot::Response> response);
 
   nav2::ServiceServer<nav2_msgs::srv::ClearEntireCostmap,
-    std::shared_ptr<rclcpp_lifecycle::LifecycleNode>>::SharedPtr clear_entire_service_;
+    nav2::LifecycleNode::SharedPtr>::SharedPtr clear_entire_service_;
   /**
    * @brief Callback to clear costmap
    */

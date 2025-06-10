@@ -47,7 +47,7 @@ public:
    * @param base_frame Robot base frame
    */
   Controller(
-    const rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::shared_ptr<tf2_ros::Buffer> tf,
+    const nav2::LifecycleNode::SharedPtr & node, std::shared_ptr<tf2_ros::Buffer> tf,
     std::string fixed_frame, std::string base_frame);
 
   /**
@@ -108,7 +108,7 @@ protected:
    * @param transform_tolerance Transform tolerance
    */
   void configureCollisionChecker(
-    const rclcpp_lifecycle::LifecycleNode::SharedPtr & node,
+    const nav2::LifecycleNode::SharedPtr & node,
     std::string costmap_topic, std::string footprint_topic, double transform_tolerance);
 
   // Dynamic parameters handler

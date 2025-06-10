@@ -31,7 +31,7 @@ namespace nav2_controller
 {
 
 void PoseProgressChecker::initialize(
-  const rclcpp_lifecycle::LifecycleNode::WeakPtr & parent,
+  const nav2::LifecycleNode::WeakPtr & parent,
   const std::string & plugin_name)
 {
   plugin_name_ = plugin_name;

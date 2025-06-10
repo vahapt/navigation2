@@ -20,7 +20,7 @@
 #include <string>
 #include <memory>
 
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_utils.hpp"
 
 namespace nav2_smac_planner
@@ -72,7 +72,7 @@ struct SmootherParams
    * @param node Ptr to node
    * @param name Name of plugin
    */
-  void get(std::shared_ptr<rclcpp_lifecycle::LifecycleNode> node, const std::string & name)
+  void get(nav2::LifecycleNode::SharedPtr node, const std::string & name)
   {
     std::string local_name = name + std::string(".smoother.");
 

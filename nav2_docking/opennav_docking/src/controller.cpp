@@ -26,7 +26,7 @@ namespace opennav_docking
 {
 
 Controller::Controller(
-  const rclcpp_lifecycle::LifecycleNode::SharedPtr & node, std::shared_ptr<tf2_ros::Buffer> tf,
+  const nav2::LifecycleNode::SharedPtr & node, std::shared_ptr<tf2_ros::Buffer> tf,
   std::string fixed_frame, std::string base_frame)
 : tf2_buffer_(tf), fixed_frame_(fixed_frame), base_frame_(base_frame)
 {
@@ -224,7 +224,7 @@ bool Controller::isTrajectoryCollisionFree(
 }
 
 void Controller::configureCollisionChecker(
-  const rclcpp_lifecycle::LifecycleNode::SharedPtr & node,
+  const nav2::LifecycleNode::SharedPtr & node,
   std::string costmap_topic, std::string footprint_topic, double transform_tolerance)
 {
   costmap_sub_ = std::make_unique<nav2_costmap_2d::CostmapSubscriber>(node, costmap_topic);

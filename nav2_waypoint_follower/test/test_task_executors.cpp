@@ -29,7 +29,7 @@
 
 TEST(WaypointFollowerTest, WaitAtWaypoint)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testWaypointNode");
+  auto node = std::make_shared<nav2::LifecycleNode>("testWaypointNode");
 
   node->declare_parameter("WAW.waypoint_pause_duration", 50);
 
@@ -58,7 +58,7 @@ TEST(WaypointFollowerTest, WaitAtWaypoint)
 
 TEST(WaypointFollowerTest, InputAtWaypoint)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testWaypointNode");
+  auto node = std::make_shared<nav2::LifecycleNode>("testWaypointNode");
   auto pub = node->create_publisher<std_msgs::msg::Empty>("input_at_waypoint/input", 1);
   pub->on_activate();
   auto publish_message =
@@ -100,7 +100,7 @@ TEST(WaypointFollowerTest, InputAtWaypoint)
 
 TEST(WaypointFollowerTest, PhotoAtWaypoint)
 {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testWaypointNode");
+  auto node = std::make_shared<nav2::LifecycleNode>("testWaypointNode");
   auto pub = node->create_publisher<sensor_msgs::msg::Image>("/camera/color/image_raw", 1);
   pub->on_activate();
   std::condition_variable cv;

@@ -210,7 +210,7 @@ TEST(SmoothControlLawTest, calculateNextPose) {
 }
 
 TEST(GracefulControllerTest, configure) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
@@ -235,7 +235,7 @@ TEST(GracefulControllerTest, configure) {
 }
 
 TEST(GracefulControllerTest, dynamicParameters) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
@@ -344,7 +344,7 @@ TEST(GracefulControllerTest, dynamicParameters) {
 }
 
 TEST(GracefulControllerTest, createSlowdownMsg) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
@@ -396,7 +396,7 @@ TEST(GracefulControllerTest, createSlowdownMsg) {
 }
 
 TEST(GracefulControllerTest, rotateToTarget) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
@@ -447,7 +447,7 @@ TEST(GracefulControllerTest, rotateToTarget) {
 }
 
 TEST(GracefulControllerTest, setSpeedLimit) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
   auto costmap_ros = std::make_shared<nav2_costmap_2d::Costmap2DROS>("global_costmap");
 
@@ -491,7 +491,7 @@ TEST(GracefulControllerTest, setSpeedLimit) {
 }
 
 TEST(GracefulControllerTest, emptyPlan) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
@@ -542,7 +542,7 @@ TEST(GracefulControllerTest, emptyPlan) {
 }
 
 TEST(GracefulControllerTest, poseOutsideCostmap) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
@@ -597,7 +597,7 @@ TEST(GracefulControllerTest, poseOutsideCostmap) {
 }
 
 TEST(GracefulControllerTest, noPruningPlan) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
@@ -663,7 +663,7 @@ TEST(GracefulControllerTest, noPruningPlan) {
 }
 
 TEST(GracefulControllerTest, pruningPlan) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 20x20 meters
@@ -740,7 +740,7 @@ TEST(GracefulControllerTest, pruningPlan) {
 }
 
 TEST(GracefulControllerTest, pruningPlanOutsideCostmap) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
@@ -806,7 +806,7 @@ TEST(GracefulControllerTest, pruningPlanOutsideCostmap) {
 }
 
 TEST(GracefulControllerTest, computeVelocityCommandRotate) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   nav2::declare_parameter_if_not_declared(
@@ -887,7 +887,7 @@ TEST(GracefulControllerTest, computeVelocityCommandRotate) {
 }
 
 TEST(GracefulControllerTest, computeVelocityCommandRegular) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
@@ -962,7 +962,7 @@ TEST(GracefulControllerTest, computeVelocityCommandRegular) {
 }
 
 TEST(GracefulControllerTest, computeVelocityCommandRegularBackwards) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Set initial rotation false and allow backward to true
@@ -1045,7 +1045,7 @@ TEST(GracefulControllerTest, computeVelocityCommandRegularBackwards) {
 }
 
 TEST(GracefulControllerTest, computeVelocityCommandFinal) {
-  auto node = std::make_shared<rclcpp_lifecycle::LifecycleNode>("testGraceful");
+  auto node = std::make_shared<nav2::LifecycleNode>("testGraceful");
   auto tf = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create a costmap of 10x10 meters
