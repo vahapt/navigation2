@@ -146,7 +146,7 @@ public:
   template<typename ActionT>
   void getPreemptedGoalIfRequested(
     typename std::shared_ptr<const typename ActionT::Goal> goal,
-    const nav2::SimpleActionServer<ActionT>::UniquePtr & action_server);
+    const typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server);
 
   /**
    * @brief Checks and logs warning if action canceled
@@ -156,7 +156,7 @@ public:
    */
   template<typename ActionT>
   bool checkAndWarnIfCancelled(
-    nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
+    typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
     const std::string & name);
 
   /**
@@ -167,7 +167,7 @@ public:
    */
   template<typename ActionT>
   bool checkAndWarnIfPreempted(
-    nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
+    typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
     const std::string & name);
 
   /**

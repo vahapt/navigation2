@@ -138,7 +138,7 @@ protected:
    */
   template<typename ActionT>
   void processRouteRequest(
-    nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
+    typename nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
 
   /**
    * @brief Find the planning duration of the request and log warnings
@@ -153,7 +153,7 @@ protected:
    * @return if the request is valid
    */
   template<typename ActionT>
-  bool isRequestValid(nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
+  bool isRequestValid(typename nav2::SimpleActionServer<ActionT>::SharedPtr & action_server);
 
   /**
    * @brief Populate result for compute route action

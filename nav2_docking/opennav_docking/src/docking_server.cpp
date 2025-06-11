@@ -184,7 +184,7 @@ DockingServer::on_shutdown(const rclcpp_lifecycle::State &)
 template<typename ActionT>
 void DockingServer::getPreemptedGoalIfRequested(
   typename std::shared_ptr<const typename ActionT::Goal> goal,
-  const nav2::SimpleActionServer<ActionT>::UniquePtr & action_server)
+  const typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server)
 {
   if (action_server->is_preempt_requested()) {
     goal = action_server->accept_pending_goal();
@@ -193,7 +193,7 @@ void DockingServer::getPreemptedGoalIfRequested(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfCancelled(
-  nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
+  typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
   const std::string & name)
 {
   if (action_server->is_cancel_requested()) {
@@ -205,7 +205,7 @@ bool DockingServer::checkAndWarnIfCancelled(
 
 template<typename ActionT>
 bool DockingServer::checkAndWarnIfPreempted(
-  nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
+  typename nav2::SimpleActionServer<ActionT>::UniquePtr & action_server,
   const std::string & name)
 {
   if (action_server->is_preempt_requested()) {
@@ -230,12 +230,12 @@ void DockingServer::dockRobot()
     return;
   }
 
-  if (checkAndWarnIfCancelled(docking_action_server_, "dock_robot")) {
+  if (checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot")) {
     docking_action_server_->terminate_all();
     return;
   }
 
-  getPreemptedGoalIfRequested(goal, docking_action_server_);
+  getPreemptedGoalIfRequested<DockRobot>(goal, docking_action_server_);
   Dock * dock{nullptr};
   num_retries_ = 0;
 
@@ -273,8 +273,8 @@ void DockingServer::dockRobot()
       RCLCPP_INFO(get_logger(), "Robot already within pre-staging pose tolerance for dock");
     } else {
       std::function<bool()> isPreempted = [this]() {
-          return checkAndWarnIfCancelled(docking_action_server_, "dock_robot") ||
-                 checkAndWarnIfPreempted(docking_action_server_, "dock_robot");
+          return checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot") ||
+                 checkAndWarnIfPreempted<DockRobot>(docking_action_server_, "dock_robot");
         };
 
       navigator_->goToPose(
@@ -434,8 +434,8 @@ void DockingServer::doInitialPerception(Dock * dock, geometry_msgs::msg::PoseSta
       throw opennav_docking_core::FailedToDetectDock("Failed initial dock detection");
     }
 
-    if (checkAndWarnIfCancelled(docking_action_server_, "dock_robot") ||
-      checkAndWarnIfPreempted(docking_action_server_, "dock_robot"))
+    if (checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot") ||
+      checkAndWarnIfPreempted<DockRobot>(docking_action_server_, "dock_robot"))
     {
       return;
     }
@@ -497,8 +497,8 @@ bool DockingServer::approachDock(
     }
 
     // Stop if cancelled/preempted
-    if (checkAndWarnIfCancelled(docking_action_server_, "dock_robot") ||
-      checkAndWarnIfPreempted(docking_action_server_, "dock_robot"))
+    if (checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot") ||
+      checkAndWarnIfPreempted<DockRobot>(docking_action_server_, "dock_robot"))
     {
       return false;
     }
@@ -564,8 +564,8 @@ bool DockingServer::waitForCharge(Dock * dock)
       return true;
     }
 
-    if (checkAndWarnIfCancelled(docking_action_server_, "dock_robot") ||
-      checkAndWarnIfPreempted(docking_action_server_, "dock_robot"))
+    if (checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot") ||
+      checkAndWarnIfPreempted<DockRobot>(docking_action_server_, "dock_robot"))
     {
       return false;
     }
@@ -589,8 +589,8 @@ bool DockingServer::resetApproach(
     publishDockingFeedback(DockRobot::Feedback::INITIAL_PERCEPTION);
 
     // Stop if cancelled/preempted
-    if (checkAndWarnIfCancelled(docking_action_server_, "dock_robot") ||
-      checkAndWarnIfPreempted(docking_action_server_, "dock_robot"))
+    if (checkAndWarnIfCancelled<DockRobot>(docking_action_server_, "dock_robot") ||
+      checkAndWarnIfPreempted<DockRobot>(docking_action_server_, "dock_robot"))
     {
       return false;
     }
@@ -663,12 +663,12 @@ void DockingServer::undockRobot()
     return;
   }
 
-  if (checkAndWarnIfCancelled(undocking_action_server_, "undock_robot")) {
+  if (checkAndWarnIfCancelled<UndockRobot>(undocking_action_server_, "undock_robot")) {
     undocking_action_server_->terminate_all(result);
     return;
   }
 
-  getPreemptedGoalIfRequested(goal, undocking_action_server_);
+  getPreemptedGoalIfRequested<UndockRobot>(goal, undocking_action_server_);
   auto max_duration = rclcpp::Duration::from_seconds(goal->max_undocking_time);
 
   try {
@@ -726,8 +726,8 @@ void DockingServer::undockRobot()
       }
 
       // Stop if cancelled/preempted
-      if (checkAndWarnIfCancelled(undocking_action_server_, "undock_robot") ||
-        checkAndWarnIfPreempted(undocking_action_server_, "undock_robot"))
+      if (checkAndWarnIfCancelled<UndockRobot>(undocking_action_server_, "undock_robot") ||
+        checkAndWarnIfPreempted<UndockRobot>(undocking_action_server_, "undock_robot"))
       {
         publishZeroVelocity();
         undocking_action_server_->terminate_all(result);

@@ -99,8 +99,8 @@ protected:
   std::string name_;
   std::atomic_bool reroute_;
   rclcpp::Logger logger_{rclcpp::get_logger("ReroutingService")};
-  nav2::ServiceServer<std_srvs::srv::Trigger,
-    nav2_util::LifecycleNode::SharedPtr>::SharedPtr service_;
+  typename nav2::ServiceServer<std_srvs::srv::Trigger,
+    nav2::LifecycleNode::SharedPtr>::SharedPtr service_;
 };
 
 }  // namespace nav2_route

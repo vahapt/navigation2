@@ -171,7 +171,7 @@ RouteServer::findPlanningDuration(const rclcpp::Time & start_time)
 template<typename ActionT>
 bool
 RouteServer::isRequestValid(
-  nav2::SimpleActionServer<ActionT>::SharedPtr & action_server)
+  typename nav2::SimpleActionServer<ActionT>::SharedPtr & action_server)
 {
   if (!action_server || !action_server->is_server_active()) {
     RCLCPP_DEBUG(get_logger(), "Action server unavailable or inactive. Stopping.");
@@ -252,7 +252,7 @@ Route RouteServer::findRoute(
 template<typename ActionT>
 void
 RouteServer::processRouteRequest(
-  nav2::SimpleActionServer<ActionT>::SharedPtr & action_server)
+  typename nav2::SimpleActionServer<ActionT>::SharedPtr & action_server)
 {
   auto goal = action_server->get_current_goal();
   auto result = std::make_shared<typename ActionT::Result>();
@@ -261,7 +261,7 @@ RouteServer::processRouteRequest(
 
   try {
     while (rclcpp::ok()) {
-      if (!isRequestValid(action_server)) {
+      if (!isRequestValid<ActionT>(action_server)) {
         return;
       }
 
@@ -352,14 +352,14 @@ void
 RouteServer::computeRoute()
 {
   RCLCPP_INFO(get_logger(), "Computing route to goal.");
-  processRouteRequest(compute_route_server_);
+  processRouteRequest<ComputeRoute>(compute_route_server_);
 }
 
 void
 RouteServer::computeAndTrackRoute()
 {
   RCLCPP_INFO(get_logger(), "Computing and tracking route to goal.");
-  processRouteRequest(compute_and_track_route_server_);
+  processRouteRequest<ComputeAndTrackRoute>(compute_and_track_route_server_);
 }
 
 void RouteServer::setRouteGraph(

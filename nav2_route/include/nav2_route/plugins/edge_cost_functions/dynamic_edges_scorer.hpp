@@ -20,8 +20,7 @@
 #include <unordered_map>
 #include <set>
 
-#include "rclcpp/rclcpp.hpp"
-#include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_route/interfaces/edge_cost_function.hpp"
 #include "nav2_msgs/srv/dynamic_edges.hpp"
 #include "nav2_ros_common/node_utils.hpp"

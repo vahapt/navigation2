@@ -272,7 +272,7 @@ PlannerServer::on_shutdown(const rclcpp_lifecycle::State &)
 
 template<typename T>
 bool PlannerServer::isServerInactive(
-  nav2::SimpleActionServer<T>::UniquePtr & action_server)
+  typename nav2::SimpleActionServer<T>::UniquePtr & action_server)
 {
   if (action_server == nullptr || !action_server->is_server_active()) {
     RCLCPP_DEBUG(get_logger(), "Action server unavailable or inactive. Stopping.");
@@ -297,7 +297,7 @@ void PlannerServer::waitForCostmap()
 
 template<typename T>
 bool PlannerServer::isCancelRequested(
-  nav2::SimpleActionServer<T>::UniquePtr & action_server)
+  typename nav2::SimpleActionServer<T>::UniquePtr & action_server)
 {
   if (action_server->is_cancel_requested()) {
     RCLCPP_INFO(get_logger(), "Goal was canceled. Canceling planning action.");
@@ -310,7 +310,7 @@ bool PlannerServer::isCancelRequested(
 
 template<typename T>
 void PlannerServer::getPreemptedGoalIfRequested(
-  nav2::SimpleActionServer<T>::UniquePtr & action_server,
+  typename nav2::SimpleActionServer<T>::UniquePtr & action_server,
   typename std::shared_ptr<const typename T::Goal> goal)
 {
   if (action_server->is_preempt_requested()) {
@@ -383,13 +383,15 @@ void PlannerServer::computePlanThroughPoses()
   geometry_msgs::msg::PoseStamped curr_start, curr_goal;
 
   try {
-    if (isServerInactive(action_server_poses_) || isCancelRequested(action_server_poses_)) {
+    if (isServerInactive<ActionThroughPoses>(action_server_poses_) ||
+      isCancelRequested<ActionThroughPoses>(action_server_poses_))
+    {
       return;
     }
 
     waitForCostmap();
 
-    getPreemptedGoalIfRequested(action_server_poses_, goal);
+    getPreemptedGoalIfRequested<ActionThroughPoses>(action_server_poses_, goal);
 
     if (goal->goals.goals.empty()) {
       throw nav2_core::NoViapointsGiven("No viapoints given");
@@ -515,13 +517,15 @@ PlannerServer::computePlan()
   geometry_msgs::msg::PoseStamped start;
 
   try {
-    if (isServerInactive(action_server_pose_) || isCancelRequested(action_server_pose_)) {
+    if (isServerInactive<ActionToPose>(action_server_pose_) ||
+      isCancelRequested<ActionToPose>(action_server_pose_))
+    {
       return;
     }
 
     waitForCostmap();
 
-    getPreemptedGoalIfRequested(action_server_pose_, goal);
+    getPreemptedGoalIfRequested<ActionToPose>(action_server_pose_, goal);
 
     // Use start pose if provided otherwise use current robot pose
     if (!getStartPose<ActionToPose>(goal, start)) {

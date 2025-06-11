@@ -194,7 +194,7 @@ protected:
   std::string name_, main_srv_name_;
   std::atomic_bool reroute_;
   rclcpp::Logger logger_{rclcpp::get_logger("RouteOperationClient")};
-  nav2::ServiceClient<SrvT,
+  typename nav2::ServiceClient<SrvT,
     nav2::LifecycleNode::SharedPtr>::SharedPtr main_client_;
   nav2::LifecycleNode::WeakPtr node_;
 };

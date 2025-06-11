@@ -78,6 +78,7 @@ public:
       node->get_node_clock_interface(),
       node->get_node_logging_interface(),
       node->get_node_waitables_interface(),
+      node->get_node_parameters_interface(),
       action_name, execute_callback, completion_callback,
       server_timeout, spin_thread, realtime)
   {}
@@ -97,6 +98,7 @@ public:
     rclcpp::node_interfaces::NodeClockInterface::SharedPtr node_clock_interface,
     rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_interface,
     rclcpp::node_interfaces::NodeWaitablesInterface::SharedPtr node_waitables_interface,
+    rclcpp::node_interfaces::NodeParametersInterface::SharedPtr node_parameters_interface,
     const std::string & action_name,
     ExecuteCallback execute_callback,
     CompletionCallback completion_callback = nullptr,
@@ -107,6 +109,7 @@ public:
     node_clock_interface_(node_clock_interface),
     node_logging_interface_(node_logging_interface),
     node_waitables_interface_(node_waitables_interface),
+    node_parameters_interface_(node_parameters_interface),
     action_name_(action_name),
     execute_callback_(execute_callback),
     completion_callback_(completion_callback),
@@ -130,6 +133,23 @@ public:
       std::bind(&SimpleActionServer::handle_accepted, this, _1),
       rcl_action_server_get_default_options(),  // Use consistent QoS settings
       callback_group_);
+
+    rcl_service_introspection_state_t introspection_state = RCL_SERVICE_INTROSPECTION_OFF;
+    if (!node_parameters_interface->has_parameter("service_introspection_mode")) {
+      node_parameters_interface->declare_parameter(
+        "service_introspection_mode", rclcpp::ParameterValue("disabled"));
+    }
+    std::string service_introspection_mode =
+      node_parameters_interface->get_parameter("service_introspection_mode").as_string();
+    if (service_introspection_mode == "metadata") {
+      introspection_state = RCL_SERVICE_INTROSPECTION_METADATA;
+    } else if (service_introspection_mode == "contents") {
+      introspection_state = RCL_SERVICE_INTROSPECTION_CONTENTS;
+    }
+
+    this->action_server_->configure_introspection(
+        node_clock_interface_->get_clock(), rclcpp::ServicesQoS(), introspection_state);
+
     if (spin_thread_) {
       executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
       executor_->add_callback_group(callback_group_, node_base_interface_);
@@ -531,6 +551,7 @@ protected:
   rclcpp::node_interfaces::NodeClockInterface::SharedPtr node_clock_interface_;
   rclcpp::node_interfaces::NodeLoggingInterface::SharedPtr node_logging_interface_;
   rclcpp::node_interfaces::NodeWaitablesInterface::SharedPtr node_waitables_interface_;
+  rclcpp::node_interfaces::NodeParametersInterface::SharedPtr node_parameters_interface_;
   std::string action_name_;
 
   ExecuteCallback execute_callback_;

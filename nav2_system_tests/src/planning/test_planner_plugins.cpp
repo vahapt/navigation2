@@ -21,7 +21,6 @@
 #include "nav_msgs/msg/path.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "planner_tester.hpp"
-#include "nav2_util/lifecycle_utils.hpp"
 #include "nav2_util/geometry_utils.hpp"
 #include "nav2_core/planner_exceptions.hpp"
 

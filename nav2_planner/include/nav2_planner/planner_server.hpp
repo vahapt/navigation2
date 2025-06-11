@@ -123,7 +123,7 @@ protected:
    * @return SUCCESS or FAILURE
    */
   template<typename T>
-  bool isServerInactive(nav2::SimpleActionServer<T>::UniquePtr & action_server);
+  bool isServerInactive(typename nav2::SimpleActionServer<T>::UniquePtr & action_server);
 
   /**
    * @brief Check if an action server has a cancellation request pending
@@ -131,7 +131,7 @@ protected:
    * @return SUCCESS or FAILURE
    */
   template<typename T>
-  bool isCancelRequested(nav2::SimpleActionServer<T>::UniquePtr & action_server);
+  bool isCancelRequested(typename nav2::SimpleActionServer<T>::UniquePtr & action_server);
 
   /**
    * @brief Wait for costmap to be valid with updated sensor data or repopulate after a
@@ -147,7 +147,7 @@ protected:
    */
   template<typename T>
   void getPreemptedGoalIfRequested(
-    nav2::SimpleActionServer<T>::UniquePtr & action_server,
+    typename nav2::SimpleActionServer<T>::UniquePtr & action_server,
     typename std::shared_ptr<const typename T::Goal> goal);
 
   /**

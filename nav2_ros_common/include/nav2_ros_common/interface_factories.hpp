@@ -22,6 +22,7 @@
 #include "nav2_ros_common/service_client.hpp"
 #include "nav2_ros_common/service_server.hpp"
 #include "nav2_ros_common/simple_action_server.hpp"
+#include "nav2_ros_common/action_client.hpp"
 
 namespace nav2
 {
@@ -122,7 +123,7 @@ inline rclcpp::PublisherOptions createPublisherOptions(
  * @param callback_group The callback group to use (if provided)
  * @return A shared pointer to the created subscription
  */
-template<typename NodeT, typename MessageT, typename CallbackT>
+template<typename MessageT, typename NodeT, typename CallbackT>
 typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
   const NodeT & node,
   const std::string & topic_name,
@@ -152,7 +153,7 @@ typename rclcpp::Subscription<MessageT>::SharedPtr create_subscription(
  * @param callback_group The callback group to use (if provided)
  * @return A shared pointer to the created publisher
  */
-template<typename NodeT, typename MessageT>
+template<typename MessageT, typename NodeT>
 typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr create_publisher(
   const NodeT & node,
   const std::string & topic_name,
@@ -226,8 +227,8 @@ typename nav2::ServiceServer<SrvT, NodeT>::SharedPtr create_service(
  * should have elevated prioritization (soft realtime)
  * @return A shared pointer to the created nav2::SimpleActionServer
  */
-template<typename NodeT, typename ActionT>
-typename nav2::SimpleActionServer<ActionT>::SharedPtr create_server(
+template<typename ActionT, typename NodeT>
+typename nav2::SimpleActionServer<ActionT>::SharedPtr create_action_server(
   const NodeT & node,
   const std::string & action_name,
   typename nav2::SimpleActionServer<ActionT>::ExecuteCallback execute_callback,
@@ -238,6 +239,16 @@ typename nav2::SimpleActionServer<ActionT>::SharedPtr create_server(
 {
   return std::make_shared<nav2::SimpleActionServer<ActionT>>(
     node, action_name, execute_callback, complete_cb, server_timeout, spin_thread, realtime);
+}
+
+template<typename ActionT, typename NodeT>
+typename nav2::ActionClient<ActionT>::SharedPtr create_action_client(
+  const NodeT & node,
+  const std::string & action_name,
+  rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
+{
+  return std::make_shared<nav2::ActionClient<ActionT, NodeT>>(
+    action_name, node, callback_group);
 }
 
 }  // namespace interfaces
