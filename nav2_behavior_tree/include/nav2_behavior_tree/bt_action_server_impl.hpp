@@ -166,6 +166,7 @@ bool BtActionServer<ActionT, NodeT>::on_configure()
     node->get_node_clock_interface(),
     node->get_node_logging_interface(),
     node->get_node_waitables_interface(),
+    node->get_node_parameters_interface(),
     action_name_, std::bind(&BtActionServer<ActionT, NodeT>::executeCallback, this),
     nullptr, std::chrono::milliseconds(500), false);
 
