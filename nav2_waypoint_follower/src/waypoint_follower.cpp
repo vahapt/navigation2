@@ -80,6 +80,7 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
     get_node_clock_interface(),
     get_node_logging_interface(),
     get_node_waitables_interface(),
+    get_node_parameters_interface(),
     "follow_waypoints", std::bind(
       &WaypointFollower::followWaypointsCallback,
       this), nullptr, std::chrono::milliseconds(
@@ -97,6 +98,7 @@ WaypointFollower::on_configure(const rclcpp_lifecycle::State & state)
     get_node_clock_interface(),
     get_node_logging_interface(),
     get_node_waitables_interface(),
+    get_node_parameters_interface(),
     "follow_gps_waypoints",
     std::bind(
       &WaypointFollower::followGPSWaypointsCallback,
