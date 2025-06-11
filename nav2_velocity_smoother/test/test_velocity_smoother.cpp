@@ -68,7 +68,6 @@ TEST(VelocitySmootherTest, openLoopTestTimer)
   auto subscription = nav2_util::TwistSubscriber(
     smoother,
     "cmd_vel_smoothed",
-    1,
     [&](geometry_msgs::msg::Twist::SharedPtr msg) {
       linear_vels.push_back(msg->linear.x);
     }, [&](geometry_msgs::msg::TwistStamped::SharedPtr msg) {
@@ -122,7 +121,6 @@ TEST(VelocitySmootherTest, approxClosedLoopTestTimer)
   auto subscription = nav2_util::TwistSubscriber(
     smoother,
     "cmd_vel_smoothed",
-    1,
     [&](geometry_msgs::msg::Twist::SharedPtr msg) {
       linear_vels.push_back(msg->linear.x);
     }, [&](geometry_msgs::msg::TwistStamped::SharedPtr msg) {

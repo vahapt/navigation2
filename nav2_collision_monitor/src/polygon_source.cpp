@@ -59,10 +59,10 @@ void PolygonSource::configure()
 
   getParameters(source_topic);
 
-  rclcpp::QoS qos = rclcpp::SensorDataQoS();  // set to default
   data_sub_ = node->create_subscription<geometry_msgs::msg::PolygonInstanceStamped>(
-    source_topic, qos,
-    std::bind(&PolygonSource::dataCallback, this, std::placeholders::_1));
+    source_topic,
+    std::bind(&PolygonSource::dataCallback, this, std::placeholders::_1),
+    nav2::qos::SensorDataQoS());
 }
 
 bool PolygonSource::getData(

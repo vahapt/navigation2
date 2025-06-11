@@ -29,7 +29,7 @@ class ProgressCheckerSelectorTestFixture : public ::testing::Test
 public:
   static void SetUpTestCase()
   {
-    node_ = std::make_shared<rclcpp::Node>("progress_checker_selector_test_fixture");
+    node_ = std::make_shared<nav2::LifecycleNode>("progress_checker_selector_test_fixture");
     factory_ = std::make_shared<BT::BehaviorTreeFactory>();
 
     config_ = new BT::NodeConfiguration();
@@ -62,13 +62,13 @@ public:
   }
 
 protected:
-  static rclcpp::Node::SharedPtr node_;
+  static nav2::LifecycleNode::SharedPtr node_;
   static BT::NodeConfiguration * config_;
   static std::shared_ptr<BT::BehaviorTreeFactory> factory_;
   static std::shared_ptr<BT::Tree> tree_;
 };
 
-rclcpp::Node::SharedPtr ProgressCheckerSelectorTestFixture::node_ = nullptr;
+nav2::LifecycleNode::SharedPtr ProgressCheckerSelectorTestFixture::node_ = nullptr;
 
 BT::NodeConfiguration * ProgressCheckerSelectorTestFixture::config_ = nullptr;
 std::shared_ptr<BT::BehaviorTreeFactory> ProgressCheckerSelectorTestFixture::factory_ = nullptr;
@@ -104,8 +104,7 @@ TEST_F(ProgressCheckerSelectorTestFixture, test_custom_topic)
 
   selected_progress_checker_cmd.data = "AngularProgressChecker";
 
-  rclcpp::QoS qos(rclcpp::KeepLast(1));
-  qos.transient_local().reliable();
+  rclcpp::QoS qos = nav2::qos::LatchedTopicQoS();
 
   auto progress_checker_selector_pub =
     node_->create_publisher<std_msgs::msg::String>(
@@ -117,7 +116,7 @@ TEST_F(ProgressCheckerSelectorTestFixture, test_custom_topic)
     tree_->rootNode()->executeTick();
     progress_checker_selector_pub->publish(selected_progress_checker_cmd);
 
-    rclcpp::spin_some(node_);
+    rclcpp::spin_some(node_->get_node_base_interface());
   }
 
   // check progress_checker updated
@@ -155,8 +154,7 @@ TEST_F(ProgressCheckerSelectorTestFixture, test_default_topic)
 
   selected_progress_checker_cmd.data = "RRT";
 
-  rclcpp::QoS qos(rclcpp::KeepLast(1));
-  qos.transient_local().reliable();
+  rclcpp::QoS qos = nav2::qos::LatchedTopicQoS();
 
   auto progress_checker_selector_pub =
     node_->create_publisher<std_msgs::msg::String>("progress_checker_selector", qos);
@@ -167,7 +165,7 @@ TEST_F(ProgressCheckerSelectorTestFixture, test_default_topic)
     tree_->rootNode()->executeTick();
     progress_checker_selector_pub->publish(selected_progress_checker_cmd);
 
-    rclcpp::spin_some(node_);
+    rclcpp::spin_some(node_->get_node_base_interface());
   }
 
   // check goal_checker updated

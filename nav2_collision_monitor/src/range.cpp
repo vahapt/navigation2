@@ -61,10 +61,10 @@ void Range::configure()
 
   getParameters(source_topic);
 
-  rclcpp::QoS range_qos = rclcpp::SensorDataQoS();  // set to default
   data_sub_ = node->create_subscription<sensor_msgs::msg::Range>(
-    source_topic, range_qos,
-    std::bind(&Range::dataCallback, this, std::placeholders::_1));
+    source_topic,
+    std::bind(&Range::dataCallback, this, std::placeholders::_1),
+    nav2::qos::SensorDataQoS());
 }
 
 bool Range::getData(

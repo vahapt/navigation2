@@ -237,14 +237,14 @@ Tester::Tester()
   cmd_vel_in_pub_ = cm_->create_publisher<geometry_msgs::msg::Twist>(
     CMD_VEL_IN_TOPIC, rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
   cmd_vel_out_sub_ = cm_->create_subscription<geometry_msgs::msg::Twist>(
-    CMD_VEL_OUT_TOPIC, rclcpp::SystemDefaultsQoS(),
+    CMD_VEL_OUT_TOPIC,
     std::bind(&Tester::cmdVelOutCallback, this, std::placeholders::_1));
 
   action_state_sub_ = cm_->create_subscription<nav2_msgs::msg::CollisionMonitorState>(
-    STATE_TOPIC, rclcpp::SystemDefaultsQoS(),
+    STATE_TOPIC,
     std::bind(&Tester::actionStateCallback, this, std::placeholders::_1));
   collision_points_marker_sub_ = cm_->create_subscription<visualization_msgs::msg::MarkerArray>(
-    COLLISION_POINTS_MARKERS_TOPIC, rclcpp::SystemDefaultsQoS(),
+    COLLISION_POINTS_MARKERS_TOPIC,
     std::bind(&Tester::collisionPointsMarkerCallback, this, std::placeholders::_1));
   parameters_client_ =
     cm_->create_client<rcl_interfaces::srv::SetParameters>(

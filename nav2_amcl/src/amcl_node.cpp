@@ -1334,8 +1334,9 @@ AmclNode::dynamicParametersCallback(
   if (reinit_map) {
     map_sub_.reset();
     map_sub_ = create_subscription<nav_msgs::msg::OccupancyGrid>(
-      map_topic_, rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable(),
-      std::bind(&AmclNode::mapReceived, this, std::placeholders::_1));
+      map_topic_,
+      std::bind(&AmclNode::mapReceived, this, std::placeholders::_1),
+      nav2::qos::LatchedTopicQoS());
   }
 
   result.successful = true;
@@ -1486,9 +1487,7 @@ AmclNode::initMessageFilters()
 
 
   laser_scan_connection_ = laser_scan_filter_->registerCallback(
-    std::bind(
-      &AmclNode::laserReceived,
-      this, std::placeholders::_1));
+    std::bind(&AmclNode::laserReceived, this, std::placeholders::_1));
 }
 
 void
@@ -1502,15 +1501,16 @@ AmclNode::initPubSub()
 
   pose_pub_ = create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "amcl_pose",
-    rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
+    nav2::qos::LatchedTopicQoS());
 
   initial_pose_sub_ = create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
-    "initialpose", rclcpp::SystemDefaultsQoS(),
+    "initialpose",
     std::bind(&AmclNode::initialPoseReceived, this, std::placeholders::_1));
 
   map_sub_ = create_subscription<nav_msgs::msg::OccupancyGrid>(
-    map_topic_, rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable(),
-    std::bind(&AmclNode::mapReceived, this, std::placeholders::_1));
+    map_topic_,
+    std::bind(&AmclNode::mapReceived, this, std::placeholders::_1),
+    nav2::qos::LatchedTopicQoS());
 
   RCLCPP_INFO(get_logger(), "Subscribed to map topic.");
 }

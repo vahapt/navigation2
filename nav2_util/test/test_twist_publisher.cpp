@@ -26,7 +26,8 @@ TEST(TwistPublisher, Unstamped)
   auto pub_node = std::make_shared<nav2::LifecycleNode>("pub_node", "");
   pub_node->configure();
   pub_node->declare_parameter("enable_stamped_cmd_vel", rclcpp::ParameterValue(false));
-  auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(pub_node, "cmd_vel", 1);
+  auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(
+    pub_node, "cmd_vel", rclcpp::QoS(1));
   ASSERT_EQ(vel_publisher->get_subscription_count(), 0);
   EXPECT_FALSE(vel_publisher->is_activated());
   pub_node->activate();
@@ -44,7 +45,7 @@ TEST(TwistPublisher, Unstamped)
 
   geometry_msgs::msg::Twist sub_msg {};
   auto my_sub = sub_node->create_subscription<geometry_msgs::msg::Twist>(
-    "cmd_vel", 10,
+    "cmd_vel",
     [&](const geometry_msgs::msg::Twist msg) {sub_msg = msg;});
 
   vel_publisher->publish(std::move(pub_msg));
@@ -65,7 +66,7 @@ TEST(TwistPublisher, Stamped)
   auto pub_node = std::make_shared<nav2::LifecycleNode>("pub_node", "");
   pub_node->declare_parameter("enable_stamped_cmd_vel", true);
   pub_node->configure();
-  auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(pub_node, "cmd_vel", 1);
+  auto vel_publisher = std::make_unique<nav2_util::TwistPublisher>(pub_node, "cmd_vel");
   ASSERT_EQ(vel_publisher->get_subscription_count(), 0);
   EXPECT_FALSE(vel_publisher->is_activated());
   pub_node->activate();
@@ -83,7 +84,7 @@ TEST(TwistPublisher, Stamped)
 
   geometry_msgs::msg::TwistStamped sub_msg {};
   auto my_sub = sub_node->create_subscription<geometry_msgs::msg::TwistStamped>(
-    "cmd_vel", 10,
+    "cmd_vel",
     [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;});
 
   vel_publisher->publish(std::move(pub_msg));

@@ -31,7 +31,7 @@ public:
 };
 RclCppFixture g_rclcppfixture;
 
-class TestServiceServer : public ServiceServer<std_srvs::srv::Empty>
+class TestServiceServer : public ServiceServer<std_srvs::srv::Empty, rclcpp::Node::SharedPtr>
 {
 public:
   TestServiceServer(

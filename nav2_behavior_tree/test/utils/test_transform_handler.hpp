@@ -24,6 +24,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_ros_common/node_thread.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
@@ -40,7 +41,7 @@ namespace nav2_behavior_tree
 class TransformHandler
 {
 public:
-  explicit TransformHandler(rclcpp::Node::SharedPtr & node)
+  explicit TransformHandler(nav2::LifecycleNode::SharedPtr & node)
   : node_(node),
     is_active_(false),
     base_transform_(nullptr),
@@ -143,7 +144,7 @@ private:
       100ms, std::bind(&TransformHandler::publishRobotTransform, this));
   }
 
-  rclcpp::Node::SharedPtr node_;
+  nav2::LifecycleNode::SharedPtr node_;
 
   bool is_active_;
 

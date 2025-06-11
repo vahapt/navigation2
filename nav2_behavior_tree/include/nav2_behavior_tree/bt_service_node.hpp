@@ -22,7 +22,7 @@
 #include "behaviortree_cpp/action_node.h"
 #include "behaviortree_cpp/json_export.h"
 #include "nav2_ros_common/node_utils.hpp"
-#include "rclcpp/rclcpp.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_behavior_tree/bt_utils.hpp"
 #include "nav2_behavior_tree/json_utils.hpp"
 #include "nav2_ros_common/service_client.hpp"
@@ -113,9 +113,10 @@ public:
     getInput("service_name", service_new);
     if (service_new != service_name_ || !service_client_) {
       service_name_ = service_new;
-      node_ = config().blackboard->template get<rclcpp::Node::SharedPtr>("node");
-      service_client_ = std::make_shared<nav2::ServiceClient<ServiceT>>(
-      service_name_, node_, true /*creates and spins an internal executor*/);
+      node_ = config().blackboard->template get<nav2::LifecycleNode::SharedPtr>("node");
+      service_client_ =
+        std::make_shared<nav2::ServiceClient<ServiceT, nav2::LifecycleNode::SharedPtr>>(
+        service_name_, node_, true /*creates and spins an internal executor*/);
     }
   }
 
@@ -262,11 +263,11 @@ protected:
   }
 
   std::string service_name_, service_node_name_;
-  typename nav2::ServiceClient<ServiceT>::SharedPtr service_client_;
+  typename nav2::ServiceClient<ServiceT, nav2::LifecycleNode::SharedPtr>::SharedPtr service_client_;
   std::shared_ptr<typename ServiceT::Request> request_;
 
   // The node that will be used for any ROS operations
-  rclcpp::Node::SharedPtr node_;
+  nav2::LifecycleNode::SharedPtr node_;
 
   // The timeout value while to use in the tick loop while waiting for
   // a result from the server

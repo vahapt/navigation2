@@ -69,7 +69,7 @@ void InputAtWaypoint::initialize(
   RCLCPP_INFO(
     logger_, "InputAtWaypoint: Subscribing to input topic %s.", input_topic.c_str());
   subscription_ = node->create_subscription<std_msgs::msg::Empty>(
-    input_topic, 1, std::bind(&InputAtWaypoint::Cb, this, _1));
+    input_topic, std::bind(&InputAtWaypoint::Cb, this, _1));
 }
 
 void InputAtWaypoint::Cb(const std_msgs::msg::Empty::SharedPtr /*msg*/)

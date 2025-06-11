@@ -256,7 +256,7 @@ protected:
   std::vector<std::string> error_code_name_prefixes_;
 
   // A regular, non-spinning ROS node that we can use for calls to the action client
-  rclcpp::Node::SharedPtr client_node_;
+  nav2::LifecycleNode::SharedPtr client_node_;
 
   // Parent node
   typename NodeT::WeakPtr node_;

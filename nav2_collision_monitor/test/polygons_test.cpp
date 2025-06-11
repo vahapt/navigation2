@@ -80,7 +80,7 @@ public:
   : nav2::LifecycleNode("test_node"), polygon_received_(nullptr)
   {
     polygon_sub_ = this->create_subscription<geometry_msgs::msg::PolygonStamped>(
-      POLYGON_PUB_TOPIC, rclcpp::SystemDefaultsQoS(),
+      POLYGON_PUB_TOPIC,
       std::bind(&TestNode::polygonCallback, this, std::placeholders::_1));
   }
 

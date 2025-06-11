@@ -77,7 +77,7 @@ DockingServer::on_configure(const rclcpp_lifecycle::State & state)
   } catch (rclcpp::exceptions::ParameterUninitializedException & ex) {
   }
 
-  vel_publisher_ = std::make_unique<nav2_util::TwistPublisher>(node, "cmd_vel", 1);
+  vel_publisher_ = std::make_unique<nav2_util::TwistPublisher>(node, "cmd_vel");
   tf2_buffer_ = std::make_shared<tf2_ros::Buffer>(node->get_clock());
 
   // Create odom subscriber for backward blind docking

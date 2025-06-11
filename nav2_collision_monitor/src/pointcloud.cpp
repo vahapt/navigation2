@@ -60,10 +60,10 @@ void PointCloud::configure()
 
   getParameters(source_topic);
 
-  rclcpp::QoS pointcloud_qos = rclcpp::SensorDataQoS();  // set to default
   data_sub_ = node->create_subscription<sensor_msgs::msg::PointCloud2>(
-    source_topic, pointcloud_qos,
-    std::bind(&PointCloud::dataCallback, this, std::placeholders::_1));
+    source_topic,
+    std::bind(&PointCloud::dataCallback, this, std::placeholders::_1),
+    nav2::qos::SensorDataQoS());
 }
 
 bool PointCloud::getData(

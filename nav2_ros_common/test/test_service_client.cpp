@@ -31,7 +31,7 @@ public:
 };
 RclCppFixture g_rclcppfixture;
 
-class TestServiceClient : public ServiceClient<std_srvs::srv::Empty>
+class TestServiceClient : public ServiceClient<std_srvs::srv::Empty, rclcpp::Node::SharedPtr>
 {
 public:
   TestServiceClient(
@@ -77,7 +77,7 @@ TEST(ServiceClient, can_ServiceClient_invoke_in_callback)
   auto pub_thread = std::thread([&]() {rclcpp::spin(pub_node);});
 
   auto sub_node = rclcpp::Node::make_shared("sub_node");
-  ServiceClient<std_srvs::srv::Empty> client("empty_srv", sub_node, true);
+  ServiceClient<std_srvs::srv::Empty, rclcpp::Node::SharedPtr> client("empty_srv", sub_node, true);
   auto sub = sub_node->create_subscription<std_msgs::msg::Empty>(
     "empty_topic",
     rclcpp::QoS(1),
@@ -121,7 +121,7 @@ TEST(ServiceClient, can_ServiceClient_async_call) {
   auto srv_thread = std::thread([&]() {rclcpp::spin(service_node);});
   // Define service client
   auto node = rclcpp::Node::make_shared("test_node");
-  ServiceClient<std_srvs::srv::Empty> client("empty_srv", node, false);
+  ServiceClient<std_srvs::srv::Empty, rclcpp::Node::SharedPtr> client("empty_srv", node, false);
   auto req = std::make_shared<std_srvs::srv::Empty::Request>();
   auto callback =
     [&callback_called](rclcpp::Client<std_srvs::srv::Empty>::SharedFuture /*future*/) {

@@ -143,8 +143,9 @@ void Circle::createSubscription(std::string & polygon_sub_topic)
       polygon_qos.transient_local();
     }
     radius_sub_ = node->create_subscription<std_msgs::msg::Float32>(
-      polygon_sub_topic, polygon_qos,
-      std::bind(&Circle::radiusCallback, this, std::placeholders::_1));
+      polygon_sub_topic,
+      std::bind(&Circle::radiusCallback, this, std::placeholders::_1),
+      polygon_qos);
   }
 }
 

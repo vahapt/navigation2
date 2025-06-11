@@ -60,10 +60,10 @@ void Scan::configure()
   // Laser scanner has no own parameters
   getCommonParameters(source_topic);
 
-  rclcpp::QoS scan_qos = rclcpp::SensorDataQoS();  // set to default
   data_sub_ = node->create_subscription<sensor_msgs::msg::LaserScan>(
-    source_topic, scan_qos,
-    std::bind(&Scan::dataCallback, this, std::placeholders::_1));
+    source_topic,
+    std::bind(&Scan::dataCallback, this, std::placeholders::_1),
+    nav2::qos::SensorDataQoS());
 }
 
 bool Scan::getData(

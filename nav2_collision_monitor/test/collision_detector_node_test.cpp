@@ -185,11 +185,11 @@ Tester::Tester()
     POLYGON_NAME, rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable());
 
   state_sub_ = cd_->create_subscription<nav2_msgs::msg::CollisionDetectorState>(
-    STATE_TOPIC, rclcpp::SystemDefaultsQoS(),
+    STATE_TOPIC,
     std::bind(&Tester::stateCallback, this, std::placeholders::_1));
 
   collision_points_marker_sub_ = cd_->create_subscription<visualization_msgs::msg::MarkerArray>(
-    COLLISION_POINTS_MARKERS_TOPIC, rclcpp::SystemDefaultsQoS(),
+    COLLISION_POINTS_MARKERS_TOPIC,
     std::bind(&Tester::collisionPointsMarkerCallback, this, std::placeholders::_1));
 }
 

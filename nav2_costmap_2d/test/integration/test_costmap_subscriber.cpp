@@ -28,20 +28,20 @@ public:
     node(std::make_shared<nav2::LifecycleNode>("test_subscriber"))
   {
     dummyCostmapMsgSubscriber = node->create_subscription<nav_msgs::msg::OccupancyGrid>(
-      topicName, 10,
+      topicName,
       std::bind(&TestCostmapSubscriberShould::costmapCallback, this, std::placeholders::_1));
 
     dummyCostmapRawMsgSubscriber = node->create_subscription<nav2_msgs::msg::Costmap>(
-      topicName + "_raw", 10,
+      topicName + "_raw",
       std::bind(&TestCostmapSubscriberShould::costmapRawCallback, this, std::placeholders::_1));
 
     dummyCostmapUpdateMsgSubscriber = node->create_subscription<map_msgs::msg::OccupancyGridUpdate>(
-      topicName + "_updates", 10,
+      topicName + "_updates",
       std::bind(&TestCostmapSubscriberShould::costmapUpdateCallback, this, std::placeholders::_1));
 
     dummyCostmapRawUpdateMsgSubscriber =
       node->create_subscription<nav2_msgs::msg::CostmapUpdate>(
-      topicName + "_raw_updates", 10, std::bind(
+      topicName + "_raw_updates", std::bind(
         &TestCostmapSubscriberShould::costmapRawUpdateCallback, this,
         std::placeholders::_1));
   }

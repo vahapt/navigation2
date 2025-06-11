@@ -129,36 +129,6 @@ public:
       std::forward<CallbackT>(callback), qos, callback_group);
   }
 
-  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
-  template<
-    typename MessageT,
-    typename CallbackT>
-  std::shared_ptr<rclcpp::Subscription<MessageT>>
-  create_subscription(
-    const std::string & topic_name,
-    const int depth,
-    CallbackT && callback)
-  {
-    return nav2::interfaces::create_subscription<MessageT>(
-      shared_from_this(), topic_name,
-      std::forward<CallbackT>(callback), rclcpp::QoS(depth), nullptr);
-  }
-  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
-  template<
-    typename MessageT,
-    typename CallbackT>
-  std::shared_ptr<rclcpp::Subscription<MessageT>>
-  create_subscription(
-    const std::string & topic_name,
-    const rclcpp::QoS & profile,
-    CallbackT && callback,
-    const rclcpp::SubscriptionOptions & options = rclcpp::SubscriptionOptions())
-  {
-    return nav2::interfaces::create_subscription<MessageT>(
-      shared_from_this(), topic_name,
-      std::forward<CallbackT>(callback), profile, options.callback_group);
-  }
-
   /**
    * @brief Create a publisher to a topic using Nav2 QoS profiles and PublisherOptions
    * @param topic_name Name of topic
@@ -175,19 +145,6 @@ public:
   {
     auto pub = nav2::interfaces::create_publisher<MessageT>(
       shared_from_this(), topic_name, qos, callback_group);
-    this->add_managed_entity(pub);
-    return pub;
-  }
-
-  // Temp to compile TODO to test for changes in namespacing for nav2_ros_common
-  template<typename MessageT>
-  typename rclcpp_lifecycle::LifecyclePublisher<MessageT>::SharedPtr
-  create_publisher(
-    const std::string & topic_name,
-    const int depth)
-  {
-    auto pub = nav2::interfaces::create_publisher<MessageT>( // TODO
-      shared_from_this(), topic_name, rclcpp::QoS(depth), nullptr);
     this->add_managed_entity(pub);
     return pub;
   }
@@ -255,10 +212,10 @@ public:
    * @brief Create a ActionClient to call an action using
    * @param action_name Name of action
    * @param callback_group The callback group to use (if provided)
-   * @return A shared pointer to the created nav2::ActionClient
+   * @return A shared pointer to the created rclcpp_action::Client
    */
   template<typename ActionT>
-  typename nav2::ActionClient<ActionT, LifecycleNode::SharedPtr>::SharedPtr
+  typename rclcpp_action::Client<ActionT>::SharedPtr
   create_action_client(
     const std::string & action_name,
     rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)

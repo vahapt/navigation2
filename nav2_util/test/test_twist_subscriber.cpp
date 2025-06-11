@@ -33,9 +33,10 @@ TEST(TwistSubscriber, Unstamped)
 
   geometry_msgs::msg::TwistStamped sub_msg {};
   auto vel_subscriber = std::make_unique<nav2_util::TwistSubscriber>(
-    sub_node, "cmd_vel", 1,
+    sub_node, "cmd_vel",
     [&](const geometry_msgs::msg::Twist msg) {sub_msg.twist = msg;},
-    [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;}
+    [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;},
+    rclcpp::QoS(1)
   );
 
   auto pub_node = std::make_shared<nav2::LifecycleNode>("pub_node", "");
@@ -45,7 +46,7 @@ TEST(TwistSubscriber, Unstamped)
   pub_msg.twist.linear.x = 42.0;
 
   auto vel_pub =
-    pub_node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 1);
+    pub_node->create_publisher<geometry_msgs::msg::Twist>("cmd_vel");
 
   pub_node->activate();
   vel_pub->on_activate();
@@ -70,7 +71,7 @@ TEST(TwistSubscriber, Stamped)
 
   geometry_msgs::msg::TwistStamped sub_msg {};
   auto vel_subscriber = std::make_unique<nav2_util::TwistSubscriber>(
-    sub_node, "cmd_vel", 1,
+    sub_node, "cmd_vel",
     [&](const geometry_msgs::msg::Twist msg) {sub_msg.twist = msg;},
     [&](const geometry_msgs::msg::TwistStamped msg) {sub_msg = msg;}
   );
@@ -82,7 +83,7 @@ TEST(TwistSubscriber, Stamped)
   pub_msg.twist.linear.x = 42.0;
 
   auto vel_pub =
-    pub_node->create_publisher<geometry_msgs::msg::TwistStamped>("cmd_vel", 1);
+    pub_node->create_publisher<geometry_msgs::msg::TwistStamped>("cmd_vel");
 
   pub_node->activate();
   vel_pub->on_activate();

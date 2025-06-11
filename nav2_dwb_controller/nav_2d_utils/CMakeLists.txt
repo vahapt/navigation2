@@ -12,6 +12,8 @@ find_package(rclcpp REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(nav2_ros_common REQUIRED)
+find_package(rclcpp_lifecycle REQUIRED)
 
 nav2_package()
 
@@ -21,6 +23,7 @@ target_include_directories(conversions
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(conversions PUBLIC
   ${geometry_msgs_TARGETS}
@@ -40,6 +43,7 @@ target_include_directories(path_ops
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(path_ops PUBLIC
   ${nav_2d_msgs_TARGETS}
@@ -55,6 +59,7 @@ target_include_directories(tf_help
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+    "$<BUILD_INTERFACE:${nav2_ros_common_INCLUDE_DIRS}>"
 )
 target_link_libraries(tf_help PUBLIC
   conversions
@@ -91,7 +96,7 @@ endif()
 
 ament_export_include_directories(include/${PROJECT_NAME})
 ament_export_libraries(conversions path_ops tf_help)
-ament_export_dependencies(geometry_msgs nav_2d_msgs nav_msgs rclcpp tf2 tf2_geometry_msgs tf2_ros)
+ament_export_dependencies(geometry_msgs nav_2d_msgs rclcpp_lifecycle nav2_ros_common nav_msgs rclcpp tf2 tf2_geometry_msgs tf2_ros)
 ament_export_targets(${PROJECT_NAME})
 
 ament_package()

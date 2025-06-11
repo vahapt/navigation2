@@ -52,7 +52,7 @@ void AssistedTeleop::onConfigure()
 
   vel_sub_ = std::make_unique<nav2_util::TwistSubscriber>(
     node,
-    cmd_vel_teleop, rclcpp::SystemDefaultsQoS(),
+    cmd_vel_teleop,
     [&](geometry_msgs::msg::Twist::SharedPtr msg) {
       teleop_twist_.twist = *msg;
     }, [&](geometry_msgs::msg::TwistStamped::SharedPtr msg) {
@@ -60,7 +60,7 @@ void AssistedTeleop::onConfigure()
     });
 
   preempt_teleop_sub_ = node->create_subscription<std_msgs::msg::Empty>(
-    "preempt_teleop", rclcpp::SystemDefaultsQoS(),
+    "preempt_teleop",
     std::bind(
       &AssistedTeleop::preemptTeleopCallback,
       this, std::placeholders::_1));

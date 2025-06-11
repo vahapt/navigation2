@@ -20,8 +20,7 @@
 #include <vector>
 
 #include "gtest/gtest.h"
-#include "rclcpp/rclcpp.hpp"
-
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "nav2_core/smoother.hpp"
 #include "nav2_core/planner_exceptions.hpp"
@@ -235,8 +234,8 @@ public:
   void SetUp() override
   {
     node_ =
-      std::make_shared<rclcpp::Node>(
-      "LifecycleSmootherTestNode", rclcpp::NodeOptions());
+      std::make_shared<nav2::LifecycleNode>(
+      "LifecycleSmootherTestNode");
 
     smoother_server_ = std::make_shared<DummySmootherServer>();
     smoother_server_->set_parameter(
@@ -321,7 +320,7 @@ public:
     return future_result.get();
   }
 
-  std::shared_ptr<rclcpp::Node> node_;
+  nav2::LifecycleNode::SharedPtr node_;
   std::shared_ptr<DummySmootherServer> smoother_server_;
   std::shared_ptr<rclcpp_action::Client<SmoothAction>> client_;
   std::shared_ptr<rclcpp_action::ClientGoalHandle<SmoothAction>> goal_handle_;

@@ -143,7 +143,7 @@ public:
     local_collision_checker_ = local_collision_checker;
     global_collision_checker_ = global_collision_checker;
 
-    vel_pub_ = std::make_unique<nav2_util::TwistPublisher>(node, "cmd_vel", 1);
+    vel_pub_ = std::make_unique<nav2_util::TwistPublisher>(node, "cmd_vel");
 
     onConfigure();
   }

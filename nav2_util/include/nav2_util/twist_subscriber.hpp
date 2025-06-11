@@ -85,9 +85,9 @@ public:
   explicit TwistSubscriber(
     nav2::LifecycleNode::SharedPtr node,
     const std::string & topic,
-    const rclcpp::QoS & qos,
     TwistCallbackT && TwistCallback,
-    TwistStampedCallbackT && TwistStampedCallback
+    TwistStampedCallbackT && TwistStampedCallback,
+    const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS()
   )
   {
     nav2::declare_parameter_if_not_declared(
@@ -97,13 +97,13 @@ public:
     if (is_stamped_) {
       twist_stamped_sub_ = node->create_subscription<geometry_msgs::msg::TwistStamped>(
         topic,
-        qos,
-        std::forward<TwistStampedCallbackT>(TwistStampedCallback));
+        std::forward<TwistStampedCallbackT>(TwistStampedCallback),
+        qos);
     } else {
       twist_sub_ = node->create_subscription<geometry_msgs::msg::Twist>(
         topic,
-        qos,
-        std::forward<TwistCallbackT>(TwistCallback));
+        std::forward<TwistCallbackT>(TwistCallback),
+        qos);
     }
   }
 
@@ -119,8 +119,8 @@ public:
   explicit TwistSubscriber(
     nav2::LifecycleNode::SharedPtr node,
     const std::string & topic,
-    const rclcpp::QoS & qos,
-    TwistStampedCallbackT && TwistStampedCallback
+    TwistStampedCallbackT && TwistStampedCallback,
+    const rclcpp::QoS & qos = nav2::qos::StandardTopicQoS()
   )
   {
     nav2::declare_parameter_if_not_declared(
@@ -130,8 +130,8 @@ public:
     if (is_stamped_) {
       twist_stamped_sub_ = node->create_subscription<geometry_msgs::msg::TwistStamped>(
         topic,
-        qos,
-        std::forward<TwistStampedCallbackT>(TwistStampedCallback));
+        std::forward<TwistStampedCallbackT>(TwistStampedCallback),
+        qos);
     } else {
       throw std::invalid_argument(
               "enable_stamped_cmd_vel must be true when using this constructor!");

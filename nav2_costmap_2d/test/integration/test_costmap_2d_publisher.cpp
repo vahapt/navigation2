@@ -83,15 +83,12 @@ public:
     callback_group_ = node->create_callback_group(
       rclcpp::CallbackGroupType::MutuallyExclusive, false);
 
-    rclcpp::SubscriptionOptions sub_option;
-    sub_option.callback_group = callback_group_;
-
     std::string topic_name = "/fake_costmap/static_layer_raw";
     layer_sub_ = node->create_subscription<nav2_msgs::msg::Costmap>(
       topic_name,
-      rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable(),
       std::bind(&LayerSubscriber::layerCallback, this, std::placeholders::_1),
-      sub_option);
+      nav2::qos::LatchedTopicQoS(),
+      callback_group_);
 
     executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>();
     executor_->add_callback_group(callback_group_, node->get_node_base_interface());

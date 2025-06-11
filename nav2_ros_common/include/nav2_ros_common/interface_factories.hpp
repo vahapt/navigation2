@@ -22,7 +22,7 @@
 #include "nav2_ros_common/service_client.hpp"
 #include "nav2_ros_common/service_server.hpp"
 #include "nav2_ros_common/simple_action_server.hpp"
-#include "nav2_ros_common/action_client.hpp"
+#include "rclcpp_action/client.hpp"
 
 namespace nav2
 {
@@ -242,13 +242,35 @@ typename nav2::SimpleActionServer<ActionT>::SharedPtr create_action_server(
 }
 
 template<typename ActionT, typename NodeT>
-typename nav2::ActionClient<ActionT>::SharedPtr create_action_client(
+void configure_action_client(
+  const NodeT & node,
+  typename rclcpp_action::Client<ActionT>::SharedPtr & action_client)
+{
+  rcl_service_introspection_state_t introspection_state = RCL_SERVICE_INTROSPECTION_OFF;
+  if (!node->has_parameter("service_introspection_mode")) {
+    node->declare_parameter("service_introspection_mode", "disabled");
+  }
+  std::string service_introspection_mode =
+    node->get_parameter("service_introspection_mode").as_string();
+  if (service_introspection_mode == "metadata") {
+    introspection_state = RCL_SERVICE_INTROSPECTION_METADATA;
+  } else if (service_introspection_mode == "contents") {
+    introspection_state = RCL_SERVICE_INTROSPECTION_CONTENTS;
+  }
+
+  action_client->configure_introspection(
+      node->get_clock(), rclcpp::ServicesQoS(), introspection_state);
+}
+
+template<typename ActionT, typename NodeT>
+typename rclcpp_action::Client<ActionT>::SharedPtr create_action_client(
   const NodeT & node,
   const std::string & action_name,
   rclcpp::CallbackGroup::SharedPtr callback_group = nullptr)
 {
-  return std::make_shared<nav2::ActionClient<ActionT, NodeT>>(
-    action_name, node, callback_group);
+  auto client = rclcpp_action::create_client<ActionT>(node, action_name, callback_group);
+  configure_action_client<ActionT>(node, client);
+  return client;
 }
 
 }  // namespace interfaces

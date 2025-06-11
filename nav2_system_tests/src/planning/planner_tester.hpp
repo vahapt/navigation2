@@ -21,7 +21,7 @@
 #include <thread>
 #include <algorithm>
 
-#include "rclcpp/rclcpp.hpp"
+#include "nav2_ros_common/lifecycle_node.hpp"
 #include "nav2_msgs/action/compute_path_to_pose.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
 #include "nav2_msgs/msg/costmap.hpp"
@@ -126,7 +126,7 @@ enum class TaskStatus : int8_t
   RUNNING = 3,
 };
 
-class PlannerTester : public rclcpp::Node
+class PlannerTester : public nav2::LifecycleNode
 {
 public:
   using ComputePathToPoseCommand = geometry_msgs::msg::PoseStamped;

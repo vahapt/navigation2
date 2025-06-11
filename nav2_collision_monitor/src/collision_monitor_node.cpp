@@ -67,12 +67,12 @@ CollisionMonitor::on_configure(const rclcpp_lifecycle::State & state)
   cmd_vel_in_sub_ = std::make_unique<nav2_util::TwistSubscriber>(
     shared_from_this(),
     cmd_vel_in_topic,
-    1,
     std::bind(&CollisionMonitor::cmdVelInCallbackUnstamped, this, std::placeholders::_1),
-    std::bind(&CollisionMonitor::cmdVelInCallbackStamped, this, std::placeholders::_1));
+    std::bind(&CollisionMonitor::cmdVelInCallbackStamped, this, std::placeholders::_1),
+    rclcpp::QoS(1));
 
   auto node = shared_from_this();
-  cmd_vel_out_pub_ = std::make_unique<nav2_util::TwistPublisher>(node, cmd_vel_out_topic, 1);
+  cmd_vel_out_pub_ = std::make_unique<nav2_util::TwistPublisher>(node, cmd_vel_out_topic);
 
   if (!state_topic.empty()) {
     state_pub_ = this->create_publisher<nav2_msgs::msg::CollisionMonitorState>(

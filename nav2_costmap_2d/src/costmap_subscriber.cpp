@@ -32,12 +32,12 @@ CostmapSubscriber::CostmapSubscriber(
   logger_ = node->get_logger();
   costmap_sub_ = node->create_subscription<nav2_msgs::msg::Costmap>(
     topic_name_,
-    rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable(),
-    std::bind(&CostmapSubscriber::costmapCallback, this, std::placeholders::_1));
+    std::bind(&CostmapSubscriber::costmapCallback, this, std::placeholders::_1),
+    nav2::qos::LatchedTopicQoS());
   costmap_update_sub_ = node->create_subscription<nav2_msgs::msg::CostmapUpdate>(
     topic_name_ + "_updates",
-    rclcpp::QoS(rclcpp::KeepLast(costmapUpdateQueueDepth)).transient_local().reliable(),
-    std::bind(&CostmapSubscriber::costmapUpdateCallback, this, std::placeholders::_1));
+    std::bind(&CostmapSubscriber::costmapUpdateCallback, this, std::placeholders::_1),
+    nav2::qos::LatchedTopicQoS(costmapUpdateQueueDepth));
 }
 
 CostmapSubscriber::CostmapSubscriber(
@@ -49,11 +49,11 @@ CostmapSubscriber::CostmapSubscriber(
   logger_ = node->get_logger();
   costmap_sub_ = node->create_subscription<nav2_msgs::msg::Costmap>(
     topic_name_,
-    rclcpp::QoS(rclcpp::KeepLast(1)).transient_local().reliable(),
+    nav2::qos::LatchedTopicQoS(),
     std::bind(&CostmapSubscriber::costmapCallback, this, std::placeholders::_1));
   costmap_update_sub_ = node->create_subscription<nav2_msgs::msg::CostmapUpdate>(
     topic_name_ + "_updates",
-    rclcpp::QoS(rclcpp::KeepLast(costmapUpdateQueueDepth)).transient_local().reliable(),
+    nav2::qos::LatchedTopicQoS(costmapUpdateQueueDepth),
     std::bind(&CostmapSubscriber::costmapUpdateCallback, this, std::placeholders::_1));
 }
 

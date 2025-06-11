@@ -94,9 +94,8 @@ bool Polygon::configure()
       polygon_.polygon.points.push_back(p_s);
     }
 
-    rclcpp::QoS polygon_qos = rclcpp::SystemDefaultsQoS();  // set to default
     polygon_pub_ = node->create_publisher<geometry_msgs::msg::PolygonStamped>(
-      polygon_pub_topic, polygon_qos);
+      polygon_pub_topic);
   }
 
   // Add callback for dynamic parameters
@@ -526,8 +525,9 @@ void Polygon::createSubscription(std::string & polygon_sub_topic)
       polygon_qos.transient_local();
     }
     polygon_sub_ = node->create_subscription<geometry_msgs::msg::PolygonStamped>(
-      polygon_sub_topic, polygon_qos,
-      std::bind(&Polygon::polygonCallback, this, std::placeholders::_1));
+      polygon_sub_topic,
+      std::bind(&Polygon::polygonCallback, this, std::placeholders::_1),
+      polygon_qos);
   }
 }
 

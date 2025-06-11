@@ -37,7 +37,7 @@ FootprintSubscriber::FootprintSubscriber(
 {
   auto node = parent.lock();
   footprint_sub_ = node->create_subscription<geometry_msgs::msg::PolygonStamped>(
-    topic_name, rclcpp::SystemDefaultsQoS(),
+    topic_name,
     std::bind(&FootprintSubscriber::footprint_callback, this, std::placeholders::_1));
 }
 
@@ -52,8 +52,9 @@ FootprintSubscriber::FootprintSubscriber(
   transform_tolerance_(transform_tolerance)
 {
   auto node = parent.lock();
-  footprint_sub_ = node->create_subscription<geometry_msgs::msg::PolygonStamped>(
-    topic_name, rclcpp::SystemDefaultsQoS(),
+  // Using an rclcpp::Node, so need to use the Nav2 factory to create the subscription
+  footprint_sub_ = nav2::interfaces::create_subscription<geometry_msgs::msg::PolygonStamped>(
+    node, topic_name,
     std::bind(&FootprintSubscriber::footprint_callback, this, std::placeholders::_1));
 }
 

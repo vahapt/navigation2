@@ -125,19 +125,19 @@ void SimpleChargingDock::configure(
 
   if (use_battery_status_) {
     battery_sub_ = node_->create_subscription<sensor_msgs::msg::BatteryState>(
-      "battery_state", 1,
+      "battery_state",
       [this](const sensor_msgs::msg::BatteryState::SharedPtr state) {
         is_charging_ = state->current > charging_threshold_;
-      });
+      }, nav2::qos::StandardTopicQoS(1));
   }
 
   if (use_external_detection_pose_) {
     dock_pose_.header.stamp = rclcpp::Time(0);
     dock_pose_sub_ = node_->create_subscription<geometry_msgs::msg::PoseStamped>(
-      "detected_dock_pose", 1,
+      "detected_dock_pose",
       [this](const geometry_msgs::msg::PoseStamped::SharedPtr pose) {
         detected_dock_pose_ = *pose;
-      });
+      }, nav2::qos::StandardTopicQoS(1));
   }
 
   bool use_stall_detection;
@@ -149,8 +149,9 @@ void SimpleChargingDock::configure(
       RCLCPP_ERROR(node_->get_logger(), "stall_joint_names cannot be empty!");
     }
     joint_state_sub_ = node_->create_subscription<sensor_msgs::msg::JointState>(
-      "joint_states", 1,
-      std::bind(&SimpleChargingDock::jointStateCallback, this, std::placeholders::_1));
+      "joint_states",
+      std::bind(&SimpleChargingDock::jointStateCallback, this, std::placeholders::_1),
+      nav2::qos::StandardTopicQoS(1));
   }
 
   dock_pose_pub_ = node_->create_publisher<geometry_msgs::msg::PoseStamped>("dock_pose", 1);

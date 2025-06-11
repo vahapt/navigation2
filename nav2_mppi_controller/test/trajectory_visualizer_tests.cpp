@@ -47,7 +47,7 @@ TEST(TrajectoryVisualizerTests, VisPathRepub)
   pub_path.poses.resize(5);
 
   auto my_sub = node->create_subscription<nav_msgs::msg::Path>(
-    "~/transformed_global_plan", 10,
+    "~/transformed_global_plan",
     [&](const nav_msgs::msg::Path msg) {received_path = msg;});
 
   TrajectoryVisualizer vis;
@@ -68,7 +68,7 @@ TEST(TrajectoryVisualizerTests, VisOptimalTrajectory)
 
   visualization_msgs::msg::MarkerArray received_msg;
   auto my_sub = node->create_subscription<visualization_msgs::msg::MarkerArray>(
-    "~/candidate_trajectories", 10,
+    "~/candidate_trajectories",
     [&](const visualization_msgs::msg::MarkerArray msg) {received_msg = msg;});
 
   // optimal_trajectory empty, should fail to publish
@@ -131,7 +131,7 @@ TEST(TrajectoryVisualizerTests, VisCandidateTrajectories)
 
   visualization_msgs::msg::MarkerArray received_msg;
   auto my_sub = node->create_subscription<visualization_msgs::msg::MarkerArray>(
-    "~/candidate_trajectories", 10,
+    "~/candidate_trajectories",
     [&](const visualization_msgs::msg::MarkerArray msg) {received_msg = msg;});
 
   models::Trajectories candidate_trajectories;
@@ -162,7 +162,7 @@ TEST(TrajectoryVisualizerTests, VisOptimalPath)
 
   nav_msgs::msg::Path received_path;
   auto my_sub = node->create_subscription<nav_msgs::msg::Path>(
-    "~/optimal_path", 10,
+    "~/optimal_path",
     [&](const nav_msgs::msg::Path msg) {received_path = msg;});
 
   // optimal_trajectory empty, should fail to publish
