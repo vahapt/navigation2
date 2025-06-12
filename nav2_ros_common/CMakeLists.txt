@@ -39,6 +39,7 @@ target_link_libraries(${PROJECT_NAME} INTERFACE
   tf2_ros::tf2_ros
   rclcpp_action::rclcpp_action
   tf2_geometry_msgs::tf2_geometry_msgs
+  bondcpp::bondcpp
 )
 
 install(DIRECTORY include/

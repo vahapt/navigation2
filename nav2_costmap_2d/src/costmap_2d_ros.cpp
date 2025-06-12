@@ -107,10 +107,6 @@ Costmap2DROS::Costmap2DROS(
   const bool & use_sim_time,
   const rclcpp::NodeOptions & options)
 : nav2::LifecycleNode(name, "",
-    // NodeOption arguments take precedence over the ones provided on the command line
-    // use this to make sure the node is placed on the provided namespace
-    // TODO(orduno) Pass a sub-node instead of creating a new node for better handling
-    //              of the namespaces
     getChildNodeOptions(name, parent_namespace, use_sim_time, options)
 ),
   name_(name),
@@ -203,7 +199,6 @@ Costmap2DROS::on_configure(const rclcpp_lifecycle::State & /*state*/)
 
     layered_costmap_->addPlugin(plugin);
 
-    // TODO(mjeronimo): instead of get(), use a shared ptr
     try {
       plugin->initialize(layered_costmap_.get(), plugin_names_[i], tf_buffer_.get(),
           shared_from_this(), callback_group_);
