@@ -52,7 +52,7 @@ class DockRobotActionTestFixture : public ::testing::Test
 public:
   static void SetUpTestCase()
   {
-    node_ = std::make_shared<nav2_LifecycleNode>("dock_robot_action_test_fixture");
+    node_ = std::make_shared<nav2::LifecycleNode>("dock_robot_action_test_fixture");
     factory_ = std::make_shared<BT::BehaviorTreeFactory>();
 
     config_ = new BT::NodeConfiguration();
@@ -60,7 +60,7 @@ public:
     // Create the blackboard that will be shared by all of the nodes in the tree
     config_->blackboard = BT::Blackboard::create();
     // Put items on the blackboard
-    config_->blackboard->set<nav2_LifecycleNode::SharedPtr>(
+    config_->blackboard->set<nav2::LifecycleNode::SharedPtr>(
       "node",
       node_);
     config_->blackboard->set<std::chrono::milliseconds>(
