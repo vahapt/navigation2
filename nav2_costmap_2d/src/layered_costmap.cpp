@@ -142,10 +142,10 @@ void LayeredCostmap::updateMap(double robot_x, double robot_y, double robot_yaw)
   // if we're using a rolling buffer costmap...
   // we need to update the origin using the robot's position
   if (rolling_window_) {
-    double new_origin_x = robot_x - combined_costmap_.getSizeInMetersX() / 2;
-    double new_origin_y = robot_y - combined_costmap_.getSizeInMetersY() / 2;
-    primary_costmap_.updateOrigin(new_origin_x, new_origin_y);
-    combined_costmap_.updateOrigin(new_origin_x, new_origin_y);
+    rolling_origin_x_ = robot_x - combined_costmap_.getSizeInMetersX() / 2 + rolling_offset_x_;
+    rolling_origin_y_ = robot_y - combined_costmap_.getSizeInMetersY() / 2 + rolling_offset_y_;
+    primary_costmap_.updateOrigin(rolling_origin_x_, rolling_origin_y_);
+    combined_costmap_.updateOrigin(rolling_origin_x_, rolling_origin_y_);
   }
 
   if (isOutofBounds(robot_x, robot_y)) {

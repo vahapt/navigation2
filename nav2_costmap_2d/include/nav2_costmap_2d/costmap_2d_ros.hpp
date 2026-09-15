@@ -411,6 +411,12 @@ protected:
   std::string robot_base_frame_;            ///< The frame_id of the robot base
   double robot_radius_;
   bool rolling_window_{false};          ///< Whether to use a rolling window version of the costmap
+  /// Whether to shift the rolling window center along the robot velocity
+  bool rolling_window_offset_enabled_{false};
+  double rolling_window_lookahead_time_{0};  ///< Offset is velocity times this time (s)
+  double rolling_window_max_offset_x_{0};    ///< Largest offset along global x (m)
+  double rolling_window_max_offset_y_{0};    ///< Largest offset along global y (m)
+  double rolling_window_velocity_averaging_interval_{0};  ///< TF velocity averaging window (s)
   bool track_unknown_space_{false};
   double transform_tolerance_{0};           ///< The timeout before transform errors
   double initial_transform_timeout_{0};   ///< The timeout before activation of the node errors
@@ -464,6 +470,33 @@ rclcpp::NodeOptions getChildNodeOptions(
   const std::string & parent_namespace,
   const bool & use_sim_time,
   const rclcpp::NodeOptions & parent_options);
+
+/**
+  * @brief Compute the rolling window offset from the robot velocity found in TF.
+  *        The velocity is the change of the base_frame position in global_frame
+  *        over the last averaging_interval, scaled by lookahead_time and clamped
+  *        per axis to [-max_offset, max_offset].
+  * @param tf TF buffer holding the global_frame -> base_frame transforms
+  * @param global_frame Frame of the costmap
+  * @param base_frame Robot base frame
+  * @param averaging_interval Time window used to average the TF velocity (s)
+  * @param lookahead_time Time the offset looks ahead (s)
+  * @param max_offset_x Largest offset along global x (m)
+  * @param max_offset_y Largest offset along global y (m)
+  * @param offset_x Resulting offset along global x (m), zero on failure
+  * @param offset_y Resulting offset along global y (m), zero on failure
+  * @return False if the velocity could not be looked up
+  */
+bool computeRollingWindowOffset(
+  const tf2::BufferCore & tf,
+  const std::string & global_frame,
+  const std::string & base_frame,
+  double averaging_interval,
+  double lookahead_time,
+  double max_offset_x,
+  double max_offset_y,
+  double & offset_x,
+  double & offset_y);
 
 }  // namespace nav2_costmap_2d
 

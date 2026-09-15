@@ -655,6 +655,48 @@ TEST_F(TestNodeWithoutUnknownOverwrite, testMaxWithoutUnknownOverwriteCombinatio
   ASSERT_EQ(unknown_count, 100);
 }
 
+/**
+ * Rolling window with an offset moves the window ahead of the robot, and
+ * obstacle layer stays aligned with the master costmap.
+ */
+TEST_F(TestNode, testRollingWindowOffset) {
+  tf2_ros::Buffer tf(node_->get_clock());
+  nav2_costmap_2d::LayeredCostmap layers("frame", true, false);
+  layers.resizeMap(10, 10, 1, 0, 0);
+
+  std::shared_ptr<nav2_costmap_2d::ObstacleLayer> olayer = nullptr;
+  addObstacleLayer(layers, tf, node_, olayer);
+
+  // 7 m ahead of the robot: outside a centered 10x10 window
+  addObservation(olayer, 7.5, 0.5, MAX_Z);
+  nav2_costmap_2d::Costmap2D * costmap = layers.getCostmap();
+
+  // Centered window does not see the obstacle
+  layers.updateMap(0, 0, 0);
+  EXPECT_DOUBLE_EQ(costmap->getOriginX(), -5.0);
+  EXPECT_DOUBLE_EQ(costmap->getOriginY(), -5.0);
+  EXPECT_EQ(countValues(*costmap, nav2_costmap_2d::LETHAL_OBSTACLE), 0);
+
+  // Window shifted 3 m along x sees it
+  layers.setRollingWindowOffset(3.0, 0.0);
+  layers.updateMap(0, 0, 0);
+  EXPECT_DOUBLE_EQ(costmap->getOriginX(), -2.0);
+  EXPECT_DOUBLE_EQ(costmap->getOriginY(), -5.0);
+  EXPECT_DOUBLE_EQ(olayer->getOriginX(), costmap->getOriginX());
+  EXPECT_DOUBLE_EQ(olayer->getOriginY(), costmap->getOriginY());
+  unsigned int mx, my;
+  ASSERT_TRUE(costmap->worldToMap(7.5, 0.5, mx, my));
+  EXPECT_EQ(costmap->getCost(mx, my), nav2_costmap_2d::LETHAL_OBSTACLE);
+
+  // Robot moves forward, obstacle stays marked in the shifted window
+  layers.updateMap(1.0, 0.0, 0.0);
+  EXPECT_DOUBLE_EQ(costmap->getOriginX(), -1.0);
+  EXPECT_DOUBLE_EQ(olayer->getOriginX(), costmap->getOriginX());
+  ASSERT_TRUE(costmap->worldToMap(7.5, 0.5, mx, my));
+  EXPECT_EQ(costmap->getCost(mx, my), nav2_costmap_2d::LETHAL_OBSTACLE);
+  EXPECT_FALSE(layers.isOutofBounds(1.0, 0.0));
+}
+
 int main(int argc, char ** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

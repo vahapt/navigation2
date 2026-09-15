@@ -38,6 +38,7 @@
 
 #include "nav2_costmap_2d/costmap_2d_ros.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <chrono>
 #include <string>
@@ -423,6 +424,16 @@ Costmap2DROS::getParameters()
     "robot_radius", 0.1);
   rolling_window_ = declare_or_get_parameter(
     "rolling_window", false);
+  rolling_window_offset_enabled_ = declare_or_get_parameter(
+    "rolling_window_offset_enabled", false);
+  rolling_window_lookahead_time_ = declare_or_get_parameter(
+    "rolling_window_lookahead_time", 1.0);
+  rolling_window_max_offset_x_ = declare_or_get_parameter(
+    "rolling_window_max_offset_x", 0.0);
+  rolling_window_max_offset_y_ = declare_or_get_parameter(
+    "rolling_window_max_offset_y", 0.0);
+  rolling_window_velocity_averaging_interval_ = declare_or_get_parameter(
+    "rolling_window_velocity_averaging_interval", 0.2);
   track_unknown_space_ = declare_or_get_parameter(
     "track_unknown_space", false);
   transform_tolerance_ = declare_or_get_parameter(
@@ -601,6 +612,27 @@ Costmap2DROS::updateMap()
       const double & x = pose.pose.position.x;
       const double & y = pose.pose.position.y;
       const double yaw = tf2::getYaw(pose.pose.orientation);
+      if (rolling_window_ && rolling_window_offset_enabled_) {
+        // Keep the robot inside the window by at least one cell
+        const Costmap2D * costmap = layered_costmap_->getCostmap();
+        const double limit_x = std::max(
+          0.0, costmap->getSizeInMetersX() / 2.0 - costmap->getResolution());
+        const double limit_y = std::max(
+          0.0, costmap->getSizeInMetersY() / 2.0 - costmap->getResolution());
+        double offset_x, offset_y;
+        if (!computeRollingWindowOffset(
+            *tf_buffer_, global_frame_, robot_base_frame_,
+            rolling_window_velocity_averaging_interval_, rolling_window_lookahead_time_,
+            std::min(rolling_window_max_offset_x_, limit_x),
+            std::min(rolling_window_max_offset_y_, limit_y),
+            offset_x, offset_y))
+        {
+          RCLCPP_WARN_THROTTLE(
+            get_logger(), *get_clock(), 5000,
+            "Could not look up robot velocity, rolling window is centered on the robot");
+        }
+        layered_costmap_->setRollingWindowOffset(offset_x, offset_y);
+      }
       layered_costmap_->updateMap(x, y, yaw);
 
       auto footprint = std::make_unique<geometry_msgs::msg::PolygonStamped>();
@@ -849,6 +881,21 @@ Costmap2DROS::updateParametersCallback(const std::vector<rclcpp::Parameter> & pa
       } else if (param_name == "origin_y") {
         resize_map = true;
         origin_y_ = parameter.as_double();
+      } else if (param_name == "rolling_window_lookahead_time") {
+        rolling_window_lookahead_time_ = parameter.as_double();
+      } else if (param_name == "rolling_window_max_offset_x") {
+        rolling_window_max_offset_x_ = parameter.as_double();
+      } else if (param_name == "rolling_window_max_offset_y") {
+        rolling_window_max_offset_y_ = parameter.as_double();
+      } else if (param_name == "rolling_window_velocity_averaging_interval") {
+        rolling_window_velocity_averaging_interval_ = parameter.as_double();
+      }
+    } else if (param_type == ParameterType::PARAMETER_BOOL) {
+      if (param_name == "rolling_window_offset_enabled") {
+        rolling_window_offset_enabled_ = parameter.as_bool();
+        if (!rolling_window_offset_enabled_) {
+          layered_costmap_->setRollingWindowOffset(0.0, 0.0);
+        }
       }
     } else if (param_type == ParameterType::PARAMETER_INTEGER) {
       if (param_name == "width") {
@@ -932,6 +979,41 @@ void Costmap2DROS::getCostsCallback(
       response->costs.push_back(static_cast<float>(costmap->getCost(mx, my)));
     }
   }
+}
+
+bool computeRollingWindowOffset(
+  const tf2::BufferCore & tf,
+  const std::string & global_frame,
+  const std::string & base_frame,
+  double averaging_interval,
+  double lookahead_time,
+  double max_offset_x,
+  double max_offset_y,
+  double & offset_x,
+  double & offset_y)
+{
+  offset_x = 0.0;
+  offset_y = 0.0;
+  if (averaging_interval <= 0.0) {
+    return false;
+  }
+  // Average velocity between the latest pose and the pose averaging_interval before it
+  geometry_msgs::msg::TransformStamped latest, previous;
+  try {
+    latest = tf.lookupTransform(global_frame, base_frame, tf2::TimePointZero);
+    const tf2::TimePoint previous_time =
+      tf2_ros::fromMsg(latest.header.stamp) - tf2::durationFromSec(averaging_interval);
+    previous = tf.lookupTransform(global_frame, base_frame, previous_time);
+  } catch (const tf2::TransformException &) {
+    return false;
+  }
+  const double velocity_x =
+    (latest.transform.translation.x - previous.transform.translation.x) / averaging_interval;
+  const double velocity_y =
+    (latest.transform.translation.y - previous.transform.translation.y) / averaging_interval;
+  offset_x = std::clamp(velocity_x * lookahead_time, -max_offset_x, max_offset_x);
+  offset_y = std::clamp(velocity_y * lookahead_time, -max_offset_y, max_offset_y);
+  return true;
 }
 
 }  // namespace nav2_costmap_2d

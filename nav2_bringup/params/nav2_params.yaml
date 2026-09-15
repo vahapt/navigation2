@@ -240,6 +240,12 @@ local_costmap:
       global_frame: odom
       robot_base_frame: base_link
       rolling_window: true
+      # Shift the window along the robot velocity to see further ahead
+      # rolling_window_offset_enabled: false
+      # rolling_window_lookahead_time: 1.0
+      # rolling_window_max_offset_x: 0.0
+      # rolling_window_max_offset_y: 0.0
+      # rolling_window_velocity_averaging_interval: 0.2
       width: 3
       height: 3
       resolution: 0.05

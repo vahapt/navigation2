@@ -120,6 +120,29 @@ public:
   }
 
   /**
+   * @brief Set the offset of the rolling window center from the robot position.
+   * Applied on the next updateMap() call. Zero keeps the window centered on the robot.
+   * @param offset_x Offset along the global frame x axis (m)
+   * @param offset_y Offset along the global frame y axis (m)
+   */
+  void setRollingWindowOffset(double offset_x, double offset_y)
+  {
+    rolling_offset_x_ = offset_x;
+    rolling_offset_y_ = offset_y;
+  }
+
+  /**
+   * @brief Get the rolling window origin requested in the last updateMap() call.
+   * Layers keeping their own grid should pass this to updateOrigin() so they stay
+   * aligned with the master costmap.
+   */
+  void getRollingWindowOrigin(double & origin_x, double & origin_y) const
+  {
+    origin_x = rolling_origin_x_;
+    origin_y = rolling_origin_y_;
+  }
+
+  /**
    * @brief If this costmap is tracking unknown space or not
    */
   bool isTrackingUnknown()
@@ -221,6 +244,8 @@ private:
   std::string global_frame_;
 
   bool rolling_window_;  /// < @brief Whether or not the costmap should roll with the robot
+  double rolling_offset_x_{0.0}, rolling_offset_y_{0.0};
+  double rolling_origin_x_{0.0}, rolling_origin_y_{0.0};
 
   double minx_, miny_, maxx_, maxy_;
   unsigned int bx0_, bxn_, by0_, byn_;

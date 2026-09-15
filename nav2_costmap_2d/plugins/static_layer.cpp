@@ -389,16 +389,15 @@ StaticLayer::updateBounds(
     // For rolling costmaps the global_frame (e.g. odom) differs from the
     // map frame.  mapToWorld() returns coordinates in the map frame, but
     // the layered costmap interprets bounds in its global_frame.  Report
-    // bounds that cover the full rolling window using the robot pose,
-    // which is already in the correct frame.  updateCosts() handles the
-    // per-cell map↔odom transform itself.
+    // bounds that cover the full rolling window using the master costmap
+    // origin, which is already in the correct frame and follows any
+    // rolling window offset.  updateCosts() handles the per-cell map↔odom
+    // transform itself.
     Costmap2D * master = layered_costmap_->getCostmap();
-    double half_w = master->getSizeInMetersX() / 2.0;
-    double half_h = master->getSizeInMetersY() / 2.0;
-    *min_x = std::min(robot_x - half_w, *min_x);
-    *min_y = std::min(robot_y - half_h, *min_y);
-    *max_x = std::max(robot_x + half_w, *max_x);
-    *max_y = std::max(robot_y + half_h, *max_y);
+    *min_x = std::min(master->getOriginX(), *min_x);
+    *min_y = std::min(master->getOriginY(), *min_y);
+    *max_x = std::max(master->getOriginX() + master->getSizeInMetersX(), *max_x);
+    *max_y = std::max(master->getOriginY() + master->getSizeInMetersY(), *max_y);
   } else {
     double wx, wy;
 

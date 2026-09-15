@@ -433,13 +433,15 @@ void RangeSensorLayer::resetRange()
 }
 
 void RangeSensorLayer::updateBounds(
-  double robot_x, double robot_y,
+  double /*robot_x*/, double /*robot_y*/,
   double robot_yaw, double * min_x, double * min_y,
   double * max_x, double * max_y)
 {
   robot_yaw = 0 + robot_yaw;  // Avoid error if variable not in use
   if (layered_costmap_->isRolling()) {
-    updateOrigin(robot_x - getSizeInMetersX() / 2, robot_y - getSizeInMetersY() / 2);
+    double origin_x, origin_y;
+    layered_costmap_->getRollingWindowOrigin(origin_x, origin_y);
+    updateOrigin(origin_x, origin_y);
   }
 
   updateCostmap();
